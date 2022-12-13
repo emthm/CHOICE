@@ -1,0 +1,268 @@
+!
+print_level: dump_all
+cost_interface_type: integrated
+!
+!
+!
+module Fan
+ !
+ disc_type: conventional
+ fan_type: large
+ design_type: constant_tip
+ !
+ !rtip: 0.7745
+ !rhre: 0.3431
+ !splitter_radius: 0.4625
+ hub_tip_ratio: 0.32
+ !hub_tip_ratio: 0.270 
+ entrance_Mach_number: 0.63
+ taper_ratio_rotor: 0.588
+ aspect_ratio_rotor: 2.2
+ aspect_ratio_ogv: 2.8
+ radial_factor: 0.98
+ !
+ rotor_spacing_to_rotor_chord_length_ratio: 0.3012
+ bypass_duct_spacing_to_rotor_chord_length_ratio: 0.64
+ ogv_spacing_to_rotor_chord_length_ratio: 0.538
+ !
+ corrected_tip_speed: 420.0
+ !
+ !from leap1a public info
+ n_rotor_blades: 18
+ n_ogv_blades: 40
+ !
+ rotor_blade_material: 'Ti64'
+ ogv_blade_material: 'Ti64'
+ containment_material: 'Ti64'
+ case_material: 'Ti64'
+ disc_material: 'Ti17'
+ use_ess: true
+ ! 
+ rt_exit_fact: 1.05
+ aspect_ratio_ess: 2.31
+ ! 
+ !text_pos: -0.36 0.75
+end module Fan
+!
+!
+!
+module Lpc
+ disc_type: conventional
+ deHaller: 0.7
+ number_of_stages: 3 
+ disc_safety_factor: 2.5
+ rotor_blade_materials: 'Ti64'
+ disc_materials: 'Ti17'
+ case_materials: 'Ti64'
+ stator_blade_material: 'Ti64'
+! entrance_geometry_from: Fan
+! entrance_Mach_number: 0.459
+! hub_tip_ratio: 0.821
+ exit_Mach_number: 0.4
+! rt: 0.4555 0.4555 0.4409 0.4234
+! rh: 0.3796 0.3906 0.3840 0.3519
+ aspect_ratio_rotor_in: 1.8
+ aspect_ratio_rotor_out: 1.8
+ aspect_ratio_stator_in: 2.603
+ aspect_ratio_stator_out: 2.121
+! number_of_rotor_blades: 72 80 88
+! number_of_stator_blades: 132 120 108
+ clearance: 0.35
+ igv: true
+ !
+! text_pos: 0.25 0.53
+ !
+end module Lpc
+!
+!
+!
+module Lpc_duct
+ entrance_Mach_number: matcharea
+! ratio_of_length_to_height: 0.5355
+ outer_radius_ratio: 0.95
+ material: 'Ti64'
+end module Lpc_duct
+!
+!
+!
+module Imc
+ n_imc_struts: 12
+ material: 'Ti64'
+ aspect_ratio_bps: 5.5
+ outer_radius_ratio_mss: 0.7
+ radial_drive_shaft: true
+ !front_bearing_xpos: 0.394
+ !use_mid_fixa: true
+ technology: conventional
+end module Imc
+!
+!
+!
+module Hpc
+ deHaller: 0.72
+ disc_type: conventional
+ design_type: constant_hub
+ number_of_stages: 10 
+ rotor_blade_materials: 1-3 'Ti64' 4-9 '4130Steel'
+ disc_materials: 1-3 'Ti17' 4-9 '4130Steel'
+ case_materials: 1-3 'Ti64' 4-9 '4130Steel'
+ stator_blade_material: 1-3 'Ti64' 4-9 '4130Steel'
+ exit_Mach_number: 0.27
+ aspect_ratio_rotor_in: 2.00
+ aspect_ratio_rotor_out: 1.23
+ aspect_ratio_stator_in: 3.05
+ aspect_ratio_stator_out: 0.79
+ utip_corr: 415.0
+ structural_case: 4
+ outlet_guide_vane: true
+ igv: true
+end module Hpc
+!
+!
+!
+module Comb
+ !Dm:  0.4712
+ !dy: 0.1
+ slope_fact: 0.35
+ !through_flow_velocity: 40.31
+ residence_time: 0.00535
+ !gap_factor: 4.0
+ !diffuser_struts: false
+end module Comb
+!
+!
+!
+module Hpt
+ disc_type: conventional
+ disc_safety_factor: 1.2
+ !aspect_ratio_rotor_in: 1.825
+ !aspect_ratio_rotor_out: 1.825
+ !aspect_ratio_stator_in: 1.53
+ !aspect_ratio_stator_out: 1.53
+ !rt: 0.3796 0.3796
+ !rh: 0.3212 0.3241 
+ number_of_stages: 2
+ stator_solidity: 1.5
+ !number_of_rotor_blades: 80
+ taper_ratio: 0.6
+ rotor_blade_material: 'ReneN5'
+ stator_vane_material: 'MarM002'
+ disc_material: 'Rene95'
+ spacing: 0.25
+ inducer_disc: true
+ use_acc: true
+end module Hpt
+!
+!
+!
+module Hpt_duct
+ entrance_Mach_number: 0.4
+ ratio_of_length_to_height: 3.50
+ !outer_radius_ratio: 1.1
+ material: 'Inco718'  
+end module Hpt_duct
+!
+!
+!
+module Lpt
+ entrance_Mach_number: 0.28
+ disc_type: conventional
+ aspect_ratio_rotor_in: 4.0
+ aspect_ratio_rotor_out: 7.5
+ aspect_ratio_stator_in: 2.5
+ aspect_ratio_stator_out: 6.0
+ !rt: 0.3869 0.4234 0.4643 0.4993 0.5114
+ !rh: 0.3212 0.3256 0.3300 0.3343 0.3387
+ !number_of_rotor_blades: 98 102 107 111
+ !number_of_stator_blades: 83 93 102 112
+ number_of_stages: 7
+ rotor_blade_material: 'Rene80'
+ spacing: 0.30
+ use_acc: true
+ !text_pos: 2.1 0.20
+ hub_angle: 0.0
+end module Lpt
+!
+!
+!
+module Lp_shaft
+ conc_shaft_start: 0.467
+ diameter_ratio: 0.846
+ material: '4130Steel'
+end module Lp_shaft
+!
+!
+!
+module hp_shaft
+ allowable_stress: 344720000.0
+end module hp_shaft
+!
+!
+!
+module Tec
+ n_tec_struts: 16
+ material: 'Inco718'
+ aspect_ratio: 1.30
+! technology: conventional
+end module Tec
+!
+!
+!
+module bypass_duct
+ entrance_Mach_number: matcharea
+ ratio_of_length_to_height: 0.3
+ outer_radius_ratio: 1.0
+ material: 'Ti64'
+end module bypass_duct
+!
+!
+!
+module hot_nozzle
+ entrance_Mach_number: matcharea
+ length_to_diameter_ratio: 1.14
+end module hot_nozzle
+!
+!
+!
+module cold_nozzle
+ entrance_Mach_number: matcharea
+end module cold_nozzle
+!
+!
+!
+module Nacelle
+ use_thrust_reverser: true
+ throat_radius_ratio: 0.922
+ max_radius_ratio: 1.30
+ len_fact: 0.71
+ thrust_rev_weight_fact: 1.1
+end module Nacelle
+!
+!
+!
+module Accessories
+ acc_w_fact: 0.10
+end module Accessories
+
+!
+!
+!
+module Weight Factors
+ Fan: 1.0
+ Lpc: 1.0
+ Lpc_duct: 1.0
+ Imc: 1.0
+ Hpc: 1.0
+ Comb: 1.0
+ Hpt: 1.0
+ Hpt_duct: 1.0
+ Lpt: 1.0
+ Tec: 1.0
+ hot_nozzle: 1.0
+ bypass_duct: 1.0
+ cold_nozzle: 1.0
+ Lp_shaft: 1.0
+ Hp_shaft: 1.0
+ Accessories: 1.0
+ Nacelle: 1.0
+end module Weight Factors
