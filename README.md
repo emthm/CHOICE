@@ -50,3 +50,76 @@ inputNoise.txt --> The noise study cases are defined
 - fan_inlet_suppression: noise suppression constant for fan inlet
 - fan_dis_suppression: noise suppression constant for fan inlet
 - lpt_suppression: noise suppression constant for fan inlet
+
+dimensionsWeight.txt --> The modules of the engine architecture are provided, e.g. Fan, Lpc, Comb, etc. The rest of the parameters are not used.
+
+weightAircraft.txt --> Engine sizing data. Metric system is used
+- GBX_ratio: gear box ratio. If the engine is direct driven, set this parameter to 1.0,
+- FanR1BDiaOuter: fan outer diameter
+- FanA2: fan annulus area
+- FanR1BNb: number of fan rotor blades.
+- FanRss: rotor stator spacing parameter. See the relevant literature for definition.
+- MtipFan: relative tip Mach number of fan in design point (typically the top-of-climb point during a flight mission). 
+- xnl: fan rotation speed in design point in rps
+- FanVsOgvNb: number of fan stator blades of
+- stages_LPC: number of LPC stages
+- r_compr: LPC radius
+- rh_compr: LPC hydraulic radius
+- RSS_compr: rotor stator spacing parameter
+- MtipLpc: relative tip Mach number of lpc in design point (typically the top-of-climb point during a flight mission). 
+- N_compr: number of rotor blades for first stage rotor.
+- S_compr: number of stator blades for first stage stator.
+- CombType: SAC/DAC, combustor type
+- maxNo_nozzles_dac: total number of fuel nozzles in DAC
+- A_comb_exit: combustor exit area
+- Deff_comb: exhaust nozzle exit plane effective diameter
+- Dhyd_comb: exhaust nozzle exit plane hydraulic diameter
+- Lc_comb: combustor nominal length
+- h_annulus_comb: annulus height at combustor exit
+- LptStgLastBNb: number of rotor at the last stage of the LPT---------------------------------
+- stages_LPT: number of LPT stages
+- LptStgLastDiaOuter: outer diameter of the last stage of the LPT
+- LptStgLastAExit: exit area of the last stage of the LPT
+- SRS: rotor stator spacing
+- A_core: core nozzle area
+- A_bypass: bypass nozzle are
+
+performanceResults.txt or trajectory performance files --> engine and aircraft performance data for every point
+Fan performance:
+-	Mtip_fan: relative tip Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
+-	Mu_fan: blade Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
+-	xnl_fan: rotational speed in rps. 
+-	dt_fan: stage temperature rise over fan rotor.
+- g1_fan: mass flow at fan face in kg/s.
+IPC/LPC performance:
+-	Mtip_lpc: relative tip Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
+-	Mu_lpc: blade Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
+-	xnl_fan: rotational speed in rps.
+-	dt_lpc: stage temperature rise over LPC rotor. In single point mode it is computed from a stage loading parameter (0.70 for non-geared and 0.45 for geared).
+-	g1_lpc: mass flow at LPC in kg/s.
+Combustor performance:
+- P3: combustor inlet pressure in Pa
+- P4: combustor exit pressure in Pa
+- P7: turbine exit pressure in Pa
+- T3: combustor inlet temperature in K
+- T4: combustor exit temperature in K
+- T5: turbine exit temperature in K
+- W3: combustor inlet flow in kg/s
+LPT performance:
+-	V_TR: relative tip speed of turbine last rotor in m/s
+-	T_LPT_exit: turbine exhaust temperature in K
+-	n_LPS: rotational speed in rps
+-	m_core: mass flow in kg/s
+-	Cax: axial velocity in m/s. In single point mode it is computed from the previous parameters and the LPT exit area.
+Jet performance:
+- dmdt_1_hot: mass flow rate of inner stream or circular jet in kg/s
+- dmdt_2_cold: mass flow rate of outer stream  in kg/s
+- v_1: nozzle exit flow velocity of inner stream or circular jet in m/s
+- v_2: nozzle exit flow velocity of outer stream in m/s
+- T_1: nozzle exit flow total temperature of inner stream or circular jet in K
+- T_2: nozzle exit flow total temperature of outer stream in K
+Airframe performance:
+- psi: aircraft pitch angle in rad
+- defl_flap: flap deflection angle in rad
+- defl_slat: slat deflection angle in rad
+- LandingGear: landing gear position, 0 or 1
