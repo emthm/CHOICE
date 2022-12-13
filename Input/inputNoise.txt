@@ -51,7 +51,7 @@ fuselage_fan: false
 !
 psi:0.048517
 defl_flap:0.436332
-!Cl_outb_flap   aoa_ail (rad)    aoa_slat (rad) for trajectory_performance false is currently coded in choice; should be changed to input later!
-fan_inlet_suppression: 0
-fan_dis_suppression: 0
-lpt_suppression: 0
+!
+fan_inlet_suppression: 10
+fan_dis_suppression: 15
+lpt_suppression: 15
