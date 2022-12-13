@@ -1,0 +1,57 @@
+point:Approach
+trajectory_performance:true
+use_trajectory_preparser: false
+generate_noise_sources:true
+use_ground_reflection: true
+use_spherical_spreading: true
+use_atmospheric_attenuation: true
+use_suppression_factor: true
+no_engines: 2
+type_nozzles: separate
+!
+xmic:-2000.0
+ymic:1.2
+zmic:0.0
+!
+dtIsa: 0.0
+!
+! aircraft parameters - find data for specific aircraft!!!mass has to be MTOW and in kg
+! aircraft_type:a321neo
+aircraft_mass: 93000
+!
+!Airframe data
+wing_area: 122.40
+wing_span: 35.8
+horizontal_tail_area: 31
+horizontal_tail_span: 12.45
+vertical_tail_area: 21.5
+vertical_tail_span: 5.87
+jet_aircraft_coef: 6
+noFlaps: 4
+flap_area: 4.8 4.1 4.8 4.1
+flap_span: 5.9 4.3 5.9 4.3
+flap_type: 2slot
+leading_edge_type: slat
+! Landing gear position: 0 -> retracted, 1 -> deployed, other -> predefined position is used for each point
+LandingGear_vec:1
+noLG: 3
+d_wheel: 49 49 30
+d_strut: 6 6 3.5
+d_wire: 1 1 1.5
+Nwheels: 2 2 2
+Nstruts: 1 1 1
+!
+! Combustor data
+comb_ign_nozzles: 20
+dac_nozzle_pattern: 30
+!
+fan_distortion: 0
+ff_distortion: 0
+fuselage_fan: false
+!
+psi:0.048517
+defl_flap:0.436332
+!Cl_outb_flap   aoa_ail (rad)    aoa_slat (rad) for trajectory_performance false is currently coded in choice; should be changed to input later!
+fan_inlet_suppression: 0
+fan_dis_suppression: 0
+lpt_suppression: 0
