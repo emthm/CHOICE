@@ -6,6 +6,7 @@ Marily Thoma (marily@chalmers.se), Xin Zhao, Tomas Grönstedt
 
 -------------------------------------------------------------------------------
 Required libraries: numpy, scipy
+
 Python version: 3
 
 -------------------------------------------------------------------------------
