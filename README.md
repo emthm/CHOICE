@@ -85,18 +85,21 @@ weightAircraft.txt --> Engine sizing data. Metric system is used
 - A_bypass: bypass nozzle are
 
 performanceResults.txt or trajectory performance files --> engine and aircraft performance data for every point
+
 Fan performance:
 -	Mtip_fan: relative tip Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
 -	Mu_fan: blade Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
 -	xnl_fan: rotational speed in rps. 
 -	dt_fan: stage temperature rise over fan rotor.
 - g1_fan: mass flow at fan face in kg/s.
+
 IPC/LPC performance:
 -	Mtip_lpc: relative tip Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
 -	Mu_lpc: blade Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
 -	xnl_fan: rotational speed in rps.
 -	dt_lpc: stage temperature rise over LPC rotor. In single point mode it is computed from a stage loading parameter (0.70 for non-geared and 0.45 for geared).
 -	g1_lpc: mass flow at LPC in kg/s.
+
 Combustor performance:
 - P3: combustor inlet pressure in Pa
 - P4: combustor exit pressure in Pa
@@ -105,12 +108,14 @@ Combustor performance:
 - T4: combustor exit temperature in K
 - T5: turbine exit temperature in K
 - W3: combustor inlet flow in kg/s
+
 LPT performance:
 -	V_TR: relative tip speed of turbine last rotor in m/s
 -	T_LPT_exit: turbine exhaust temperature in K
 -	n_LPS: rotational speed in rps
 -	m_core: mass flow in kg/s
 -	Cax: axial velocity in m/s. In single point mode it is computed from the previous parameters and the LPT exit area.
+
 Jet performance:
 - dmdt_1_hot: mass flow rate of inner stream or circular jet in kg/s
 - dmdt_2_cold: mass flow rate of outer stream  in kg/s
@@ -118,6 +123,7 @@ Jet performance:
 - v_2: nozzle exit flow velocity of outer stream in m/s
 - T_1: nozzle exit flow total temperature of inner stream or circular jet in K
 - T_2: nozzle exit flow total temperature of outer stream in K
+
 Airframe performance:
 - psi: aircraft pitch angle in rad
 - defl_flap: flap deflection angle in rad
