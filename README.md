@@ -1,6 +1,12 @@
-# CHOICE
+# CHOICE - CHalmers nOIse CodE
 An aircraft noise prediction framework based on empirical and semi-empirical methods found in public literature. 
 The code is able to predict the noise at the source (aircraft) and at the certification points on the ground (so far for 2D propagation only).  
+
+Marily Thoma (marily@chalmers.se), Xin Zhao, Tomas Grönstedt
+
+-------------------------------------------------------------------------------
+Required libraries: numpy, scipy
+Python version: 3
 
 -------------------------------------------------------------------------------
 The following files are used as input:
