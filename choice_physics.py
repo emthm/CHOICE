@@ -783,6 +783,8 @@ class Jet:
         Jet source noise model for circular and coaxial jets based on the methods presented by Russel (J. W. Russel.
         "An empirical Method for Predicting the mixing Noise Levels of Subsonic Circular and Coaxial Jets".
         NASA-CR-3786).
+        :param dmdt_1: Mass flow rate of inner stream or circular jet (kg/s)
+        :param dmdt_2: Mass flow rate of outer stream (kg/s)
         :param v_1: Nozzle exit flow velocity of inner stream or circular jet (m/s)
         :param v_2: Nozzle exit flow velocity of outer stream (m/s)
         :param T_1: Nozzle exit flow total temperature of inner stream or circular jet (K)
@@ -941,6 +943,7 @@ class Jet:
 class Combustor:
     """
     Instantiate combustor source noise prediction.
+    :param type_comb: Combustor type, SAC or DAC
     :param Aec: Combustor exit area (ft^2)
     :param De: Exhaust nozzle exit plane effective diameter (ft)
     :param Dh: Exhaust nozzle exit plane hydraulic diameter (ft)
@@ -1946,7 +1949,7 @@ def get_dx(x1, y1, z1, dt, gamma, c0, Va, tnext):
     Computes distance travelled until the location of the next noise sample generation.
     :param x1: x coordinate of first sample (in relation to microphone)
     :param y1: y coordinate (height) of first sample (in relation to microphone)
-    :param zmic: z coordinate of microphone
+    :param z1: z coordinate of microphone
     :param dt: time interval between sounds reaching the microphone
     :param gamma: flight path angle
     :param c0: speed of sound at aircraft location
@@ -1958,8 +1961,6 @@ def get_dx(x1, y1, z1, dt, gamma, c0, Va, tnext):
 
     tg = math.tan(np.radians(gamma))
     r1 = math.sqrt(x1 ** 2 + y1 ** 2 + z1 ** 2)
-
-    # s1 = math.sqrt(x1 ** 2 + z1 ** 2)
 
     a = ((1.0 + tg ** 2) * (c0 ** 2 - Va ** 2)) / Va ** 2
     b = -2.0 * (r1 + c0 * dt) * c0 * math.sqrt(1.0 + tg ** 2) / Va - 2.0 * x1 - 2.0 * y1 * tg
@@ -2015,7 +2016,8 @@ def get_xsi(clgr, x, y, xmic, ymic):
 
 class PerceivedNoiseMetrics:
 
-    def getPNL(self, nti, fdoppler, SPLp):
+    @classmethod
+    def getPNL(cls, nti, fdoppler, SPLp):
         """
         Computes the Perceived Noise Level.
         :param nti: Number of times (for interpolated grid)
@@ -2028,13 +2030,14 @@ class PerceivedNoiseMetrics:
         Ffactor = 0.15
 
         for i in range(nti):
-            wrk = self.getNoys(fdoppler[:, i], SPLp[:, i])
+            wrk = cls.getNoys(fdoppler[:, i], SPLp[:, i])
             vec1 = max(wrk)
             vec2[i] = (1 - Ffactor) * vec1 + Ffactor * sum(wrk)
 
         return 40.0 + (10.0 / (math.log10(2))) * np.log10(vec2)
 
-    def getPNLT(self, nti, fband, PNL, SPL):
+    @staticmethod
+    def getPNLT(nti, fband, PNL, SPL):
         """
         Computes the Perceived Noise Level corrected for spectral irregularities
         :param nti: Number of times / points.
@@ -2106,7 +2109,8 @@ class PerceivedNoiseMetrics:
 
         return PNL + C
 
-    def getEPNL(self, PNLT):
+    @staticmethod
+    def getEPNL(PNLT):
         """
         Computes the Effective Perceived Noise Level.
         :param PNLT: The corrected Perceived Noise Level (dB)
@@ -2124,7 +2128,8 @@ class PerceivedNoiseMetrics:
 
         return D + PNLTM
 
-    def getNoys(self, fband, SPL_vec):
+    @staticmethod
+    def getNoys(fband, SPL_vec):
         """ Computes Noys metric from SPL and frequency. """
         Noys = np.zeros(len(fband))
 

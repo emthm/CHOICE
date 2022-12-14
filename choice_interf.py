@@ -12,7 +12,6 @@ import choice_aux
 import choice_data
 from scipy.interpolate import interp1d
 
-output_file_open = False
 maxNoPts = 3  # Maximum number of operating points
 version_num = '1.0'
 
@@ -490,11 +489,11 @@ class PerformanceChoice:
         """ Sets the airframe performance parameters. """
         file_path = 'Input/' + self.point.rstrip() + '_airfrm_performance.txt'
         if self.trajPerf:
-            storage_mat = choice_aux.loadStorageMat(file_path, self.n_traj, 9)
+            storage_mat = choice_aux.loadStorageMat(file_path, self.n_traj, 4)
             self.psi_airfrm = storage_mat[:, 0]
-            self.defl_flap_airfrm = storage_mat[:, 5]
-            self.defl_slat_airfrm = storage_mat[:, 6]
-            self.LandingGear = storage_mat[:, 7]
+            self.defl_flap_airfrm = storage_mat[:, 1]
+            self.defl_slat_airfrm = storage_mat[:, 2]
+            self.LandingGear = storage_mat[:, 3]
         else:
             self.psi_airfrm = np.full(self.n_traj, noise_choice.psi_airfrm_vec[self.ptr])
             self.defl_flap_airfrm = np.full(self.n_traj, noise_choice.defl_flap_airfrm_vec[self.ptr])
@@ -1002,14 +1001,14 @@ def CertificationData(n_times, fobs, fband, SPLp):
     PNLT = NoiseMatrices()
     EPNL = NoiseMatrices()
     for key in SPLp.__dict__:
-        PNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics().getPNL(n_times, fobs, SPLp.__dict__[key])
-        PNLT.__dict__[key] = choice_physics.PerceivedNoiseMetrics().getPNLT(n_times, fband, PNL.__dict__[key],
+        PNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp.__dict__[key])
+        PNLT.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.__dict__[key],
                                                                             SPLp.__dict__[key])
-        EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics().getEPNL(PNLT.__dict__[key])
+        EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.__dict__[key])
 
     all_sources = np.array([PNLT_value for PNLT_value in PNLT.__dict__.values()])
     PNLT.tot = choice_aux.getTotLevel(all_sources)
-    EPNL.tot = choice_physics.PerceivedNoiseMetrics().getEPNL(PNLT.tot)
+    EPNL.tot = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.tot)
 
     return EPNL
 
