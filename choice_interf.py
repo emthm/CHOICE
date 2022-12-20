@@ -222,12 +222,6 @@ class NoiseChoice:
             self.N_wheels_airfrm = np.array([float(nw) for nw in noiseFile.get('Nwheels').split()])
             self.N_struts_airfrm = np.array([float(ns) for ns in noiseFile.get('Nstruts').split()])
 
-        # Distortion parameter based on Average axial velocity decrement divided by the blade speed at the place where
-        # the average distortion acts, Povinelli, F. P., Dittmar, J. H., & Woodward, R. P. (1972). Effects of
-        # installation caused flow distortion on noise from a fan designed for turbofan engines.
-        self.fan_distortion = noiseFile.get('fan_distortion')
-        self.ff_distortion = noiseFile.get('ff_distortion')
-
         self.psi_airfrm_vec = np.zeros(3)
         self.defl_flap_airfrm_vec = np.zeros(3)
         self.LandingGear = np.zeros(3)
