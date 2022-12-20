@@ -876,10 +876,6 @@ def compute_noise_sources(operatingPoint, traj, modules, noise, weight, performa
             prms.__dict__[key] = include_multiple_engines(noise.no_engines, prms.__dict__[key])
 
     if noise.gen_noise_source_matr:
-        prms_int = Prms(traj.n_traj_pts)
-        # for key in prms.__dict__:
-        #     prms_int.__dict__[key] = directivity_interpolation(
-        #         prms.__dict__[key], theta, np.degrees(performanceChoice.psi_airfrm), traj.n_traj_pts)
         choice_aux.gen_noise_source_matr_subr(operatingPoint, choice_data.nfreq, choice_data.nthet, traj.n_traj_pts,
                                               prms)
 
@@ -889,16 +885,6 @@ def compute_noise_sources(operatingPoint, traj, modules, noise, weight, performa
 def include_multiple_engines(no_engines, prms):
     """ Account for multiple engines on the aircraft. """
     return np.sqrt(float(no_engines) * prms ** 2)
-
-
-def directivity_interpolation(prms, theta, psi, ntraj):
-    """ Interpolate the rms acoustic pressure accounting for aircraft pitch. """
-    prmsi = np.zeros((choice_data.nfreq, choice_data.nthet, ntraj))
-    for ifr in range(choice_data.nfreq):
-        for jtr in range(ntraj):
-            prmsi[ifr, :, jtr] = interp1d(theta, prms[ifr, :, jtr], fill_value="extrapolate")(theta + psi[jtr])
-            prmsi[ifr, prmsi[ifr, :, jtr] < 0, jtr] = 0
-    return prmsi
 
 
 class NoiseMatrices:
