@@ -51,7 +51,15 @@ class AtmosphericEffects:
         return math.sqrt(gam * choice_data.Risa * ts) * M
 
 
-class Airframe:
+class NoiseSource:
+
+    @staticmethod
+    def suppression(prms, s_db):
+        """ Calculates the suppressed acoustic pressure. """
+        return np.sqrt((prms ** 2) * 10 ** (-s_db / 10))
+
+
+class Airframe(NoiseSource):
     """
     Instantiate airframe source noise prediction.
     :param opPoint: Approach, Cutback, Sideline
@@ -123,7 +131,7 @@ class Airframe:
         self.X = \
             np.array([-9.992824, -7.587345, -1.474888e1, 3.307829e1, 1.141251e2, -3.080667e2, 2.104914e2, -4.519879e1])
 
-    def calcAirfrm(self, Ta, Ha, Ma, Va, defl_flap, defl_slat, LG):
+    def calc(self, Ta, Ha, Ma, Va, defl_flap, defl_slat, LG):
         """
         Airframe source noise model based on a combination of methods found in public literature. Trailing-edge and
         landing gear noise are modelled separately. The references for each method are found in the description of the
@@ -168,7 +176,7 @@ class Airframe:
                     lgs = False
 
             # Noise from wing
-            ny = calc_dynamic_visc(Ta) / rho0
+            ny = DynamicViscocity.calculate(Ta) / rho0
             phi_sid = 0  # Sideline angle (lateral directivity) is calculated from the flyover plane -> In flyover, phi = 0
             horizontal_factor = math.cos(np.radians(phi_sid))
             wing = self.get_wing_and_tail(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND)
@@ -464,7 +472,7 @@ class Airframe:
         return mat
 
 
-class Jet:
+class Jet(NoiseSource):
     """
     Instantiate jet source noise prediction.
     :param A_core_caj: Nozzle exit flow area of inner stream or circular jet (m^2)
@@ -778,7 +786,7 @@ class Jet:
 
         self.table_vi = np.array([table_vi_1, table_vi_2, table_vi_3, table_vi_4, table_vi_5, table_vi_6, table_vi_7])
 
-    def calcCaj(self, dmdt_1, dmdt_2, v_1, v_2, T_1, T_2, Ta, Pa):
+    def calc(self, dmdt_1, dmdt_2, v_1, v_2, T_1, T_2, Ta, Pa):
         """
         Jet source noise model for circular and coaxial jets based on the methods presented by Russel (J. W. Russel.
         "An empirical Method for Predicting the mixing Noise Levels of Subsonic Circular and Coaxial Jets".
@@ -833,10 +841,8 @@ class Jet:
             x_3 = math.log10((v_2 / v_1) / 1)
             x_4 = math.log10((T_2 / T_1) / 1)
             x_5 = math.log10((self.A_2 / self.A_1) / 1)
-            if v_2 / v_1 < 0.02 or v_2 / v_1 > 2.5:
-                print('v_2/v_1 is not within the valid range (0.02 - 2.5)', 'call from calcCaj')
-            if T_2 / T_1 < 0.20 or T_2 / T_1 > 4.0:
-                print('T_2/T_1 is not within the valid range (0.2 - 4.0)', 'call from calcCaj')
+            # v_2/v_1 operating range in method development is (0.02 - 2.5)
+            # T_2/T_1 operating range in method development is (0.2 - 4.0)
             if self.A_2 / self.A_1 < 0.50 or self.A_2 / self.A_1 > 10.0:
                 print('A_2/A_1 is not within the valid range (0.5 - 10.0)', 'call from calcCaj')
         elif self.type_jet.lower() == 'circular':
@@ -851,10 +857,8 @@ class Jet:
         else:
             print('type_jet not known!')
 
-        if v_e / c_amb < 0.30 or v_e / c_amb > 2.0:
-            print('v_e/c_amb is not within valid range (0.3 - 2.0)', 'call from calcCaj')
-        if T_e / t_amb < 0.70 or T_e / t_amb > 4.5:
-            print('T_e/t_amb is not within the valid range (0.7 - 4.5)', 'call from calcCaj')
+        # v_e / c_amb operating range in method development is (0.3 - 2.0)
+        # T_e/t_amb operating range in method development is (0.7 - 4.5)
 
         # STEP 3 - Compute Derivative Multipliers
         # Circular and coannular jet
@@ -940,7 +944,7 @@ class Jet:
         return choice_aux.SPL2prms(SPL)
 
 
-class Combustor:
+class Combustor(NoiseSource):
     """
     Instantiate combustor source noise prediction.
     :param type_comb: Combustor type, SAC or DAC
@@ -967,7 +971,7 @@ class Combustor:
         self.nthet = len(theta)
         self.nfreq = len(fband)
 
-    def calcComb(self, Nf, pattern, pa, p3, p4, p7, ta, t3, t4, t5, w3):
+    def calc(self, Nf, pattern, pa, p3, p4, p7, ta, t3, t4, t5, w3):
         """
         Combustor source noise model based on the method for low-emissions combustors developed by Gliebe et al. (P. Gliebe,
         R. Mani, H. Shin, B. Mitchell, G. Ashford, S. Salamah and S. Connel. "Aeroacoustic Prediction Codes".
@@ -1152,7 +1156,7 @@ class Combustor:
         return choice_aux.prms2SPL(prms_total)
 
 
-class Turbine:
+class Turbine(NoiseSource):
     """
     Instantiate turbine source noise prediction.
     :param N_rotors: Number of rotors
@@ -1182,7 +1186,7 @@ class Turbine:
         self.turb_atm_abs = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.20, 0.20, 0.3, 0.4,
                                       0.5, 0.6, 0.8, 1.20, 1.4, 2.0, 2.9, 4.2])
 
-    def calcTurbine(self, Vtr, Texit, xnl, mcore, Cax):
+    def calc(self, Vtr, Texit, xnl, mcore, Cax):
         """
         Turbine source noise model based on the method developed by Dunn and Peart (D. G. Dunn and N. A. Peart. "Aircraft
         Noise Source and Contour Estimation". NASA-CR-114649).
@@ -1254,7 +1258,7 @@ class Turbine:
         return choice_aux.SPL2prms(SPL_1m)
 
 
-class FanCompressor:
+class FanCompressor(NoiseSource):
     """
     Instantiate fan or compressor source noise prediction.
     :param component: Compressor component, fan, LPC, IPC
@@ -1343,7 +1347,7 @@ class FanCompressor:
             -0.1500, 0.000, -1.000, -2.000, -4.000, -6.000, -8.000, -10.000, -12.500, -15.000, -17.500, -20.000])
         self.liners = True
 
-    def calcFanandCompressor(self, operatingPoint, Mtip, Mu, dT, xnl, g1):
+    def calc(self, operatingPoint, Mtip, Mu, dT, xnl, g1):
         """
         Fan and compressor source noise model based on the methods developed by Heidman (M. F. Heidmann. "Interim
         Prediction Method for Fan and Compressor Source Noise". NASA-TM-X71763) and updated by Kontos et al. (K. B. Kontos,
@@ -1701,11 +1705,6 @@ class FanCompressor:
             return 63.0 + 20.0 * math.log10(self.MtrD) - 20.0 * math.log10(M_tr)
 
 
-def calcSuppression(prms, s_db):
-    """ Calculates the suppressed acoustic pressure. """
-    return np.sqrt((prms ** 2) * 10 ** (-s_db / 10))
-
-
 class PropagationEffects:
     """
     Instantiate noise estimation at microphone/observer.
@@ -1840,11 +1839,11 @@ class PropagationEffects:
         Fcap = np.full(nf, complex(0, 0))
         for i, taui in enumerate(tau):
             if abs(taui) > 10.0:
-                if np.real(taui) < 0:
+                if -np.real(taui) < 0:
                     U = 1  # U is a step function
-                elif np.real(taui) == 0:
+                elif -np.real(taui) == 0:
                     U = 0.5
-                elif np.real(taui) > 0:
+                elif -np.real(taui) > 0:
                     U = 0
                 Fcap[i] = -2 * math.sqrt(math.pi) * U * taui * cmath.exp(taui ** 2) + 1 / (2 * taui ** 2) - 3 / (
                         (2 * taui ** 2) ** 2)
@@ -1908,11 +1907,11 @@ class PropagationEffects:
         theta[theta > math.pi] = 2 * math.pi - theta[theta > math.pi]
         return theta
 
-    @classmethod
-    def get_atm_abs(cls, t_k, relHum, fband):
+    @staticmethod
+    def get_atm_abs(t_k, relHum, fband):
         """
-        Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the SAE ARP 866A
-        report.
+        Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the SAE ARP
+        866A report.
         :param t_k: Atmospheric temperature (K)
         :param relHum: Relative humidity
         :param fband: 1/3 octave band frequency (Hz)
@@ -1942,76 +1941,6 @@ class PropagationEffects:
 
         alfa_mol = alfa_molmax * alfa_norm
         return alfa_class + alfa_mol
-
-
-def get_dx(x1, y1, z1, dt, gamma, c0, Va, tnext):
-    """
-    Computes distance travelled until the location of the next noise sample generation.
-    :param x1: x coordinate of first sample (in relation to microphone)
-    :param y1: y coordinate (height) of first sample (in relation to microphone)
-    :param z1: z coordinate of microphone
-    :param dt: time interval between sounds reaching the microphone
-    :param gamma: flight path angle
-    :param c0: speed of sound at aircraft location
-    :param Va: aircraft speed
-    :param tnext: next sampling time
-    :return: the distance that the aircraft travelled
-    """
-    solution_found = False
-
-    tg = math.tan(np.radians(gamma))
-    r1 = math.sqrt(x1 ** 2 + y1 ** 2 + z1 ** 2)
-
-    a = ((1.0 + tg ** 2) * (c0 ** 2 - Va ** 2)) / Va ** 2
-    b = -2.0 * (r1 + c0 * dt) * c0 * math.sqrt(1.0 + tg ** 2) / Va - 2.0 * x1 - 2.0 * y1 * tg
-    c = r1 ** 2 + (c0 ** 2) * (dt ** 2) + 2 * r1 * c0 * dt - x1 ** 2 - y1 ** 2
-
-    sol1 = (-b + math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
-    sol2 = (-b - math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
-
-    # pick solution
-    s2 = x1 + sol1
-    y2 = y1 + sol1 * tg
-    dr = math.sqrt(sol1 ** 2 + (sol1 * tg) ** 2)
-    attempt1 = math.sqrt(s2 ** 2 + y2 ** 2) / c0 + dr / Va
-    res = abs(attempt1 - tnext) / max(1.0, tnext)
-
-    if res < 10.0 * sys.float_info.epsilon:
-        ds = sol1
-        solution_found = True
-
-    x2 = x1 + sol2
-    y2 = y1 + sol2 * tg
-    dr = math.sqrt(sol2 ** 2 + (sol2 * tg) ** 2)
-    attempt2 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
-    res = abs(attempt2 - tnext) / max(1.0, tnext)
-
-    if res < 10.0 * sys.float_info.epsilon:
-        ds = sol2
-        solution_found = True
-
-    if not solution_found:
-        choice_aux.report_error('failed to establish solution', 'get_dx', 'choice_physics')
-        return
-    else:
-        return ds
-
-
-def get_xsi(clgr, x, y, xmic, ymic):
-    """
-    Computes the angle between the direction of the aircraft's motion and the sound propagation path.
-    :param clgr: Flight path angle (deg)
-    :param x: Aircraft horizontal distance from/to airport (m)
-    :param y: Aircraft altitude (m)
-    :param xmic: Microphone/observer horizontal distance (m)
-    :param ymic: Microphone/observer height (m)
-    :return: Computed angle (rad)
-    """
-    fi = np.arctan((xmic - x) / (y - ymic))
-    fi[y <= ymic] = math.pi / 2  # in reality the airframe and engines are always higher than the microphone
-    psi = math.pi / 2 - fi
-
-    return psi + np.deg2rad(clgr)
 
 
 class PerceivedNoiseMetrics:
@@ -2157,21 +2086,18 @@ class PerceivedNoiseMetrics:
         return Noys
 
 
-def calc_dynamic_visc(t):
-    """ Computes the dynamic viscocity for a given temperature. """
-    mu_0 = 17.1e-6
+class DynamicViscocity:
 
-    if 273.15 <= t < 373.15:
-        beta1 = 0.4743742289
-        beta2 = 0.0445219791
-        beta3 = 0.1651857290
-    elif 373.15 <= t < 973.15:
-        beta1 = 0.5688972460
-        beta2 = 0.0414204258
-        beta3 = 0.1192514508
-    elif t < 273.15:
-        return 17.1e-6
-    elif t > 973.15:
-        return 41.5e-6
-
-    return mu_0 * ((t / 288.15) ** beta1 + beta2 * (t / 288.15) + beta3 * math.log((t / 288.15) ** 2))
+    @staticmethod
+    def calculate(t):
+        """ Computes the dynamic viscocity for a given temperature. """
+        mu_0 = 17.1e-6
+        if 273.15 <= t < 373.15:
+            beta = np.array([0.4743742289, 0.0445219791, 0.1651857290])
+        elif 373.15 <= t < 973.15:
+            beta = np.array([0.5688972460, 0.0414204258, 0.1192514508])
+        elif t < 273.15:
+            return 17.1e-6
+        elif t > 973.15:
+            return 41.5e-6
+        return mu_0 * ((t / 288.15) ** beta[0] + beta[1] * (t / 288.15) + beta[2] * math.log((t / 288.15) ** 2))

@@ -31,7 +31,7 @@ def loadStorageMat(fname, ndata, nvars):
                     mat[i, j] = float(st)
                 i = i + 1
     if i != ndata:
-        sys.exit('confusion in number of data - ndata different from number of lines in file for file ')
+        sys.exit('confusion in number of data - ndata different from number of lines in file')
 
     return mat
 
@@ -76,10 +76,8 @@ def preProcessFanFile(fname, d1, a2):
 
     # dump newFile onto file
     with open(fname, 'w') as fp:
-        for i in range(len(newFile)):
-            fp.write(newFile[i] + '\n')
-
-        newFile[i] = parseFanLine(string, d1, a2)
+        for nf in newFile:
+            fp.write(nf + '\n')
 
 
 def preProcessLptFile(fname, de, ae):
@@ -124,10 +122,8 @@ def preProcessLptFile(fname, de, ae):
 
     # dump new_file onto file
     with open(fname, 'w') as fp:
-        for i in range(len(new_file)):
-            fp.write(new_file[i])
-
-            new_file[i] = parseLptLine(string, de, ae)
+        for nf in new_file:
+            fp.write(nf)
 
 
 def containsStars(fname):
@@ -141,9 +137,7 @@ def containsStars(fname):
                 if ('*****') in s:
                     stars = True
                     break
-
             if stars: break
-
     return stars
 
 
@@ -375,14 +369,7 @@ def get_Cax(gam, p, t, w, A):
     return Cax
 
 
-class EPNL_point:
-    def __init__(self, lateral, cutback, approach):
-        self.lateral = lateral
-        self.cutback = cutback
-        self.approach = approach
-
-
-class chapter3():
+class chapter3:
     """
     A class that defined the EPNL certification limits for every operating point.
     :param noEngines: Number of engines
@@ -438,11 +425,3 @@ class chapter3():
         else:
             return 80.57 + 8.51 * math.log10(400.0)  # 102.71
 
-
-def isfloat(num):
-    """ Checks if the provided string is a float number. """
-    try:
-        float(num)
-        return True
-    except ValueError:
-        return False

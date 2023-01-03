@@ -31,36 +31,28 @@ class WeightChoice:
         self.MtipD_fan = weightFile.get('MtipFan')
         if self.MtipD_fan is not None and (self.MtipD_fan > 3.0 or self.MtipD_fan < 0.7): choice_aux.report_error(
             'unexpected value on MtipD_fan', 'setFan', 'SetWeightChoice')
-
         self.xnlD_fan = weightFile.get('xnl')
         if self.xnlD_fan is not None and self.xnlD_fan > 600: choice_aux.report_error(
             'xnl from self.weightFile very large. Unit should always be rps!', 'setFan', 'SetWeightChoice')
-
         self.rss_fan = weightFile.get('FanRss')
         if self.rss_fan is not None and (self.rss_fan > 300.0 or self.rss_fan < 5.0): choice_aux.report_error(
             'unexpected value on rss_fan', 'setFan', 'SetWeightChoice')
-
         self.N_rotors_fan = weightFile.get('FanR1BNb')
         self.N_stators_fan = weightFile.get('FanVsOgvNb')
-
         self.A2_fan = weightFile.get('FanA2')
         if self.A2_fan is not None and (self.A2_fan > 50.0 or self.A2_fan < 0.1): choice_aux.report_error(
             'unexpected value on A2_fan', 'setFan', 'SetWeightChoice')
-
         self.D1_fan = weightFile.get('FanR1BDiaOuter')
         if self.D1_fan is not None and (self.D1_fan < 0.1 or self.D1_fan > 10.0): choice_aux.report_error(
             'unexpected value on D1_fan', 'setFan', 'SetWeightChoice')
 
         self.n_stages_LPC = weightFile.get('stages_LPC')
-
         self.gbx_ratio = weightFile.get('GBX_ratio')
         self.MtipD_lpc = weightFile.get('MtipLpc')
         self.xnlD_lpc = self.xnlD_fan * self.gbx_ratio
         self.rss_lpc = weightFile.get('RSS_compr')
-
         self.N_rotors_lpc = weightFile.get('N_compr')
         self.N_stators_lpc = weightFile.get('S_compr')
-
         self.D1_lpc = 2 * weightFile.get('r_compr')
         self.Dh1_lpc = 2 * weightFile.get('rh_compr')
 
@@ -87,22 +79,17 @@ class WeightChoice:
         self.MtipD_ff = weightFile.get('Mtipff')
         if self.MtipD_ff is not None and (self.MtipD_ff > 3.0 or self.MtipD_ff < 0.7): choice_aux.report_error(
             'unexpected value on MtipD_ff', 'setff', 'SetWeightChoice')
-
         self.xnlD_ff = weightFile.get('xnlff')
         if self.xnlD_ff is not None and self.xnlD_ff > 600: choice_aux.report_error(
             'xnlff from weightFile very large. Unit should always be rps!', 'setff', 'SetWeightChoice')
-
         self.rss_ff = weightFile.get('ffRss')
         if self.rss_ff is not None and (self.rss_ff > 300.0 or self.rss_ff) < 5.0: choice_aux.report_error(
             'unexpected value on rss_ff', 'setff', 'SetWeightChoice')
-
         self.N_rotors_ff = weightFile.get('ffR1BNb')
         self.N_stators_ff = weightFile.get('ffVsOgvNb')
-
         self.A2_ff = weightFile.get('ffA2')
         if self.A2_ff is not None and (self.A2_ff > 50.0 or self.A2_ff < 0.1): choice_aux.report_error(
             'unexpected value on A2_ff', 'setff', 'SetWeightChoice')
-
         self.D1_ff = weightFile.get('ffR1BDiaOuter')
         if self.D1_ff is not None and (self.D1_ff < 0.1 or self.D1_ff > 10.0): choice_aux.report_error(
             'unexpected value on D1_ff', 'setff', 'SetWeightChoice')
@@ -155,7 +142,6 @@ class NoiseChoice:
         self.type_nozzles = "separate"
         self.type_nozzles = noiseFile.get('type_nozzles')  # "separate" or "mix", other type will not be recognized
 
-        # check if fuselage_fan exists
         self.fuselage_fan = False
         if 'true' in noiseFile.get('fuselage_fan'): self.fuselage_fan = True
 
@@ -266,7 +252,7 @@ class Trajectory:
 
         self.clgr[self.n_traj_pts - 1] = self.clgr[self.n_traj_pts - 2]
 
-        self.xsi = choice_physics.get_xsi(self.clgr, self.x, self.y, noise_choice.xmic[ipnt], noise_choice.ymic[ipnt])
+        self.get_xsi(noise_choice.xmic[ipnt], noise_choice.ymic[ipnt])
 
         if np.isnan(self.xsi).any(): sys.exit('not a number computed for xsi')
         self.xsid = np.rad2deg(self.xsi)
@@ -319,9 +305,9 @@ class Trajectory:
             if self.va_source[i - 1] == 0:
                 dx = 0
             else:
-                dx = choice_physics.get_dx(self.x_source[i - 1], self.y_source[i - 1], self.z_source, dt,
-                                           self.clgr_source[i - 1], self.a_source[i - 1], self.va_source[i - 1],
-                                           self.r1[i - 1] / self.a_source[i - 1] + dt)
+                dx = self.get_dx(self.x_source[i - 1], self.y_source[i - 1], self.z_source, dt,
+                                 self.clgr_source[i - 1], self.a_source[i - 1], self.va_source[i - 1],
+                                 self.r1[i - 1] / self.a_source[i - 1] + dt)
 
             # update using dx
             self.x_source[i] = self.x_source[i - 1] + dx
@@ -351,6 +337,70 @@ class Trajectory:
         self.ta = np.array([choice_physics.AtmosphericEffects.get_t_ambient(h, dtIsa) for h in self.y])
         self.a = np.sqrt(choice_data.gamma_air * R * self.ta)
         self.Ma = self.Va / self.a
+
+    @staticmethod
+    def get_dx(x1, y1, z1, dt, gamma, c0, Va, tnext):
+        """
+        Computes distance travelled until the location of the next noise sample generation.
+        :param x1: x coordinate of first sample (in relation to microphone)
+        :param y1: y coordinate (height) of first sample (in relation to microphone)
+        :param z1: z coordinate of microphone
+        :param dt: time interval between sounds reaching the microphone
+        :param gamma: flight path angle
+        :param c0: speed of sound at aircraft location
+        :param Va: aircraft speed
+        :param tnext: next sampling time
+        :return: the distance that the aircraft travelled
+        """
+        solution_found = False
+
+        tg = math.tan(np.radians(gamma))
+        r1 = math.sqrt(x1 ** 2 + y1 ** 2 + z1 ** 2)
+
+        a = ((1.0 + tg ** 2) * (c0 ** 2 - Va ** 2)) / Va ** 2
+        b = -2.0 * (r1 + c0 * dt) * c0 * math.sqrt(1.0 + tg ** 2) / Va - 2.0 * x1 - 2.0 * y1 * tg
+        c = r1 ** 2 + (c0 ** 2) * (dt ** 2) + 2 * r1 * c0 * dt - x1 ** 2 - y1 ** 2
+
+        sol1 = (-b + math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
+        sol2 = (-b - math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
+
+        # pick solution
+        s2 = x1 + sol1
+        y2 = y1 + sol1 * tg
+        dr = math.sqrt(sol1 ** 2 + (sol1 * tg) ** 2)
+        attempt1 = math.sqrt(s2 ** 2 + y2 ** 2) / c0 + dr / Va
+        res = abs(attempt1 - tnext) / max(1.0, tnext)
+
+        if res < 10.0 * sys.float_info.epsilon:
+            ds = sol1
+            solution_found = True
+
+        x2 = x1 + sol2
+        y2 = y1 + sol2 * tg
+        dr = math.sqrt(sol2 ** 2 + (sol2 * tg) ** 2)
+        attempt2 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
+        res = abs(attempt2 - tnext) / max(1.0, tnext)
+
+        if res < 10.0 * sys.float_info.epsilon:
+            ds = sol2
+            solution_found = True
+
+        if not solution_found:
+            choice_aux.report_error('failed to establish solution', 'get_dx', 'choice_interf')
+            return
+        else:
+            return ds
+
+    def get_xsi(self, xmic, ymic):
+        """
+        Computes the angle between the direction of the aircraft's motion and the sound propagation path.
+        :param xmic: Microphone/observer horizontal distance (m)
+        :param ymic: Microphone/observer height (m)
+        """
+        fi = np.arctan((xmic - self.x) / (self.y - ymic))
+        fi[self.y <= ymic] = math.pi / 2  # in reality the airframe and engines are always higher than the microphone
+        psi = math.pi / 2 - fi
+        self.xsi = psi + np.deg2rad(self.clgr)
 
     def read_trajectory_input(self, opPnt):
         """
@@ -389,20 +439,20 @@ class Trajectory:
         self.z = np.asarray(z)
         self.n_traj_pts = len(self.x)
 
+    @classmethod
+    def set(cls, ipnt, opPnt, noise_choice):
+        """
+        Sets the required trajectory details for the noise calculation.
+        :param ipnt: Operating point (trajectory) number in order of appearance in the inputNoise.txt
+        :param opPnt: opPnt: Operating point (trajectory), e.g. Approach, Cutback, Sideline
+        :param noise_choice: NoiseChoice object
+        :return: A trajectory object
+        """
+        traj = cls(ipnt, opPnt, noise_choice)  # Compute r, clgr, xsi and time
+        traj.set_velocity(noise_choice.dtIsa)  # compute ta, a and Ma
+        traj.set_time_vector(ipnt, noise_choice)  # compute "retarded" vectors at source
 
-def set_trajectory(ipnt, opPnt, noise_choice):
-    """
-    Sets the required trajectory details for the noise calculation.
-    :param ipnt: Operating point (trajectory) number in order of appearance in the inputNoise.txt
-    :param opPnt: opPnt: Operating point (trajectory), e.g. Approach, Cutback, Sideline
-    :param noise_choice: NoiseChoice object
-    :return: A trajectory object
-    """
-    traj = Trajectory(ipnt, opPnt, noise_choice)  # Compute r, clgr, xsi and time
-    traj.set_velocity(noise_choice.dtIsa)  # compute ta, a and Ma
-    traj.set_time_vector(ipnt, noise_choice)  # compute "retarded" vectors at source
-
-    return traj
+        return traj
 
 
 def set_rotational_speeds_choice(mpd, weightChoice, comp):
@@ -692,39 +742,38 @@ class PerformanceChoice:
     def get_variable(self, point, name):
         """ Returns the value of the item with the specified key for the provided point. """
         if point == 'Take-off':
-            variable = self.mpd.perf_file_to.get(name)
+            return self.mpd.perf_file_to.get(name)
         elif point == 'Sideline':
-            variable = self.mpd.perf_file_sl.get(name)
+            return self.mpd.perf_file_sl.get(name)
         elif point == 'Cutback':
-            variable = self.mpd.perf_file_cutback.get(name)
+            return self.mpd.perf_file_cutback.get(name)
         elif point == 'Approach':
-            variable = self.mpd.perf_file_approach.get(name)
+            return self.mpd.perf_file_approach.get(name)
         elif point == 'Cruise':
-            variable = self.mpd.perf_file_cr.get(name)
+            return self.mpd.perf_file_cr.get(name)
         elif point == 'Top-of-climb':
-            variable = self.mpd.perf_file_toc.get(name)
-        return variable
+            return self.mpd.perf_file_toc.get(name)
 
+    @classmethod
+    def set(cls, ptr, modules, n_traj, mpd, noise_choice, weight_choice):
+        """ Sets the performance data for each component. """
+        performance_choice = cls(ptr, noise_choice.trajectory_performance, noise_choice.opPnt[ptr].strip(), n_traj,
+                                 weight_choice, mpd)
+        openRotor = performance_choice.getIsOpenRotor(modules)
+        if openRotor: sys.exit('Model is open rotor - noise modelling not implemented yet')
 
-def set_performance_choice(ptr, modules, n_traj, mpd, noise_choice, weight_choice):
-    """ Returns a PerformanceChoice object that contains the performance data for each component. """
-    performance_choice = PerformanceChoice(ptr, noise_choice.trajectory_performance, noise_choice.opPnt[ptr].strip(),
-                                           n_traj, weight_choice, mpd)
-    openRotor = performance_choice.getIsOpenRotor(modules)
-    if openRotor: sys.exit('Model is open rotor - noise modelling not implemented yet')
+        for module in modules:
+            if module == 'Fan': performance_choice.setFan()
+            if module == 'Ipc' or module == 'Lpc': performance_choice.setLpc()
+            if module == 'Lpt': performance_choice.setLpt()
+            if module == 'Comb': performance_choice.setComb()
+            if module == 'cold_nozzle': performance_choice.coAxialJet()
+            if module == 'fuselage_fan': performance_choice.setff()
+            if module == 'ff_nozzle': performance_choice.coAxialJet_ffn()
 
-    for module in modules:
-        if module == 'Fan': performance_choice.setFan()
-        if module == 'Ipc' or module == 'Lpc': performance_choice.setLpc()
-        if module == 'Lpt': performance_choice.setLpt()
-        if module == 'Comb': performance_choice.setComb()
-        if module == 'cold_nozzle': performance_choice.coAxialJet()
-        if module == 'fuselage_fan': performance_choice.setff()
-        if module == 'ff_nozzle': performance_choice.coAxialJet_ffn()
+        performance_choice.setAirfrm(noise_choice)
 
-    performance_choice.setAirfrm(noise_choice)
-
-    return performance_choice
+        return performance_choice
 
 
 class Prms:
@@ -762,129 +811,140 @@ class Prms:
         self.Caj_ffn = np.zeros((nfreq, nthet, npts))
 
 
-def compute_noise_sources(operatingPoint, traj, modules, noise, weight, performance, nop):
-    """
-    Compute the acoustic pressure for each noise component.
-    :param operatingPoint: Approach, Cutback, Sideline
-    :param traj: A Trajectory object with the trajectory data
-    :param modules: Fan, Lpc, Lpt, etc.
-    :param noiseChoice: A noiseChoice object with the required input arguments for the noise prediction
-    :param weightChoice: A weightChoice object with the engine size and architecture
-    :param performanceChoice: A performanceChoice object with the engine performance data
-    :param nop: Number of operating point
-    :return: A Prms object with the rms acoustic pressure for each component, the directivity angle and the 1/3 octave
-    band frequencies
-    """
+class NoiseSources:
 
-    theta = np.array([0.0 + float(i) * 5.0 for i in range(choice_data.nthet)])
-    [fband, f, freq] = choice_aux.set_frequencies(choice_data.nb, choice_data.nfreq, float(choice_data.fmin),
-                                                  float(choice_data.fmax))
-    prms = Prms(traj.n_traj_pts)
+    def __init__(self, prms, theta, fband):
+        """ Instantiate noise source object"""
+        self.prms = prms
+        self.theta = theta
+        self.fband = fband
 
-    airframe = choice_physics.Airframe(operatingPoint, noise.N_wheels_airfrm, noise.N_struts_airfrm, noise.nlg_airfrm,
-                                       noise.d_wheel_airfrm, noise.d_strut_airfrm, noise.d_wire_airfrm, noise.NoFlap,
-                                       noise.S_flap_airfrm, noise.span_flap_airfrm, noise.Sw_airfrm, noise.span_airfrm,
-                                       noise.ND, noise.span_hor_tail, noise.Sht, noise.span_ver_tail, noise.Svt,
-                                       noise.flap_type, noise.slat_type, theta, fband)
-    if 'cold_nozzle' in modules: jet = choice_physics.Jet(weight.A_core_caj, weight.A_bypass_caj, noise.type_nozzles,
-                                                          theta, fband)
-    if 'Comb' in modules:
-        comb = choice_physics.Combustor(weight.type_comb, weight.Aec_comb, weight.De_comb, weight.Dh_comb,
-                                        weight.Lc_comb, weight.h_comb, weight.Nfmax_comb, theta, fband)
-    if 'Lpt' in modules:
-        turb = choice_physics.Turbine(weight.N_rotors_lpt, weight.n_stages_lpt, weight.SRS_lpt, theta, fband, f)
-    if 'Fan' in modules:
-        fan = choice_physics.FanCompressor('Fan', weight.MtipD_fan, weight.N_rotors_fan, weight.N_stators_fan,
-                                           weight.rss_fan, theta, fband, f)
-    if 'Ipc' in modules:
-        lpc = choice_physics.FanCompressor('Ipc', weight.MtipD_lpc, weight.N_rotors_lpc, weight.N_stators_lpc,
-                                           weight.rss_lpc, theta, fband, f)
-    if 'Lpc' in modules:
-        lpc = choice_physics.FanCompressor('Lpc', weight.MtipD_lpc, weight.N_rotors_lpc, weight.N_stators_lpc,
-                                           weight.rss_lpc, theta, fband, f)
-    if 'fuselage_fan' in modules:
-        ffan = choice_physics.FanCompressor('fuselage_fan', weight.MtipD_ff, weight.N_rotors_ff, weight.N_stators_ff,
-                                            weight.rss_ff, theta, fband, f)
-    if 'ff_nozzle' in modules: ffjet = choice_physics.Jet(weight.A_core_caj_ffn, weight.A_bypass_caj_ffn, 'mix')
+    @classmethod
+    def compute(cls, traj, modules, noise, weight, performance, nop):
+        """
+        Compute the acoustic pressure for each noise component.
+        :param operatingPoint: Approach, Cutback, Sideline
+        :param traj: A Trajectory object with the trajectory data
+        :param modules: Fan, Lpc, Lpt, etc.
+        :param noise: A noiseChoice object with the required input arguments for the noise prediction
+        :param weight: A weightChoice object with the engine size and architecture
+        :param performance: A performanceChoice object with the engine performance data
+        :param nop: Number of operating point
+        :return: A Prms object with the rms acoustic pressure for each component, the directivity angle and the 1/3 octave
+        band frequencies
+        """
 
-    # evaluate component noise models
-    for i in range(traj.n_traj_pts):  # for all points along trajectory - evaluate noise sources
-        pa = choice_physics.AtmosphericEffects.get_p_ambient(traj.y[i])
-        for module in modules:  # evaluate all noise sources in this engine model
-            if module.rstrip() == 'Fan':
-                temp = fan.calcFanandCompressor(operatingPoint, performance.Mtip_fan[i], performance.Mu_fan[i],
-                                                performance.dt_fan[i], performance.xnl_fan[i], performance.g1_fan[i])
-                prms.Fan_inlet_tone[:, :, i] = temp[0]
-                prms.Fan_discharge_tone[:, :, i] = temp[1]
-                prms.Fan_inlet_broadband[:, :, i] = temp[2]
-                prms.Fan_discharge_broadband[:, :, i] = temp[3]
-                prms.Fan_inlet_combination[:, :, i] = temp[4]
+        theta = np.array([0.0 + float(i) * 5.0 for i in range(choice_data.nthet)])
+        [fband, f, freq] = choice_aux.set_frequencies(choice_data.nb, choice_data.nfreq, float(choice_data.fmin),
+                                                      float(choice_data.fmax))
+        prms = Prms(traj.n_traj_pts)
 
-                if noise.use_suppression_factor:
-                    prms.Fan_inlet[:, :, i] = choice_physics.calcSuppression(temp[5], noise.S_fan_inlet)
-                    prms.Fan_discharge[:, :, i] = choice_physics.calcSuppression(temp[6], noise.S_fan_dis)
-                else:
-                    prms.Fan_inlet[:, :, i] = temp[5]
-                    prms.Fan_discharge[:, :, i] = temp[6]
-            elif module == 'Ipc' or module == 'Lpc':
-                temp = lpc.calcFanandCompressor(operatingPoint, performance.Mtip_lpc[i], performance.Mu_lpc[i],
-                                                performance.dt_lpc[i], performance.xnl_lpc[i], performance.g1_lpc[i])
-                prms.Lpc_inlet_tone[:, :, i] = temp[0]
-                prms.Lpc_inlet_broadband[:, :, i] = temp[2]
-                prms.Lpc_inlet_combination[:, :, i] = temp[4]
-                prms.Lpc_inlet[:, :, i] = temp[5]
-            elif module == 'Lpt':
-                prms.Lpt[:, :, i] = turb.calcTurbine(performance.Vtr_lpt[i], performance.Texit_lpt[i],
-                                                     performance.xnl_lpt[i], performance.mcore_lpt[i],
-                                                     performance.Cax_lpt[i])
+        operatingPoint = noise.opPnt[nop].strip()
+        airframe = choice_physics.Airframe(operatingPoint, noise.N_wheels_airfrm, noise.N_struts_airfrm,
+                                           noise.nlg_airfrm, noise.d_wheel_airfrm, noise.d_strut_airfrm,
+                                           noise.d_wire_airfrm, noise.NoFlap, noise.S_flap_airfrm,
+                                           noise.span_flap_airfrm, noise.Sw_airfrm, noise.span_airfrm, noise.ND,
+                                           noise.span_hor_tail, noise.Sht, noise.span_ver_tail, noise.Svt,
+                                           noise.flap_type, noise.slat_type, theta, fband)
+        if 'cold_nozzle' in modules: jet = choice_physics.Jet(weight.A_core_caj, weight.A_bypass_caj,
+                                                              noise.type_nozzles, theta, fband)
+        if 'Comb' in modules:
+            comb = choice_physics.Combustor(weight.type_comb, weight.Aec_comb, weight.De_comb, weight.Dh_comb,
+                                            weight.Lc_comb, weight.h_comb, weight.Nfmax_comb, theta, fband)
+        if 'Lpt' in modules:
+            turb = choice_physics.Turbine(weight.N_rotors_lpt, weight.n_stages_lpt, weight.SRS_lpt, theta, fband, f)
+        if 'Fan' in modules:
+            fan = choice_physics.FanCompressor('Fan', weight.MtipD_fan, weight.N_rotors_fan, weight.N_stators_fan,
+                                               weight.rss_fan, theta, fband, f)
+        if 'Ipc' in modules:
+            lpc = choice_physics.FanCompressor('Ipc', weight.MtipD_lpc, weight.N_rotors_lpc, weight.N_stators_lpc,
+                                               weight.rss_lpc, theta, fband, f)
+        if 'Lpc' in modules:
+            lpc = choice_physics.FanCompressor('Lpc', weight.MtipD_lpc, weight.N_rotors_lpc, weight.N_stators_lpc,
+                                               weight.rss_lpc, theta, fband, f)
+        if 'fuselage_fan' in modules:
+            ffan = choice_physics.FanCompressor('fuselage_fan', weight.MtipD_ff, weight.N_rotors_ff,
+                                                weight.N_stators_ff, weight.rss_ff, theta, fband, f)
+        if 'ff_nozzle' in modules: ffjet = choice_physics.Jet(weight.A_core_caj_ffn, weight.A_bypass_caj_ffn, 'mix')
 
-                if noise.use_suppression_factor:
-                    prms.Lpt[:, :, i] = choice_physics.calcSuppression(prms.Lpt[:, :, i], noise.S_lpt)
-            elif module == 'Comb':
-                prms.Comb[:, :, i] = comb.calcComb(min(noise.Nf_comb_ign[nop], weight.Nfmax_comb),
+        # evaluate component noise models
+        for i in range(traj.n_traj_pts):  # for all points along trajectory - evaluate noise sources
+            pa = choice_physics.AtmosphericEffects.get_p_ambient(traj.y[i])
+            for module in modules:  # evaluate all noise sources in this engine model
+                if module.rstrip() == 'Fan':
+                    temp = fan.calc(operatingPoint, performance.Mtip_fan[i], performance.Mu_fan[i],
+                                    performance.dt_fan[i], performance.xnl_fan[i], performance.g1_fan[i])
+                    prms.Fan_inlet_tone[:, :, i] = temp[0]
+                    prms.Fan_discharge_tone[:, :, i] = temp[1]
+                    prms.Fan_inlet_broadband[:, :, i] = temp[2]
+                    prms.Fan_discharge_broadband[:, :, i] = temp[3]
+                    prms.Fan_inlet_combination[:, :, i] = temp[4]
+
+                    if noise.use_suppression_factor:
+                        prms.Fan_inlet[:, :, i] = fan.suppression(temp[5], noise.S_fan_inlet)
+                        prms.Fan_discharge[:, :, i] = fan.suppression(temp[6], noise.S_fan_dis)
+                    else:
+                        prms.Fan_inlet[:, :, i] = temp[5]
+                        prms.Fan_discharge[:, :, i] = temp[6]
+                elif module == 'Ipc' or module == 'Lpc':
+                    temp = lpc.calc(operatingPoint, performance.Mtip_lpc[i], performance.Mu_lpc[i],
+                                    performance.dt_lpc[i], performance.xnl_lpc[i], performance.g1_lpc[i])
+                    prms.Lpc_inlet_tone[:, :, i] = temp[0]
+                    prms.Lpc_inlet_broadband[:, :, i] = temp[2]
+                    prms.Lpc_inlet_combination[:, :, i] = temp[4]
+                    prms.Lpc_inlet[:, :, i] = temp[5]
+                elif module == 'Lpt':
+                    prms.Lpt[:, :, i] = turb.calc(performance.Vtr_lpt[i], performance.Texit_lpt[i],
+                                                  performance.xnl_lpt[i], performance.mcore_lpt[i],
+                                                  performance.Cax_lpt[i])
+
+                    if noise.use_suppression_factor:
+                        prms.Lpt[:, :, i] = turb.suppression(prms.Lpt[:, :, i], noise.S_lpt)
+                elif module == 'Comb':
+                    prms.Comb[:, :, i] = comb.calc(min(noise.Nf_comb_ign[nop], weight.Nfmax_comb),
                                                    noise.Nf_comb_pattern, pa, performance.P3_comb[i],
                                                    performance.P4_comb[i], performance.P7_comb[i], traj.ta[i],
                                                    performance.T3_comb[i], performance.T4_comb[i],
                                                    performance.T5_comb[i], performance.W3_comb[i])
-            elif module == 'cold_nozzle':
-                prms.Caj[:, :, i] = jet.calcCaj(performance.dmdt_1_caj[i], performance.dmdt_2_caj[i],
-                                                performance.v_1_caj[i], performance.v_2_caj[i], performance.T_1_caj[i],
-                                                performance.T_2_caj[i], traj.ta[i], pa)
-            elif module == 'fuselage_fan':
-                temp = ffan.calcFanandCompressor(module, operatingPoint, performance.Mtip_ff[i], performance.Mu_ff[i],
-                                                 performance.dt_ff[i], performance.xnl_ff[i], performance.g1_ff[i])
-                prms.Ff_inlet_tone[:, :, i] = temp[0]
-                prms.Ff_discharge_tone[:, :, i] = temp[1]
-                prms.Ff_inlet_broadband[:, :, i] = temp[2]
-                prms.Ff_discharge_broadband[:, :, i] = temp[3]
-                prms.Ff_inlet_combination[:, :, i] = temp[4]
-                prms.Ff_inlet[:, :, i] = temp[5]
-                prms.Ff_discharge[:, :, i] = temp[6]
-            elif module == 'ff_nozzle':
-                prms.Caj_ffn[:, :, i] = ffjet.calcCaj(performance.dmdt_1_caj_ffn[i], 0.0, performance.v_1_caj_ffn[i],
-                                                      0.0, performance.T_1_caj_ffn[i], 0.0, traj.ta[i], pa)
-            else:
-                pass
+                elif module == 'cold_nozzle':
+                    prms.Caj[:, :, i] = jet.calc(performance.dmdt_1_caj[i], performance.dmdt_2_caj[i],
+                                                 performance.v_1_caj[i], performance.v_2_caj[i], performance.T_1_caj[i],
+                                                 performance.T_2_caj[i], traj.ta[i], pa)
+                elif module == 'fuselage_fan':
+                    temp = ffan.calc(module, operatingPoint, performance.Mtip_ff[i], performance.Mu_ff[i],
+                                     performance.dt_ff[i], performance.xnl_ff[i], performance.g1_ff[i])
+                    prms.Ff_inlet_tone[:, :, i] = temp[0]
+                    prms.Ff_discharge_tone[:, :, i] = temp[1]
+                    prms.Ff_inlet_broadband[:, :, i] = temp[2]
+                    prms.Ff_discharge_broadband[:, :, i] = temp[3]
+                    prms.Ff_inlet_combination[:, :, i] = temp[4]
+                    prms.Ff_inlet[:, :, i] = temp[5]
+                    prms.Ff_discharge[:, :, i] = temp[6]
+                elif module == 'ff_nozzle':
+                    prms.Caj_ffn[:, :, i] = ffjet.calc(performance.dmdt_1_caj_ffn[i], 0.0, performance.v_1_caj_ffn[i],
+                                                       0.0, performance.T_1_caj_ffn[i], 0.0, traj.ta[i], pa)
+                else:
+                    pass
 
-        prms.Airfrm[:, :, i] = airframe.calcAirfrm(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i],
-                                                   performance.defl_flap_airfrm[i], performance.defl_slat_airfrm[i],
-                                                   performance.LandingGear[i])
+            prms.Airfrm[:, :, i] = airframe.calc(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i],
+                                                 performance.defl_flap_airfrm[i], performance.defl_slat_airfrm[i],
+                                                 performance.LandingGear[i])
 
-    # include multiple engines
-    for key in prms.__dict__:
-        if key != 'Airfrm':
-            prms.__dict__[key] = include_multiple_engines(noise.no_engines, prms.__dict__[key])
+        # include multiple engines
+        for key in prms.__dict__:
+            if key != 'Airfrm':
+                prms.__dict__[key] = cls.include_multiple_engines(noise.no_engines, prms.__dict__[key])
 
-    if noise.gen_noise_source_matr:
-        choice_aux.gen_noise_source_matr_subr(operatingPoint, choice_data.nfreq, choice_data.nthet, traj.n_traj_pts,
-                                              prms)
+        if noise.gen_noise_source_matr:
+            choice_aux.gen_noise_source_matr_subr(operatingPoint, choice_data.nfreq, choice_data.nthet, traj.n_traj_pts,
+                                                  prms)
 
-    return [prms, theta, fband]
+        return cls(prms, theta, fband)
 
-
-def include_multiple_engines(no_engines, prms):
-    """ Account for multiple engines on the aircraft. """
-    return np.sqrt(float(no_engines) * prms ** 2)
+    @staticmethod
+    def include_multiple_engines(no_engines, prms):
+        """ Account for multiple engines on the aircraft. """
+        return np.sqrt(float(no_engines) * prms ** 2)
 
 
 class NoiseMatrices:
@@ -893,7 +953,7 @@ class NoiseMatrices:
     :param modules: Fan, Lpc, Lpt, etc.
     """
 
-    def __init__(self, modules = None):
+    def __init__(self, modules=None):
         """ Initializes the noise level matrix for each component. """
         if modules is not None:
             if 'Fan' in modules:
@@ -945,86 +1005,63 @@ def source_interpolation(prms, traj):
                       range(choice_data.nthet)] for ifr in range(choice_data.nfreq)])
 
 
-def compute_flight_effects(use_ground_refl, spherical_spr, atm_atten, traj, ymic, SPLi, xsii, Mai, Tai, alphai, theta,
-                           fband):
-    """
-    Computes the sound pressure level matrices along the trajectory accounting for propagation effects.
-    :param use_ground_refl: True to account for ground reflection or False else
-    :param spherical_spr: True to account for spherical spreading or False else
-    :param atm_atten: True to account for atmospheric attenuation or False else
-    :param traj: A Trajectory object with the trajectory data
-    :param ymic: Microphone height (m)
-    :param SPLi: Sound Pressure Level matrix
-    :param xsii: Observation angle (rad)
-    :param Mai: Mach number
-    :param Tai: Atmospheric temperature (K)
-    :param alphai: Angle of attack
-    :param theta: Directivity angle (deg)
-    :param fband: Octave band frequency (Hz)
-    :return: Sound Pressure Level accounting for flight effects and shifted frequency due to aircraft motion
-    """
+class GroundNoise:
 
-    propagation = choice_physics.PropagationEffects(ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai,
-                                                    alphai)
-    SPLp = NoiseMatrices()
-    prmsp = NoiseMatrices()
-    for key in SPLi.__dict__:
-        [SPLp.__dict__[key], prmsp.__dict__[key]] = \
-            propagation.flightEffects(traj.n_times, theta, traj.x_source, traj.y_source, traj.r1, Tai, SPLi.__dict__[key])
-    return [SPLp, propagation.fobs]
+    def __init__(self, SPLp, fobs):
+        self.SPLp = SPLp
+        self.fobs = fobs
 
+    @classmethod
+    def compute_flight_effects(cls, use_ground_refl, spherical_spr, atm_atten, traj, ymic, SPLi, xsii, Mai, Tai, alphai,
+                               theta, fband):
+        """
+        Computes the sound pressure level matrices along the trajectory accounting for propagation effects.
+        :param use_ground_refl: True to account for ground reflection or False else
+        :param spherical_spr: True to account for spherical spreading or False else
+        :param atm_atten: True to account for atmospheric attenuation or False else
+        :param traj: A Trajectory object with the trajectory data
+        :param ymic: Microphone height (m)
+        :param SPLi: Sound Pressure Level matrix
+        :param xsii: Observation angle (rad)
+        :param Mai: Mach number
+        :param Tai: Atmospheric temperature (K)
+        :param alphai: Angle of attack
+        :param theta: Directivity angle (deg)
+        :param fband: Octave band frequency (Hz)
+        :return: Sound Pressure Level accounting for flight effects and shifted frequency due to aircraft motion
+        """
 
-def CertificationData(n_times, fobs, fband, SPLp):
-    """ Computes the Effective Perceived Noise Level (EPNL) for each aircraft noise source and for the total
-    aircraft. """
-    PNL = NoiseMatrices()
-    PNLT = NoiseMatrices()
-    EPNL = NoiseMatrices()
-    for key in SPLp.__dict__:
-        PNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp.__dict__[key])
-        PNLT.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.__dict__[key],
-                                                                            SPLp.__dict__[key])
-        EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.__dict__[key])
-
-    all_sources = np.array([PNLT_value for PNLT_value in PNLT.__dict__.values()])
-    PNLT.tot = choice_aux.getTotLevel(all_sources)
-    EPNL.tot = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.tot)
-
-    return EPNL
+        propagation = choice_physics.PropagationEffects(ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii,
+                                                        Mai, alphai)
+        SPLp = NoiseMatrices()
+        prmsp = NoiseMatrices()
+        for key in SPLi.__dict__:
+            [SPLp.__dict__[key], prmsp.__dict__[key]] = \
+                propagation.flightEffects(traj.n_times, theta, traj.x_source, traj.y_source, traj.r1, Tai,
+                                          SPLi.__dict__[key])
+        return cls(SPLp, propagation.fobs)
 
 
-def save_noise_points(fname, opPoint, fuselage_fan, EPNL):
-    """ Saves the EPNL for each component and for the total in output file. """
-    with open(fname, 'a') as fp:
-        fp.write('\n' + '***Operating point is ' + opPoint + '\n')
-        fp.write('Fan inlet EPNL is'.rjust(23) + str(format(round(EPNL.Fan_inlet, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Fan discharge EPNL is'.rjust(23) + str(format(round(EPNL.Fan_discharge, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Inlet LPC EPNL is'.rjust(23) + str(format(round(EPNL.Lpc_inlet, 4), '.4f')).rjust(17) + '\n')
-        fp.write('LPT EPNL is'.rjust(23) + str(format(round(EPNL.Lpt, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Comb EPNL is'.rjust(23) + str(format(round(EPNL.Comb, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Caj EPNL is'.rjust(23) + str(format(round(EPNL.Caj, 4), '.4f')).rjust(17) + '\n')
+class CertificationData:
 
-        # Engine total noise
-        kernel = (10.0 ** (EPNL.Fan_inlet / 10.0) + 10.0 ** (EPNL.Fan_discharge / 10.0) +
-                  10.0 ** (EPNL.Lpc_inlet / 10) + 10.0 ** (EPNL.Lpt / 10.0) + 10.0 **
-                  (EPNL.Comb / 10.0) + 10.0 ** (EPNL.Caj / 10.0))
-        fp.write(
-            'EPNL_tot_engine is'.rjust(23) + str(format(round(10.0 * math.log10(kernel), 4), '.4f')).rjust(17) + '\n')
+    @staticmethod
+    def compute(n_times, fobs, fband, SPLp):
+        """ Computes the Effective Perceived Noise Level (EPNL) for each aircraft noise source and for the total
+        aircraft. """
+        PNL = NoiseMatrices()
+        PNLT = NoiseMatrices()
+        EPNL = NoiseMatrices()
+        for key in SPLp.__dict__:
+            PNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp.__dict__[key])
+            PNLT.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.__dict__[key],
+                                                                              SPLp.__dict__[key])
+            EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.__dict__[key])
 
-        fp.write(
-            'Airframe EPNL is'.rjust(23) + str(format(round(EPNL.Airfrm, 4), '.4f')).rjust(17) + '\n')
+        all_sources = np.array([PNLT_value for PNLT_value in PNLT.__dict__.values()])
+        PNLT.tot = choice_aux.getTotLevel(all_sources)
+        EPNL.tot = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.tot)
 
-        if fuselage_fan:
-            fp.write('EPNL_inlet_ff is' + str(format(round(EPNL.Ff_inlet, 4), '.4f')).rjust(17) + '\n')
-            fp.write('EPNL_discharge_ff is' + str(format(round(EPNL.Ff_discharge, 4), '.4f')).rjust(17) + '\n')
-            fp.write('EPNL_caj_ff is'.rjust(23) + str(format(round(EPNL.Caj_ffn, 4), '.4f')).rjust(17) + '\n')
-            # EPNL_tot_ff is the total EPNL of the fuselage fan assembly which includes the fuselage fan and the nozzle
-            fp.write('EPNL_tot_ff is'.rjust(23) +
-                     str(format(round(10. * math.log10(10.0 ** (EPNL.Ff_inlet / 10.0) +
-                                                       10.0 ** (EPNL.Ff_discharge / 10.0) +
-                                                       10.0 ** (EPNL.Caj_ffn / 10.0)), 4), '.4f')).rjust(17) + '\n')
-
-        fp.write('EPNL_tot with D is'.rjust(23) + str(format(round(EPNL.tot, 4), '.4f')).rjust(17))
+        return EPNL
 
 
 def certificationLimits(noEngines, MTOW):

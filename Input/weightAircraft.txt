@@ -8,7 +8,6 @@ FanRss:    0.941200000000E+02
 MtipFan:    0.142847407289E+01
 xnl:    0.649644905347E+02
 FanVsOgvNb:          40
-D_facetoexit_fan:    0.980164989959E+00
 stages_LPC:           3
 r_compr:    0.514127914063E+00
 rh_compr:    0.445890699434E+00
@@ -28,11 +27,5 @@ stages_LPT:           7
 LptStgLastDiaOuter:    0.107966861953E+01
 LptStgLastAExit:    0.423690376829E+00
 SRS:    0.300000000000E+00
-NozMainDiaB:    0.564026759349E+00
-LpNAbsTo:    0.389786943208E+04
-FanNAbsTo:    0.389786943208E+04
 A_core:    0.249855721633E+00
 A_bypass:    0.147983828205E+01
-Plug_radius:    0.000000000000E+00
-Core_nozzel_outer_radius:    0.282013379674E+00
-Bypass_nozzle_outer_radius:    0.873194272273E+00

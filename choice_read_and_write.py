@@ -5,59 +5,71 @@ Used to read and edit external / input files.
 
 import sys
 import choice_aux
-from os import path, chdir
+from os import path
+import math
 
 
-def read_external_files(dim_file, weight_file, noise_file, perf_file):
-    """
-    Reads data from files and creates and returns them in lists or dictionaries.
-    :param dim_file: File with the modules and engine architecture details
-    :param weight_file: File with data on engine sizing
-    :param noise_file: File to define the cases to be run and required inputs for noise prediction
-    :param perf_file: File containing the engine performance data for every point
-    :return: the data in list or dictionary format
-    """
-    weightFile = retrieve_file(weight_file)
-    noiseFile = retrieve_file(noise_file)
+class ReadFiles:
 
-    if path.exists(perf_file):  # Check if multipoint performance data exist
-        perfFile = open_performance_file(perf_file)
-        mpd = MultptPerfData(perfFile)
-    else:
-        print('Multipoint perf. file not found. Case must be traj. perf. type.')
+    def __init__(self, dim_file, weight_file, noise_file, perf_file):
+        """
+        Instantiate files to be read.
+        :param dim_file: File with the modules and engine architecture details
+        :param weight_file: File with data on engine sizing
+        :param noise_file: File to define the cases to be run and required inputs for noise prediction
+        :param perf_file: File containing the engine performance data for every point
+        """
+        self.dim_file = dim_file
+        self.weight_file = weight_file
+        self.noise_file = noise_file
+        self.perf_file = perf_file
+        self.modules = []
+        self.perfFile = []
 
-    # parse dimensions file and set modules
-    modules = set_modules(dim_file)
+        self.weightFile = self.retrieve_file(self.weight_file)
+        self.noiseFile = self.retrieve_file(self.noise_file)
 
-    return [modules, weightFile, noiseFile, mpd]
+        if path.exists(self.perf_file):  # Check if multipoint performance data exist
+            self.open_performance_file()
+            self.mpd = MultptPerfData(self.perfFile)
+        else:
+            print('Multipoint perf. file not found. Case must be traj. perf. type.')
 
+        # parse dimensions file and set modules
+        self.set_modules()
 
-def retrieve_file(file):
-    """ Reads the data from the given file and creates a dictionary. """
-    file_data = {}
-    with open(file) as fp:
-        for line in fp:
-            if line and not line.startswith('!'):
-                li = line.split(':')
-                if choice_aux.isfloat(li[1]):
-                    file_data[li[0].strip()] = float(li[1])
+    @staticmethod
+    def retrieve_file(file):
+        """ Reads the data from the given file and creates a dictionary. """
+        file_data = {}
+        with open(file) as fp:
+            for line in fp:
+                if line and not line.startswith('!'):
+                    li = line.split(':')
+                    if isfloat(li[1]):
+                        file_data[li[0].strip()] = float(li[1])
+                    else:
+                        file_data[li[0].strip()] = li[1].strip()
                 else:
-                    file_data[li[0].strip()] = li[1].strip()
-            else:
-                continue
-    return file_data
+                    continue
+        return file_data
 
+    def set_modules(self):
+        """ Returns a list of the modules in the dimensionsWeight.txt file"""
+        with open(self.dim_file) as df:
+            for line in df:
+                if line and not line.startswith('!'):
+                    if 'end module' in line:
+                        self.modules.append(line.split()[2].strip())
 
-def open_performance_file(file):
-    """ Reads a given performance file into a list. """
-    perfFile = []
-    with open(file) as fp:
-        for line in fp:
-            if line and not line.startswith('!'):
-                perfFile.append(line.strip())
-            else:
-                continue
-    return perfFile
+    def open_performance_file(self):
+        """ Reads a given performance file into a list. """
+        with open(self.perf_file) as fp:
+            for line in fp:
+                if line and not line.startswith('!'):
+                    self.perfFile.append(line.strip())
+                else:
+                    continue
 
 
 class MultptPerfData:
@@ -75,63 +87,52 @@ class MultptPerfData:
                 if p.find('Cruise') > -1 or p.find('MID-CRUISE') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_cr = load_dict(spos, pf)
+                    self.perf_file_cr = self.load_dict(spos, pf)
                 if p.find('Approach') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_approach = load_dict(spos, pf)
+                    self.perf_file_approach = self.load_dict(spos, pf)
                 if p.find('Cutback') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_cutback = load_dict(spos, pf)
+                    self.perf_file_cutback = self.load_dict(spos, pf)
                 if p.find('Cruise') > -1 or p.find('MID-CRUISE') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_cr = load_dict(spos, pf)
+                    self.perf_file_cr = self.load_dict(spos, pf)
                 if p.find('Top of Climb') > -1 or p.find('TOP_OF_CLIMB') > -1 or p.find('Top-of-climb') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_toc = load_dict(spos, pf)
+                    self.perf_file_toc = self.load_dict(spos, pf)
                 if p.find('Sideline') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_sl = load_dict(spos, pf)
+                    self.perf_file_sl = self.load_dict(spos, pf)
                 if p.find('Take-Off') > -1 or p.find('Take-off') > -1:
                     spos = i + 3
                     tag_found = True
-                    self.perf_file_to = load_dict(spos, pf)
+                    self.perf_file_to = self.load_dict(spos, pf)
                 if not tag_found:
-                    choice_aux.report_error('Point name specifier likely to have been misspelt. You wrote ' + pf[
-                        i].strip() + '. Try Take-off, Top-of-climb or Cruise', 'split_performance_file',
-                                            'read_and_write_files')
+                    choice_aux.report_error(
+                        'Point name specifier likely to have been misspelt. You wrote ' + pf[i].strip() +
+                        '. Try Take-off, Top-of-climb or Cruise', 'split_performance_file', 'read_and_write_files')
             else:
                 continue
 
-
-def load_dict(spos, pf):
-    """ Returns a dictionary with all the data for a given operating point. """
-    farr = {}
-    for i in range(spos, len(pf)):
-        if pf[i].find(':') > -1:
-            li = pf[i].split(':')
-            if choice_aux.isfloat(li[1]):
-                farr[li[0].strip()] = float(li[1])
+    @staticmethod
+    def load_dict(spos, pf):
+        """ Returns a dictionary with all the data for a given operating point. """
+        farr = {}
+        for i in range(spos, len(pf)):
+            if pf[i].find(':') > -1:
+                li = pf[i].split(':')
+                if isfloat(li[1]):
+                    farr[li[0].strip()] = float(li[1])
+                else:
+                    farr[li[0].strip()] = li[1].strip()
             else:
-                farr[li[0].strip()] = li[1].strip()
-        else:
-            break
-    return farr
-
-
-def set_modules(dimF):
-    """ Returns a list of the modules in the dimensionsWeight.txt file"""
-    modules = []
-    with open(dimF) as df:
-        for line in df:
-            if line and not line.startswith('!'):
-                if 'end module' in line:
-                    modules.append(line.split()[2].strip())
-    return modules
+                break
+        return farr
 
 
 def preparse_trajectories(traj_perf, opPnt, modules):
@@ -260,3 +261,46 @@ def preparse_trajectories(traj_perf, opPnt, modules):
             print('Trajectory performance file being parsed')
             parsePerformanceFiles(op.rstrip(), n[0], modules)
     sys.exit('stopped after preparsing - turn preparsing false to continue to computations')
+
+
+def save_noise_points(fname, opPoint, fuselage_fan, EPNL):
+    """ Saves the EPNL for each component and for the total in output file. """
+    with open(fname, 'a') as fp:
+        fp.write('\n' + '***Operating point is ' + opPoint + '\n')
+        fp.write('Fan inlet EPNL is'.rjust(23) + str(format(round(EPNL.Fan_inlet, 4), '.4f')).rjust(17) + '\n')
+        fp.write('Fan discharge EPNL is'.rjust(23) + str(format(round(EPNL.Fan_discharge, 4), '.4f')).rjust(17) + '\n')
+        fp.write('Inlet LPC EPNL is'.rjust(23) + str(format(round(EPNL.Lpc_inlet, 4), '.4f')).rjust(17) + '\n')
+        fp.write('LPT EPNL is'.rjust(23) + str(format(round(EPNL.Lpt, 4), '.4f')).rjust(17) + '\n')
+        fp.write('Comb EPNL is'.rjust(23) + str(format(round(EPNL.Comb, 4), '.4f')).rjust(17) + '\n')
+        fp.write('Caj EPNL is'.rjust(23) + str(format(round(EPNL.Caj, 4), '.4f')).rjust(17) + '\n')
+
+        # Engine total noise
+        kernel = (10.0 ** (EPNL.Fan_inlet / 10.0) + 10.0 ** (EPNL.Fan_discharge / 10.0) +
+                  10.0 ** (EPNL.Lpc_inlet / 10) + 10.0 ** (EPNL.Lpt / 10.0) + 10.0 **
+                  (EPNL.Comb / 10.0) + 10.0 ** (EPNL.Caj / 10.0))
+        fp.write(
+            'EPNL_tot_engine is'.rjust(23) + str(format(round(10.0 * math.log10(kernel), 4), '.4f')).rjust(17) + '\n')
+
+        fp.write(
+            'Airframe EPNL is'.rjust(23) + str(format(round(EPNL.Airfrm, 4), '.4f')).rjust(17) + '\n')
+
+        if fuselage_fan:
+            fp.write('EPNL_inlet_ff is' + str(format(round(EPNL.Ff_inlet, 4), '.4f')).rjust(17) + '\n')
+            fp.write('EPNL_discharge_ff is' + str(format(round(EPNL.Ff_discharge, 4), '.4f')).rjust(17) + '\n')
+            fp.write('EPNL_caj_ff is'.rjust(23) + str(format(round(EPNL.Caj_ffn, 4), '.4f')).rjust(17) + '\n')
+            # EPNL_tot_ff is the total EPNL of the fuselage fan assembly which includes the fuselage fan and the nozzle
+            fp.write('EPNL_tot_ff is'.rjust(23) +
+                     str(format(round(10. * math.log10(10.0 ** (EPNL.Ff_inlet / 10.0) +
+                                                       10.0 ** (EPNL.Ff_discharge / 10.0) +
+                                                       10.0 ** (EPNL.Caj_ffn / 10.0)), 4), '.4f')).rjust(17) + '\n')
+
+        fp.write('EPNL_tot with D is'.rjust(23) + str(format(round(EPNL.tot, 4), '.4f')).rjust(17))
+
+
+def isfloat(num):
+    """ Checks if the provided string is a float number. """
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False

@@ -45,6 +45,8 @@ Nstruts: 1 1 1
 comb_ign_nozzles: 20
 dac_nozzle_pattern: 30
 !
+fan_distortion: 0
+ff_distortion: 0
 fuselage_fan: false
 !
 psi:0.048517
