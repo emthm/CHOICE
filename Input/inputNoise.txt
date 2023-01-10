@@ -35,9 +35,9 @@ leading_edge_type: slat
 ! Landing gear position: 0 -> retracted, 1 -> deployed, other -> predefined position is used for each point
 LandingGear_vec:1
 noLG: 3
-d_wheel: 49 49 30
-d_strut: 6 6 3.5
-d_wire: 1 1 1.5
+d_wheel: 1.2446 1.2446 0.762
+d_strut: 0.1524 0.1524 0.0889
+d_wire: 0.0254 0.0254 0.0381
 Nwheels: 2 2 2
 Nstruts: 1 1 1
 !
