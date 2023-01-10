@@ -3,14 +3,56 @@ An aircraft noise prediction framework based on empirical and semi-empirical met
 The code is able to predict the noise at the source (aircraft) and at the certification points on the ground (so far for 2D propagation only).  
 
 -------------------------------------------------------------------------------
-Required libraries: numpy, scipy
 
-Python version: 3
+## How to install the library
+ 
+1. Download or clone the respiratory
+2. (Optional) Create and activate a virtual environment. The following commands can be used in Anaconda prompt:
+   ```
+   conda create -n env_choice python==3.8
+   conda activate env_choice
+   ```
+3. Navigate to the downloaded respiratory path (CHOICE library folder) and run the following commands in order to install all package requirements and dependencies:
+   ```
+   pip install -r requirements.txt
+   python setup.py install
+   ```
 
--------------------------------------------------------------------------------
-The following files are used as input:
+## How to use CHOICE
 
-inputNoise.txt --> The noise study cases are defined
+A sample script to run choice is provided in main.py. Below a step by step guide:
+
+1. Import the library:
+   ```
+   from choice import CHOICE
+   ```
+2. Set input file names and input and output folder path (absolute or relative). If they ar not provided, default names are used.
+   ```
+   #  Input files folder path
+   input_folder = 'Input/'
+   #  Output folder path
+   output_folder = 'Output/'
+   #  Specify input files
+   perf_file = 'performanceResults.txt'
+   dim_file = 'dimensionsWeight.txt'
+   weight_file = 'weightAircraft.txt'
+   noise_file = 'inputNoise.txt'
+   ```
+3. Instantiate a CHOICE object
+   ```
+   noise = CHOICE(input_folder, output_folder, perf_file, dim_file, weight_file, noise_file)
+   ```
+4. Run choice
+   ```
+   noise.run_choice()
+   ```
+
+
+## Input files:
+
+The following files are required as input to CHOICE
+
+#### inputNoise.txt --> The noise study cases are defined
 - point: specify the noise certification point e.g. Approach, Cutback or Sideline
 - trajectory_performance: true/false. If set to true, files for trjectory data should be provided e.g. Approach_airframe_performnce.txt. If set to false a single point performance study is perfomed using the performanceResults.txt
 - use_trajectory_preparser: true/false. If set to true, the input trajectory performance files are processed to remove empty lines or zero velocity of aircraft at early or late points
@@ -40,9 +82,9 @@ inputNoise.txt --> The noise study cases are defined
 - leading_edge_type: slat/flap for slats or leading edge flaps
 - LandingGear_vec: 0/1 for retracted or extended
 - noLG: number of landing gears
-- d_wheel: wheel diameter for each landing gear in in
-- d_strut: typical strut diameter for each landing gear in in
-- d_wire:  typical wire or hydraulic pipe diameter for each landing gear in in
+- d_wheel: wheel diameter for each landing gear in m
+- d_strut: typical strut diameter for each landing gear in m
+- d_wire:  typical wire or hydraulic pipe diameter for each landing gear in m
 - Nwheels: number of wheels on each landing gear
 - Nstruts: number of main strust on each landing gear
 - comb_ign_nozzles: ignitted nozzles for SAC (Single Annular Combustor)
@@ -56,9 +98,9 @@ inputNoise.txt --> The noise study cases are defined
 - fan_dis_suppression: noise suppression constant for fan inlet
 - lpt_suppression: noise suppression constant for fan inlet
 
-dimensionsWeight.txt --> The modules of the engine architecture are provided, e.g. Fan, Lpc, Comb, etc. The rest of the parameters are not used.
+#### dimensionsWeight.txt --> The modules of the engine architecture are provided, e.g. Fan, Lpc, Comb, etc. The rest of the parameters are not used.
 
-weightAircraft.txt --> Engine sizing data. Metric system is used
+#### weightAircraft.txt --> Engine sizing data. Metric system is used
 - GBX_ratio: gear box ratio. If the engine is direct driven, set this parameter to 1.0,
 - FanR1BDiaOuter: fan outer diameter
 - FanA2: fan annulus area
@@ -89,7 +131,7 @@ weightAircraft.txt --> Engine sizing data. Metric system is used
 - A_core: core nozzle area
 - A_bypass: bypass nozzle are
 
-performanceResults.txt or trajectory performance files --> engine and aircraft performance data for every point
+#### performanceResults.txt or trajectory performance files --> engine and aircraft performance data for every point
 
 Fan performance:
 -	Mtip_fan: relative tip Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
