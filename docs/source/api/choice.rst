@@ -8,35 +8,35 @@ CHOICE
     :members: run_choice
 
 
-Module choice_read_and_write
+Reading and editing input files
 ==========================================
 
 .. automodule:: choice.choice_read_and_write
    :members:
 
 
-Module choice_interf
+Interface
 ==========================================
 
 .. automodule:: choice.choice_interf
    :members:
 
 
-Module choice_physics
+Physics based methods for noise prediction
 ==========================================
 
 .. automodule:: choice.choice_physics
    :members:
 
 
-Module choice_aux
+General functions
 ==========================================
 
 .. automodule:: choice.choice_aux
    :members:
 
 
-Module choice_data
+Data
 ==========================================
 
 .. automodule:: choice.choice_data
