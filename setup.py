@@ -31,5 +31,5 @@ setup(
     ],
     packages=["choice"],
     include_package_data=True,
-    install_requires=["numpy~=1.21.5", "scipy~=1.7.3"]
+    install_requires=["numpy~=1.22.4", "scipy~=1.7.3"]
 )
