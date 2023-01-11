@@ -1,6 +1,7 @@
 # CHOICE - CHalmers nOIse CodE
-An aircraft noise prediction framework based on empirical and semi-empirical methods found in public literature. 
-The code is able to predict the noise at the source (aircraft) and at the certification points on the ground (so far for 2D propagation only).  
+CHOICE is a Python Library used for predicting aircraft noise based on empirical and semi-empirical methods found in public literature. 
+The code is able to predict the noise at the source (aircraft), generating frequency and directivity dependend SPL (Sound Pressure Level) matrices, and to calculate the EPNL (Effective Perceived Noise Level) at the certification points on the ground (for 2D propagation only). 
+
 
 -------------------------------------------------------------------------------
 
