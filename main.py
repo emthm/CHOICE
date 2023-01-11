@@ -15,5 +15,5 @@ if __name__ == "__main__":
     noise_file = 'inputNoise.txt'
 
     #  Call CHOICE
-    noise = CHOICE()
+    noise = CHOICE(input_folder, output_folder, perf_file, dim_file, weight_file, noise_file)
     noise.run_choice()
