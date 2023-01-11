@@ -201,31 +201,31 @@ def preparse_trajectories(traj_perf, opPnt, modules, input_folder):
 
         return [nBeg, nEnd]
 
-    def parsePerformanceFiles(opPnt, nBeg, modules):
+        def parsePerformanceFiles(opPnt, nBeg, modules, input_folder):
         """ Preparses all the performance files for a given operating point. """
         if 'Fan' in modules:
             filename = opPnt.rstrip() + '_fan_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         if 'Ipc' or 'Lpc' in modules:
             filename = opPnt.rstrip() + '_lpc_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         if 'Lpt' in modules:
             filename = opPnt.rstrip() + '_lpt_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         if 'Comb' in modules:
             filename = opPnt.rstrip() + '_comb_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         if 'cold_nozzle' in modules:
             filename = opPnt.rstrip() + '_coAxialJet_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         if 'fuselage_fan' in modules:
             filename = opPnt.rstrip() + '_fuselagefan_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         if 'ff_nozzle' in modules:
             filename = opPnt.rstrip() + '_ffnJet_performance.txt'
-            parsePerfFile(filename, nBeg)
+            parsePerfFile(filename, nBeg, input_folder)
         filename = opPnt.rstrip() + '_airfrm_performance.txt'
-        parsePerfFile(filename, nBeg)
+        parsePerfFile(filename, nBeg, input_folder)
 
     def parsePerfFile(filename, nBeg, input_folder):
         """ Preparses the performance file for a given operating point and component by removing the lines corresponding
