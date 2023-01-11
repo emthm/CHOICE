@@ -20,7 +20,7 @@ The code is able to predict the noise at the source (aircraft) and at the certif
 
 ## How to use CHOICE
 
-A sample script to run choice is provided in main.py. Below a step by step guide:
+A sample script to run CHOICE is provided in main.py. Below a step by step guide:
 
 1. Import the library:
    ```
