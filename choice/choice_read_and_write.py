@@ -201,7 +201,7 @@ def preparse_trajectories(traj_perf, opPnt, modules, input_folder):
 
         return [nBeg, nEnd]
 
-        def parsePerformanceFiles(opPnt, nBeg, modules, input_folder):
+    def parsePerformanceFiles(opPnt, nBeg, modules, input_folder):
         """ Preparses all the performance files for a given operating point. """
         if 'Fan' in modules:
             filename = opPnt.rstrip() + '_fan_performance.txt'
