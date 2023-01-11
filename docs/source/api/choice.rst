@@ -4,7 +4,6 @@ CHOICE
 
 .. currentmodule:: choice.choice_main
 
-.. Don't include inherited members to keep the doc short
 .. autoclass:: choice.CHOICE
     :members: run_choice
 
