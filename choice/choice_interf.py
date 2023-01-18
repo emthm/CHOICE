@@ -68,15 +68,29 @@ class WeightChoice:
         self.De_lpt = weightFile.get('LptStgLastDiaOuter')
         self.Ae_lpt = weightFile.get('LptStgLastAExit')
 
-        self.type_comb = weightFile.get('CombType')
-        self.Nfmax_comb = weightFile.get('maxNo_nozzles_dac')  # total number of DAC fuel nozzles
-        self.Aec_comb = weightFile.get('A_comb_exit') / (choice_data.ft2m ** 2)  # combustor exit area (ft^2)
-        self.De_comb = weightFile.get(
-            'Deff_comb') / choice_data.ft2m  # exhaust nozzle exit plane effective diameter (ft)
-        self.Dh_comb = weightFile.get(
-            'Dhyd_comb') / choice_data.ft2m  # exhaust nozzle exit plane hydraulic diameter (ft)
-        self.Lc_comb = weightFile.get('Lc_comb') / choice_data.ft2m  # combustor nominal length (ft)
-        self.h_comb = weightFile.get('h_annulus_comb') / choice_data.ft2m  # annulus height at combustor exit (ft)
+        # Build-in combustor model data, derived from the noise prediction method development literature
+        self.type_comb = 'SAC'
+        self.Nfmax_comb = 40 # total number of DAC fuel nozzles
+        self.Aec_comb = 0.13926166 / (choice_data.ft2m ** 2)  # combustor exit area (ft^2)
+        self.De_comb = 10.543032 / choice_data.ft2m  # exhaust nozzle exit plane effective diameter (ft)
+        self.Dh_comb = 4.218432 / choice_data.ft2m  # exhaust nozzle exit plane hydraulic diameter (ft)
+        self.Lc_comb = 0.13968984 / choice_data.ft2m  # combustor nominal length (ft)
+        self.h_comb = 0.06348984 / choice_data.ft2m  # annulus height at combustor exit (ft)
+
+        if weightFile.get('CombType') is not None:
+            self.type_comb = weightFile.get('CombType')
+        if weightFile.get('maxNo_nozzles_dac') is not None:
+            self.Nfmax_comb = weightFile.get('maxNo_nozzles_dac')
+        if weightFile.get('A_comb_exit') is not None:
+            self.Aec_comb = weightFile.get('A_comb_exit') / (choice_data.ft2m ** 2)
+        if weightFile.get('Deff_comb') is not None:
+            self.De_comb = weightFile.get('Deff_comb') / choice_data.ft2m
+        if weightFile.get('Dhyd_comb') is not None:
+            self.Dh_comb = weightFile.get('Dhyd_comb') / choice_data.ft2m
+        if weightFile.get('Lc_comb') is not None:
+            self.Lc_comb = weightFile.get('Lc_comb') / choice_data.ft2m
+        if weightFile.get('h_annulus_comb') is not None:
+            self.h_comb = weightFile.get('h_annulus_comb') / choice_data.ft2m
 
         self.A_core_caj = weightFile.get('A_core')
         self.A_bypass_caj = weightFile.get('A_bypass')
