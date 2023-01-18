@@ -1864,11 +1864,11 @@ class PropagationEffects:
         Fcap = np.full(nf, complex(0, 0))
         for i, taui in enumerate(tau):
             if abs(taui) > 10.0:
-                if -np.real(taui) < 0:
+                if -np.real(taui) > 0:
                     U = 1  # U is a step function
                 elif -np.real(taui) == 0:
                     U = 0.5
-                elif -np.real(taui) > 0:
+                elif -np.real(taui) < 0:
                     U = 0
                 Fcap[i] = -2 * math.sqrt(math.pi) * U * taui * cmath.exp(taui ** 2) + 1 / (2 * taui ** 2) - 3 / (
                         (2 * taui ** 2) ** 2)
