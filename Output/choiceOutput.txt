@@ -7,5 +7,5 @@
            Comb EPNL is          73.6084
             Caj EPNL is          77.1884
      EPNL_tot_engine is          92.5770
-       Airframe EPNL is          89.4369
-     EPNL_tot with D is          94.2542
+       Airframe EPNL is          87.5622
+     EPNL_tot with D is          93.8584
