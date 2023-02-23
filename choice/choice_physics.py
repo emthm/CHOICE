@@ -192,7 +192,7 @@ class Airframe(NoiseSource):
 
             # Noise from wing
             ny = DynamicViscocity.calculate(Ta) / rho0
-            phi_sid = 0  # Sideline angle (lateral directivity) is calculated from the flyover plane -> In flyover, phi = 0
+            phi_sid = 0  # Sideline angle (lateral directivity) is calculated from the flyover plane->In flyover, phi=0
             horizontal_factor = math.cos(np.radians(phi_sid))
             wing = self.get_wing_and_tail(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND)
             ps_trailing_edge = pow(wing, 2)
@@ -260,9 +260,7 @@ class Airframe(NoiseSource):
         nthet = self.nthet
         R = self.R
         delta = 0.37 * (S / b) * ((Va * S / (b * ny)) ** (-0.2))
-        H = R * np.sin(np.radians(theta))
-        H[(theta == 0)] = H[(theta == 5)]
-        H[(theta == 180)] = H[(theta == 175)]
+        H = R
         OASPL_theta = 50 * math.log10(Va / (100 * choice_data.kt2mps)) + 10 * np.log10(delta * b / (H ** 2)) + \
                       ND + 10 * np.log10((dir_factor ** 2) * (np.cos(np.radians(theta) / 2)) ** 2) + 101.3
         OASPL_theta[(theta == 180)] = OASPL_theta[(theta == 175)]
@@ -293,9 +291,7 @@ class Airframe(NoiseSource):
         nfreq = self.nfreq
         nthet = self.nthet
         R = self.R
-        H = R * np.sin(np.radians(theta))
-        H[(theta == 0)] = H[(theta == 5)]
-        H[(theta == 180)] = H[(theta == 175)]
+        H = R
         cf = Sf / bf
         St = fband * cf / Va
         if "1slot" or "2slot" in flap_type:
@@ -346,9 +342,7 @@ class Airframe(NoiseSource):
             SPLi = choice_aux.prms2SPL(self.get_wing_and_tail(Va, ny, S, b, dir_factor, ND)) + 3  # spectrum 1
             prmsi = choice_aux.SPL2prms(SPLi)
             delta = 0.37 * (S / b) * ((Va * S / (b * ny)) ** (-0.2))
-            H = R * np.sin(np.radians(theta))
-            H[(theta == 0)] = H[(theta == 5)]
-            H[(theta == 180)] = H[(theta == 175)]
+            H = R
             OASPL_theta = 50 * math.log10(Va / (100 * choice_data.kt2mps)) + 10 * np.log10(delta * b / (H ** 2)) + \
                           ND + 10 * np.log10((dir_factor ** 2) * (np.cos(np.radians(theta) / 2)) ** 2) + 101.3
             OASPL_theta[(theta == 180)] = OASPL_theta[(theta == 175)]
