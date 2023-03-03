@@ -70,7 +70,7 @@ class WeightChoice:
 
         # Build-in combustor model data, derived from the noise prediction method development literature
         self.type_comb = 'SAC'
-        self.Nfmax_comb = 40 # total number of DAC fuel nozzles
+        self.Nfmax_comb = 40  # total number of DAC fuel nozzles
         self.Aec_comb = 0.13926166 / (choice_data.ft2m ** 2)  # combustor exit area (ft^2)
         self.De_comb = 10.543032 / choice_data.ft2m  # exhaust nozzle exit plane effective diameter (ft)
         self.Dh_comb = 4.218432 / choice_data.ft2m  # exhaust nozzle exit plane hydraulic diameter (ft)
@@ -395,14 +395,14 @@ class Trajectory:
         sol2 = (-b - math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
 
         # pick solution
-        s2 = x1 + sol1
+        x2 = x1 + sol1
         y2 = y1 + sol1 * tg
         dr = math.sqrt(sol1 ** 2 + (sol1 * tg) ** 2)
-        attempt1 = math.sqrt(s2 ** 2 + y2 ** 2) / c0 + dr / Va
+        attempt1 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
         res = abs(attempt1 - tnext) / max(1.0, tnext)
 
         if res < 10.0 * sys.float_info.epsilon:
-            ds = sol1
+            dx = sol1
             solution_found = True
 
         x2 = x1 + sol2
@@ -412,14 +412,14 @@ class Trajectory:
         res = abs(attempt2 - tnext) / max(1.0, tnext)
 
         if res < 10.0 * sys.float_info.epsilon:
-            ds = sol2
+            dx = sol2
             solution_found = True
 
         if not solution_found:
             choice_aux.report_error('failed to establish solution', 'get_dx', 'choice_interf')
             return
         else:
-            return ds
+            return dx
 
     def get_xsi(self, xmic, ymic):
         """
@@ -445,7 +445,7 @@ class Trajectory:
         y = []
         Va = []
         alpha = []
-        z = []
+              
 
         with open(file) as fp:
             for line in fp:
@@ -457,10 +457,10 @@ class Trajectory:
                         y.append(float(string[1]))
                         Va.append(float(string[2]))
                         alpha.append(float(string[3]))
-                        if len(string) == 5:
-                            z.append(float(string[4]))
-                        else:
-                            z.append(0)
+                                            
+                                                      
+                             
+                                       
                     else:
                         continue
 
@@ -468,7 +468,7 @@ class Trajectory:
         self.y = np.asarray(y)
         self.Va = np.asarray(Va)
         self.alpha = np.asarray(alpha)
-        self.z = np.asarray(z)
+                              
         self.n_traj_pts = len(self.x)
 
     @classmethod
@@ -911,9 +911,11 @@ class NoiseSources:
                              and the 1/3 octave band frequencies
         """
 
-        theta = np.array([0.0 + float(i) * 5.0 for i in range(choice_data.nthet)])
+        theta = np.array([0.0 + i * 5.0 for i in range(choice_data.nthet)])
         [fband, f, freq] = choice_aux.set_frequencies(choice_data.nb, choice_data.nfreq, float(choice_data.fmin),
                                                       float(choice_data.fmax))
+        
+        # flyover plane
         prms = Prms(traj.n_traj_pts)
 
         operatingPoint = noise.opPnt[nop].strip()
