@@ -1805,7 +1805,7 @@ class PropagationEffects:
 
             ptr = ptr - 1  # remove last unused update
 
-            G13damp[0, :] = sum(G1mat[0:int((N_b - 1) / 2 + 1), 0]) / float((N_b - 1) / 2 + 1)  # first row special
+            G13damp[0, :] = sum(G1mat[0:int((N_b - 1) / 2 + 1), :]) / float((N_b - 1) / 2 + 1)  # first row special
             n_freqs_last = int(
                 round((3 * N_b * np.log10(self.fobs[-1, -1] / self.fobs[0, -1]) / math.log10(2)))) + 1
             G13damp[-1, :] = sum(G1mat[round(n_freqs_last - (N_b - 1) / 2 - 1):n_freqs_last, 0]) / float(
@@ -1814,7 +1814,6 @@ class PropagationEffects:
 
             prmsp = np.sqrt(G13damp * prmsp ** 2)
 
-        prmsp[prmsp < choice_data.p0] = choice_data.p0
         SPLp = choice_aux.prms2SPL(prmsp)
 
         return [SPLp, prmsp]
@@ -1938,7 +1937,7 @@ class PropagationEffects:
         :param float relHum: Relative humidity
         :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
 
-        :return ndarray: 1D array containing the atmospheric absorption in dB per 100 ft
+        :return ndarray: 1D array containing the atmospheric absorption in dB per 100 m
         """
         # Standard Classical Atmospheric Coefficient
         b = np.array([1.328924, -3.179768E-2, 2.173716E-4, -1.7496E-6])
