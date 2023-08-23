@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>choice.choice_read_and_write &mdash; CHOICE  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CHOICE
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/api/choice.html">CHOICE</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CHOICE</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>choice.choice_read_and_write</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for choice.choice_read_and_write</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module choice_read_and write</span>
+
+<span class="sd">Used to read and edit external / input files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">choice.choice_aux</span> <span class="k">as</span> <span class="nn">choice_aux</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<div class="viewcode-block" id="ReadFiles"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.ReadFiles">[docs]</a><span class="k">class</span> <span class="nc">ReadFiles</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Instantiate files to be read.</span>
+
+<span class="sd">    :param str weight_file: File with data on engine sizing</span>
+<span class="sd">    :param str noise_file: File to define the cases to be run and required inputs for noise prediction</span>
+<span class="sd">    :param str perf_file: File containing the engine performance data for every point</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_file</span><span class="p">,</span> <span class="n">noise_file</span><span class="p">,</span> <span class="n">perf_file</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_file</span> <span class="o">=</span> <span class="n">weight_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noise_file</span> <span class="o">=</span> <span class="n">noise_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perf_file</span> <span class="o">=</span> <span class="n">perf_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perfFile</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightFile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieve_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noiseFile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieve_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">perf_file</span><span class="p">):</span>  <span class="c1"># Check if multipoint performance data exist</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_performance_file</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mpd</span> <span class="o">=</span> <span class="n">MultptPerfData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">perfFile</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Multipoint perf. file not found. Case must be traj. perf. type.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># parse dimensions file and set modules</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_modules</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ReadFiles.retrieve_file"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.ReadFiles.retrieve_file">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reads the data from the given file and creates a dictionary. &quot;&quot;&quot;</span>
+        <span class="n">file_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+                    <span class="n">li</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">isfloat</span><span class="p">(</span><span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                        <span class="n">file_data</span><span class="p">[</span><span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">file_data</span><span class="p">[</span><span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">file_data</span></div>
+
+<div class="viewcode-block" id="ReadFiles.set_modules"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.ReadFiles.set_modules">[docs]</a>    <span class="k">def</span> <span class="nf">set_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a list of the modules in the dimensionsWeight.txt file&quot;&quot;&quot;</span>
+        <span class="n">available_modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fan&#39;</span><span class="p">,</span> <span class="s1">&#39;lpc&#39;</span><span class="p">,</span> <span class="s1">&#39;ipc&#39;</span><span class="p">,</span> <span class="s1">&#39;comb&#39;</span><span class="p">,</span> <span class="s1">&#39;lpt&#39;</span><span class="p">,</span> <span class="s1">&#39;cold_nozzle&#39;</span><span class="p">,</span> <span class="s1">&#39;fuselage_fan&#39;</span><span class="p">,</span> <span class="s1">&#39;ff_nozzle&#39;</span><span class="p">]</span>
+        <span class="n">input_modules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noiseFile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;modules&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">input_modules</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">available_modules</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="ReadFiles.open_performance_file"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.ReadFiles.open_performance_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_performance_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reads a given performance file into a list. &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">perf_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perfFile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span></div></div>
+
+
+<div class="viewcode-block" id="MultptPerfData"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.MultptPerfData">[docs]</a><span class="k">class</span> <span class="nc">MultptPerfData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Instantiate the multipoint performance data for each point.</span>
+
+<span class="sd">    :param list pf: A list of data from the performance file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pf</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pf</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Point Name:&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Point name:&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ISA&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;SLS Hot Day&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ICAO&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;design&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Cruise&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;MID-CRUISE&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Approach&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_approach</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Cutback&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_cutback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Cruise&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;MID-CRUISE&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Top of Climb&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;TOP_OF_CLIMB&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Top-of-climb&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_toc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Sideline&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_sl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Take-Off&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Take-off&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">spos</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+                    <span class="n">tag_found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">perf_file_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">tag_found</span><span class="p">:</span>
+                    <span class="n">choice_aux</span><span class="o">.</span><span class="n">report_error</span><span class="p">(</span>
+                        <span class="s1">&#39;Point name specifier likely to have been misspelt. You wrote &#39;</span> <span class="o">+</span> <span class="n">pf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span>
+                        <span class="s1">&#39;. Try Take-off, Top-of-climb or Cruise&#39;</span><span class="p">,</span> <span class="s1">&#39;split_performance_file&#39;</span><span class="p">,</span> <span class="s1">&#39;read_and_write_files&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+<div class="viewcode-block" id="MultptPerfData.load_dict"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.MultptPerfData.load_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="n">pf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a dictionary with all the data for a given operating point. &quot;&quot;&quot;</span>
+        <span class="n">farr</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spos</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pf</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">pf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">li</span> <span class="o">=</span> <span class="n">pf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">isfloat</span><span class="p">(</span><span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="n">farr</span><span class="p">[</span><span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">farr</span><span class="p">[</span><span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">li</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">farr</span></div></div>
+
+
+<div class="viewcode-block" id="preparse_trajectories"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.preparse_trajectories">[docs]</a><span class="k">def</span> <span class="nf">preparse_trajectories</span><span class="p">(</span><span class="n">traj_perf</span><span class="p">,</span> <span class="n">opPnt</span><span class="p">,</span> <span class="n">modules</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preparses the trajectory and component performance files by removing data corresponding to stationary points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">parseTrajectoryFile</span><span class="p">(</span><span class="n">opPnt</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Preparses the trajectory files by removing stationary points. &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">input_folder</span> <span class="o">+</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">li</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+
+        <span class="c1"># if the file starts with a comment line try to figure out the position of x and Va (method is based on units)</span>
+        <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">xpos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+                <span class="n">str1</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">str1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;!&#39;</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="k">if</span> <span class="s1">&#39;(m)&#39;</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="k">if</span> <span class="s1">&#39;(m/s)&#39;</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="k">if</span> <span class="s1">&#39;(s)&#39;</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="k">if</span> <span class="s1">&#39;(deg)&#39;</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span> <span class="k">continue</span>
+
+                <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="s1">&#39;xpos&#39;</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span> <span class="n">xpos</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">if</span> <span class="s1">&#39;Va&#39;</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span> <span class="n">vapos</span> <span class="o">=</span> <span class="n">j</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># if no clues from comments on first line put default positions</span>
+            <span class="n">xpos</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">vapos</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="n">nBeg</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">li</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">li</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span> <span class="k">continue</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">li</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">xpos</span><span class="p">])</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">vapos</span><span class="p">])</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">nBeg</span> <span class="o">=</span> <span class="n">nBeg</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Detected standstill point in line &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;=&gt; removing line. CHOICE will remove &#39;</span>
+                                                                          <span class="s1">&#39;corresponding lines in performance files &#39;</span>
+                                                                          <span class="s1">&#39;if trajectory performance is true&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="n">nEnd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">li</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">nBeg</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">nBeg</span><span class="p">,</span> <span class="n">nEnd</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parsePerformanceFiles</span><span class="p">(</span><span class="n">opPnt</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">modules</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Preparses all the performance files for a given operating point. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;Fan&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fan_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Ipc&#39;</span> <span class="ow">or</span> <span class="s1">&#39;Lpc&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_lpc_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Lpt&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_lpt_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Comb&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_comb_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Cold_nozzle&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_coAxialJet_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Fuselage_fan&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fuselagefan_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Ff_nozzle&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_ffnJet_performance.txt&#39;</span>
+            <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">opPnt</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_airfrm_performance.txt&#39;</span>
+        <span class="n">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parsePerfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nBeg</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Preparses the performance file for a given operating point and component by removing the lines corresponding</span>
+<span class="sd">        to stationary points. &quot;&quot;&quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; opening file&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">input_folder</span> <span class="o">+</span> <span class="n">filename</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">li</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+
+        <span class="c1"># re-open unit and dump parsed file</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">li</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">li</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">nBeg</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; skipping line number &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39; to avoid standstill operation&#39;</span><span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">li</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Preparsing routines was requested...&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">opPnt</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; parsing&#39;</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">parseTrajectoryFile</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="n">input_folder</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">traj_perf</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Trajectory performance file being parsed&#39;</span><span class="p">)</span>
+            <span class="n">parsePerformanceFiles</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">modules</span><span class="p">,</span> <span class="n">input_folder</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;stopped after preparsing - turn preparsing false to continue to computations&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="save_noise_points"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.save_noise_points">[docs]</a><span class="k">def</span> <span class="nf">save_noise_points</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">opPoint</span><span class="p">,</span> <span class="n">fuselage_fan</span><span class="p">,</span> <span class="n">EPNL</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Saves the EPNL for each component and for the total in output file. &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;***Operating point is &#39;</span> <span class="o">+</span> <span class="n">opPoint</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Fan inlet EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Fan_inlet</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Fan discharge EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Fan_discharge</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Inlet LPC EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Lpc_inlet</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;LPT EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Lpt</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Comb EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Comb</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Caj EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Caj</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Engine total noise</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Fan_inlet</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Fan_discharge</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span>
+                  <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Lpc_inlet</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Lpt</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">**</span>
+                  <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Comb</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Caj</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="s1">&#39;EPNL_tot_engine is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">kernel</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="s1">&#39;Airframe EPNL is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Airfrm</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fuselage_fan</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;EPNL_inlet_ff is&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Ff_inlet</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;EPNL_discharge_ff is&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Ff_discharge</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;EPNL_caj_ff is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Caj_ffn</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1"># EPNL_tot_ff is the total EPNL of the fuselage fan assembly which includes the fuselage fan and the nozzle</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;EPNL_tot_ff is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span>
+                     <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Ff_inlet</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span>
+                                                       <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Ff_discharge</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span>
+                                                       <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">Caj_ffn</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)),</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;EPNL_tot with D is&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">EPNL</span><span class="o">.</span><span class="n">tot</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;.4f&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">17</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="isfloat"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_read_and_write.isfloat">[docs]</a><span class="k">def</span> <span class="nf">isfloat</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Checks if the provided string is a float number. &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Marily Thoma
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

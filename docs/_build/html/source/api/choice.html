@@ -1,0 +1,1386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CHOICE &mdash; CHOICE  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Welcome to CHOICE’s documentation!" href="../../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CHOICE
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CHOICE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_read_and_write">Reading and editing input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_interf">Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_physics">Physics based methods for noise prediction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_aux">General functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_data">Data</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CHOICE</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>CHOICE</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/source/api/choice.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="choice">
+<h1>CHOICE<a class="headerlink" href="#choice" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.CHOICE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.</span></span><span class="sig-name descname"><span class="pre">CHOICE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Input/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Output/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perf_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'performanceResults.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weightAircraft.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inputNoise.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_main.html#CHOICE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.CHOICE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate input files and folders to be used for the noise calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_folder</strong> (<em>str</em>) – input files folder path</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em>) – output files folder path</p></li>
+<li><p><strong>perf_file</strong> (<em>str</em>) – file containing the engine performance parameters</p></li>
+<li><p><strong>weight_file</strong> (<em>str</em>) – file containing engine sizing data</p></li>
+<li><p><strong>noise_file</strong> (<em>str</em>) – file that is used to define the noise calculation study</p></li>
+<li><p><strong>file_type</strong> (<em>str</em>) – file type for noise source matrices (csv, m, None)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.CHOICE.run_choice">
+<span class="sig-name descname"><span class="pre">run_choice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_main.html#CHOICE.run_choice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.CHOICE.run_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the required parameters and performs the noise calculation</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="module-choice.choice_read_and_write">
+<span id="reading-and-editing-input-files"></span><h2>Reading and editing input files<a class="headerlink" href="#module-choice.choice_read_and_write" title="Permalink to this heading">¶</a></h2>
+<p>Module choice_read_and write</p>
+<p>Used to read and edit external / input files.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.MultptPerfData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_read_and_write.</span></span><span class="sig-name descname"><span class="pre">MultptPerfData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#MultptPerfData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.MultptPerfData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the multipoint performance data for each point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> (<em>list</em>) – A list of data from the performance file</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.MultptPerfData.load_dict">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#MultptPerfData.load_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.MultptPerfData.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with all the data for a given operating point.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.ReadFiles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_read_and_write.</span></span><span class="sig-name descname"><span class="pre">ReadFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perf_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#ReadFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.ReadFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate files to be read.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight_file</strong> (<em>str</em>) – File with data on engine sizing</p></li>
+<li><p><strong>noise_file</strong> (<em>str</em>) – File to define the cases to be run and required inputs for noise prediction</p></li>
+<li><p><strong>perf_file</strong> (<em>str</em>) – File containing the engine performance data for every point</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.ReadFiles.open_performance_file">
+<span class="sig-name descname"><span class="pre">open_performance_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#ReadFiles.open_performance_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.ReadFiles.open_performance_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a given performance file into a list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.ReadFiles.retrieve_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retrieve_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#ReadFiles.retrieve_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.ReadFiles.retrieve_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the data from the given file and creates a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.ReadFiles.set_modules">
+<span class="sig-name descname"><span class="pre">set_modules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#ReadFiles.set_modules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.ReadFiles.set_modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the modules in the dimensionsWeight.txt file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.isfloat">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_read_and_write.</span></span><span class="sig-name descname"><span class="pre">isfloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#isfloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.isfloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the provided string is a float number.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.preparse_trajectories">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_read_and_write.</span></span><span class="sig-name descname"><span class="pre">preparse_trajectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj_perf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opPnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#preparse_trajectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.preparse_trajectories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preparses the trajectory and component performance files by removing data corresponding to stationary points.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_read_and_write.save_noise_points">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_read_and_write.</span></span><span class="sig-name descname"><span class="pre">save_noise_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fuselage_fan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EPNL</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_read_and_write.html#save_noise_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_read_and_write.save_noise_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the EPNL for each component and for the total in output file.</p>
+</dd></dl>
+
+</section>
+<section id="module-choice.choice_interf">
+<span id="interface"></span><h2>Interface<a class="headerlink" href="#module-choice.choice_interf" title="Permalink to this heading">¶</a></h2>
+<p>Module choice_interf</p>
+<p>Choice interface: used to set the required parameters for the noise calculation and call the physics-based methods from
+the module choice_physics.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.NoiseChoice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">NoiseChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noiseFile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#NoiseChoice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.NoiseChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the required input arguments for the noise prediction cases to be run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>noiseFile</strong> (<em>dict</em>) – Definition of the noise cases to be performed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.NoiseMatrices">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">NoiseMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#NoiseMatrices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.NoiseMatrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that defines the noise level for each aircraft noise component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>modules</strong> (<em>list</em>) – Fan, Lpc, Lpt, etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.NoiseSources">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">NoiseSources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#NoiseSources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.NoiseSources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate noise source object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prms</strong> (<a class="reference internal" href="#choice.choice_interf.Prms" title="choice.choice_interf.Prms"><em>Prms</em></a>) – Acoustic pressure arrays for each aircraft noise component</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containg directivity angles</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containg the 1/3 octave band frequencies</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.NoiseSources.compute">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">performance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#NoiseSources.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.NoiseSources.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the acoustic pressure for each noise component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traj</strong> (<a class="reference internal" href="#choice.choice_interf.Trajectory" title="choice.choice_interf.Trajectory"><em>Trajectory</em></a>) – A Trajectory object with the trajectory data</p></li>
+<li><p><strong>modules</strong> (<em>list</em>) – Fan, Lpc, Lpt, etc</p></li>
+<li><p><strong>noise</strong> (<a class="reference internal" href="#choice.choice_interf.NoiseChoice" title="choice.choice_interf.NoiseChoice"><em>NoiseChoice</em></a>) – A NoiseChoice object with the required input arguments for the noise prediction</p></li>
+<li><p><strong>weight</strong> (<a class="reference internal" href="#choice.choice_interf.WeightChoice" title="choice.choice_interf.WeightChoice"><em>WeightChoice</em></a>) – A WeightChoice object with the engine size and architecture</p></li>
+<li><p><strong>performance</strong> (<a class="reference internal" href="#choice.choice_interf.PerformanceChoice" title="choice.choice_interf.PerformanceChoice"><em>PerformanceChoice</em></a>) – A PerformanceChoice object with the engine performance data</p></li>
+<li><p><strong>nop</strong> (<em>int</em>) – Number of operating point</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em>) – Output folder path</p></li>
+<li><p><strong>ext</strong> (<em>str</em>) – File extension for noise source matrices</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return NoiseSources<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Prms object with the rms acoustic pressure for each component, the directivity angles
+and the 1/3 octave band frequencies</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.NoiseSources.include_multiple_engines">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">include_multiple_engines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">no_engines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#NoiseSources.include_multiple_engines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.NoiseSources.include_multiple_engines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Account for multiple engines on the aircraft.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">PerformanceChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajPerf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_traj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_choice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the engine performance data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ptr</strong> (<em>int</em>) – Operating point (trajectory) number in order of appearance in the inputNoise.txt</p></li>
+<li><p><strong>trajPerf</strong> (<em>bool</em>) – If true, trajectory data are used, else, single point study is performed</p></li>
+<li><p><strong>point</strong> (<em>str</em>) – Operating point</p></li>
+<li><p><strong>n_traj</strong> (<em>int</em>) – Number of trajectory points</p></li>
+<li><p><strong>Weight_choice</strong> (<a class="reference internal" href="#choice.choice_interf.WeightChoice" title="choice.choice_interf.WeightChoice"><em>WeightChoice</em></a>) – Engine sizing data</p></li>
+<li><p><strong>mpd</strong> (<a class="reference internal" href="#choice.choice_read_and_write.MultptPerfData" title="choice.choice_read_and_write.MultptPerfData"><em>MultptPerfData</em></a>) – Multipoint performance data</p></li>
+<li><p><strong>input_folder</strong> (<em>str</em>) – Input files folder path</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.coAxialJet">
+<span class="sig-name descname"><span class="pre">coAxialJet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.coAxialJet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.coAxialJet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the jet performance parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.coAxialJet_ffn">
+<span class="sig-name descname"><span class="pre">coAxialJet_ffn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.coAxialJet_ffn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.coAxialJet_ffn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the jet performance parameters for fuselage fan nozzle .</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.getIsOpenRotor">
+<span class="sig-name descname"><span class="pre">getIsOpenRotor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.getIsOpenRotor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.getIsOpenRotor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if it is an open rotor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.get_variable">
+<span class="sig-name descname"><span class="pre">get_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.get_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.get_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of the item with the specified key for the provided point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.set">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_traj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_choice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_choice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the performance data for each component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ptr</strong> (<em>int</em>) – Operating point (trajectory) number in order of appearance in the inputNoise.txt</p></li>
+<li><p><strong>modules</strong> (<em>list</em>) – Engine components</p></li>
+<li><p><strong>n_traj</strong> (<em>int</em>) – Number of trajectory points</p></li>
+<li><p><strong>mpd</strong> (<a class="reference internal" href="#choice.choice_read_and_write.MultptPerfData" title="choice.choice_read_and_write.MultptPerfData"><em>MultptPerfData</em></a>) – Multipoint performance data</p></li>
+<li><p><strong>noise_choice</strong> (<a class="reference internal" href="#choice.choice_interf.NoiseChoice" title="choice.choice_interf.NoiseChoice"><em>NoiseChoice</em></a>) – Noise prediction input data</p></li>
+<li><p><strong>weight_choice</strong> (<a class="reference internal" href="#choice.choice_interf.WeightChoice" title="choice.choice_interf.WeightChoice"><em>WeightChoice</em></a>) – Engine sizing data</p></li>
+<li><p><strong>input_folder</strong> (<em>str</em>) – Input files folder</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return PerformanceChoice<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PerformanceChoice object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.setAirfrm">
+<span class="sig-name descname"><span class="pre">setAirfrm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_choice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.setAirfrm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.setAirfrm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the airframe performance parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.setComb">
+<span class="sig-name descname"><span class="pre">setComb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.setComb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.setComb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the combustor performance parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.setFan">
+<span class="sig-name descname"><span class="pre">setFan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.setFan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.setFan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the fan performance parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.setLpc">
+<span class="sig-name descname"><span class="pre">setLpc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.setLpc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.setLpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the low pressure compressor performance parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.setLpt">
+<span class="sig-name descname"><span class="pre">setLpt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.setLpt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.setLpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the low pressure turbine performance parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.PerformanceChoice.setff">
+<span class="sig-name descname"><span class="pre">setff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#PerformanceChoice.setff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.PerformanceChoice.setff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the fuselage fan performance parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.Prms">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">Prms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Prms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Prms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate rms acoustic pressure for each aircraft noise component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>npts</strong> (<em>int</em>) – Number of trajectory points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">Trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opPnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_choice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the trajectory data of the aircraft.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipnt</strong> (<em>int</em>) – Operating point (trajectory) number in order of appearance in the inputNoise.txt</p></li>
+<li><p><strong>opPnt</strong> (<em>str</em>) – Operating point (trajectory), e.g. Approach, Cutback, Sideline</p></li>
+<li><p><strong>noise_choice</strong> (<a class="reference internal" href="#choice.choice_interf.NoiseChoice" title="choice.choice_interf.NoiseChoice"><em>NoiseChoice</em></a>) – Noise prediction input data</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory.get_dx">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_dx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tnext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.get_dx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.get_dx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes distance travelled until the location of the next noise sample generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> (<em>float</em>) – x coordinate of first sample (in relation to microphone)</p></li>
+<li><p><strong>y1</strong> (<em>float</em>) – y coordinate (height) of first sample (in relation to microphone)</p></li>
+<li><p><strong>z1</strong> (<em>float</em>) – z coordinate of microphone</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – Time interval between sounds reaching the microphone</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Flight path angle</p></li>
+<li><p><strong>c0</strong> (<em>float</em>) – Speed of sound at aircraft location</p></li>
+<li><p><strong>Va</strong> (<em>float</em>) – Aircraft speed</p></li>
+<li><p><strong>tnext</strong> (<em>float</em>) – Next sampling time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return float<span class="colon">:</span></dt>
+<dd class="field-even"><p>The distance that the aircraft travelled</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory.get_xsi">
+<span class="sig-name descname"><span class="pre">get_xsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.get_xsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.get_xsi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the angle between the direction of the aircraft’s motion and the sound propagation path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmic</strong> (<em>float</em>) – Microphone/observer horizontal distance (m)</p></li>
+<li><p><strong>ymic</strong> (<em>float</em>) – Microphone/observer height (m)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory.read_trajectory_input">
+<span class="sig-name descname"><span class="pre">read_trajectory_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opPnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.read_trajectory_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.read_trajectory_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads and stores the trajectory data (position, velocity and angle of attack) for the provided operating point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>opPnt</strong> (<em>str</em>) – Operating point</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory.set">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opPnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_choice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the required trajectory details for the noise calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipnt</strong> (<em>int</em>) – Operating point (trajectory) number in order of appearance in the inputNoise.txt</p></li>
+<li><p><strong>opPnt</strong> (<em>str</em>) – Operating point (trajectory), e.g. Approach, Cutback, Sideline</p></li>
+<li><p><strong>noise_choice</strong> (<a class="reference internal" href="#choice.choice_interf.NoiseChoice" title="choice.choice_interf.NoiseChoice"><em>NoiseChoice</em></a>) – NoiseChoice object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return Trajectory<span class="colon">:</span></dt>
+<dd class="field-even"><p>A trajectory object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory.set_time_vector">
+<span class="sig-name descname"><span class="pre">set_time_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_choice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.set_time_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.set_time_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the retarded time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipnt</strong> (<em>int</em>) – Operating point (trajectory) number in order of appearance in the inputNoise.txt</p></li>
+<li><p><strong>noise_choice</strong> (<a class="reference internal" href="#choice.choice_interf.NoiseChoice" title="choice.choice_interf.NoiseChoice"><em>NoiseChoice</em></a>) – NoiseChoice object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_interf.Trajectory.set_velocity">
+<span class="sig-name descname"><span class="pre">set_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtIsa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.set_velocity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.set_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes ambient temperature (ta), speed of sound (a) and Mach number (Ma) along the trajectory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dtIsa</strong> (<em>float</em>) – Deviation from ISA temperature</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_interf.WeightChoice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">WeightChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weightFile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#WeightChoice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.WeightChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the engine size and architecture data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>weightFile</strong> (<em>dict</em>) – Engine sizing data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_interf.certificationLimits">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">certificationLimits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noEngines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MTOW</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#certificationLimits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.certificationLimits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes EPNL certification limits.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_interf.compute_SPLi">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">compute_SPLi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prmsi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#compute_SPLi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.compute_SPLi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes Sound Pressure Level matrix from rms acoustic pressure.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_interf.get_version_num">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">get_version_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#get_version_num"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.get_version_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes CHOICE version number in output file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_interf.interpolate_to_t_source">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">interpolate_to_t_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#interpolate_to_t_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.interpolate_to_t_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Sound Pressure Level for the times that the sound reaches the microphone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>traj</strong> (<a class="reference internal" href="#choice.choice_interf.Trajectory" title="choice.choice_interf.Trajectory"><em>Trajectory</em></a>) – A Trajectory object with the trajectory data</p></li>
+<li><p><strong>modules</strong> (<em>list</em>) – Fan, Lpc, Lpt, etc.</p></li>
+<li><p><strong>prms</strong> (<a class="reference internal" href="#choice.choice_interf.Prms" title="choice.choice_interf.Prms"><em>Prms</em></a>) – A Prms object with the rms acoustic pressure for each component</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fot the times that the sound reaches the microphone, an NoiseMatrices object with the Sound Pressure Level
+for each component, the observation angle, the Mach number and the angle of attack</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_interf.set_rotational_speeds_choice">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">set_rotational_speeds_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mpd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weightChoice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#set_rotational_speeds_choice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.set_rotational_speeds_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates absolute speeds from relative rotating speeds (from performance) using several points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mpd</strong> (<a class="reference internal" href="#choice.choice_read_and_write.MultptPerfData" title="choice.choice_read_and_write.MultptPerfData"><em>MultptPerfData</em></a>) – Multipoint performance data</p></li>
+<li><p><strong>weightChoice</strong> (<a class="reference internal" href="#choice.choice_interf.WeightChoice" title="choice.choice_interf.WeightChoice"><em>WeightChoice</em></a>) – Engine sizing data</p></li>
+<li><p><strong>comp</strong> (<em>str</em>) – Engine component</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return MultptPerfData<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated multipoint performance data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_interf.source_interpolation">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_interf.</span></span><span class="sig-name descname"><span class="pre">source_interpolation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#source_interpolation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.source_interpolation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate the rms acoustic pressure for the times that reach the microphone.</p>
+</dd></dl>
+
+</section>
+<section id="module-choice.choice_physics">
+<span id="physics-based-methods-for-noise-prediction"></span><h2>Physics based methods for noise prediction<a class="headerlink" href="#module-choice.choice_physics" title="Permalink to this heading">¶</a></h2>
+<p>Module choice_physics</p>
+<p>Physics and methods for the noise prediction broken down in modules.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">Airframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_wheels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_struts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nlg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_wheel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_strut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_wire</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NoFlap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">span_flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">span_hor_tail</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sht</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">span_ver_tail</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Svt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flap_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slat_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate airframe source noise prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opPoint</strong> (<em>list</em>) – Approach, Cutback, Sideline</p></li>
+<li><p><strong>N_wheels</strong> (<em>int</em>) – Array containing the number of wheels in each landing gear system</p></li>
+<li><p><strong>N_struts</strong> (<em>int</em>) – Array containing the number of main struts in each landing gear system</p></li>
+<li><p><strong>nlg</strong> (<em>int</em>) – Number of landing gear systems</p></li>
+<li><p><strong>d_wheel</strong> (<em>ndarray</em>) – 1D array containing the diameters of landing gear wheels (in)</p></li>
+<li><p><strong>d_strut</strong> (<em>ndarray</em>) – 1D array containing typical diameter of landing gear struts (in)</p></li>
+<li><p><strong>d_wire</strong> (<em>ndarray</em>) – 1D array containing typical diameter of landing gear wire/small pipes (in)</p></li>
+<li><p><strong>NoFlap</strong> (<em>int</em>) – Number of flap elements</p></li>
+<li><p><strong>S_flap</strong> (<em>ndarray</em>) – 1D array containing the area of each flap (m**2)</p></li>
+<li><p><strong>span_flap</strong> (<em>ndarray</em>) – 1D array containing the span of each flap (m)</p></li>
+<li><p><strong>Sw</strong> (<em>float</em>) – Aircraft reference area (m**2)</p></li>
+<li><p><strong>span</strong> (<em>float</em>) – Wing span (m)</p></li>
+<li><p><strong>ND</strong> (<em>int</em>) – Coefficient for jet aircraft (1 =&gt; + 6dB in wing trailing edge OASPL)</p></li>
+<li><p><strong>span_hor_tail</strong> (<em>float</em>) – Horizontal tail span (m)</p></li>
+<li><p><strong>Sht</strong> (<em>float</em>) – Horizontal tail area (m)</p></li>
+<li><p><strong>span_ver_tail</strong> (<em>float</em>) – Vertical tail span (m)</p></li>
+<li><p><strong>Svt</strong> (<em>float</em>) – Vertical tail area (m)</p></li>
+<li><p><strong>flap_type</strong> (<em>str</em>) – Flap type: 1slot, 2slot, 3slot</p></li>
+<li><p><strong>slat_type</strong> (<em>str</em>) – Leading edge high-lift system type: slat, le_flap</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe.calc">
+<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airframe source noise model based on a combination of methods found in public literature. Trailing-edge and
+landing gear noise are modelled separately. The references for each method are found in the description of the
+corresponding functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ta</strong> (<em>float</em>) – Atmospheric static temperature (K)</p></li>
+<li><p><strong>Ha</strong> (<em>float</em>) – Flight altitude (m)</p></li>
+<li><p><strong>Ma</strong> (<em>float</em>) – Aircraft Mach number</p></li>
+<li><p><strong>Va</strong> (<em>float</em>) – Aircraft speed (m/s)</p></li>
+<li><p><strong>defl_flap</strong> (<em>float</em>) – Flap deflection angle (rad)</p></li>
+<li><p><strong>defl_flap</strong> – Slat deflection angle (rad)</p></li>
+<li><p><strong>LG</strong> (<em>int</em>) – Landing gear position (0 =&gt; retracted, 1 =&gt; extended)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for airframe component</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe.full_matrix">
+<span class="sig-name descname"><span class="pre">full_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mato</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.full_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.full_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the coefficients that are required for the landing gear calculation for every directivity angle and
+returns a nc x nthet array where nc is the order of the equation of each noise component.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe.getLandingGear">
+<span class="sig-name descname"><span class="pre">getLandingGear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtire</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.getLandingGear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.getLandingGear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Landing gear source noise model based on the method presented by Sen et al. (R. Sen, B. Hardy, K. Yamamoto,
+Y. Guo., G. Miller “Airframe Noise Sub-Component Definition and Model”. NASA/CR-2004-213255.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Nt</strong> (<em>int</em>) – Number of wheels/tires</p></li>
+<li><p><strong>Ns</strong> (<em>int</em>) – Number of main struts</p></li>
+<li><p><strong>M</strong> (<em>float</em>) – Aircraft Mach number</p></li>
+<li><p><strong>c0</strong> (<em>float</em>) – Speed of sound (m/s)</p></li>
+<li><p><strong>dl</strong> (<em>float</em>) – Representative length scale for low frequency noise component (ft)</p></li>
+<li><p><strong>dh</strong> (<em>float</em>) – Representative length scale for high frequency noise component (ft)</p></li>
+<li><p><strong>dtire</strong> (<em>float</em>) – Representative length scale for tire noise component (ft)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for landing gear</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe.get_le_slats">
+<span class="sig-name descname"><span class="pre">get_le_slats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slat_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.get_le_slats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.get_le_slats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leading edge high-lift system source noise model developed by Fink (M.R. Fink, “Airframe Noise Prediction
+Method”, FAA-RD-77-29 and M.R. Fink, “Noise Component Method for Airframe Noise”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Va</strong> (<em>float</em>) – Aircraft speed (m/s)</p></li>
+<li><p><strong>ny</strong> (<em>float</em>) – Kinematic viscocity (m**2/s)</p></li>
+<li><p><strong>S</strong> (<em>float</em>) – Wing or tail area (m**2)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Wing or tail span (m)</p></li>
+<li><p><strong>dir_factor</strong> (<em>float</em>) – Equals cos(phi) where phi is lateral directivity calculated from the flyover plane</p></li>
+<li><p><strong>ND</strong> (<em>int</em>) – Coefficient for jet aircraft (1 =&gt; + 6dB in wing trailing edge OASPL)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for leading edge flaps</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe.get_te_flaps">
+<span class="sig-name descname"><span class="pre">get_te_flaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flap_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.get_te_flaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.get_te_flaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trailing edge flap source noise model developed by Fink (M.R. Fink, “Airframe Noise Prediction Method”,
+FAA-RD-77-29 and M.R. Fink, “Noise Component Method for Airframe Noise”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Va</strong> (<em>float</em>) – Aircraft speed (m/s)</p></li>
+<li><p><strong>Sf</strong> (<em>float</em>) – Flap area (m**2)</p></li>
+<li><p><strong>bf</strong> (<em>float</em>) – Flap span (m)</p></li>
+<li><p><strong>defl_flap</strong> (<em>float</em>) – Flap deflection angle (rad)</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Lateral directivity calculated from the flyover plane</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for trailing edge flaps</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Airframe.get_wing_and_tail">
+<span class="sig-name descname"><span class="pre">get_wing_and_tail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.get_wing_and_tail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.get_wing_and_tail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trailing edge source noise model for wing and tail surfaces developed by Fink (M.R. Fink, “Noise Component Method
+for Airframe Noise”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Va</strong> (<em>float</em>) – Aircraft speed (m/s)</p></li>
+<li><p><strong>ny</strong> (<em>float</em>) – Kinematic viscocity (m**2/s)</p></li>
+<li><p><strong>S</strong> (<em>float</em>) – Wing or tail area (m**2)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Wing or tail span (m)</p></li>
+<li><p><strong>dir_factor</strong> (<em>float</em>) – Equals cos(phi) where phi is lateral directivity calculated from the flyover plane</p></li>
+<li><p><strong>ND</strong> (<em>int</em>) – Coefficient for jet aircraft (1 =&gt; + 6dB in wing trailing edge OASPL)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for wing and tail airframe component</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_physics.Combustor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">Combustor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Aec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">De</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nfmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Combustor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Combustor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate combustor source noise prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_comb</strong> (<em>str</em>) – Combustor type, SAC or DAC</p></li>
+<li><p><strong>Aec</strong> (<em>float</em>) – Combustor exit area (ft^2)</p></li>
+<li><p><strong>De</strong> (<em>float</em>) – Exhaust nozzle exit plane effective diameter (ft)</p></li>
+<li><p><strong>Dh</strong> (<em>float</em>) – Exhaust nozzle exit plane hydraulic diameter (ft)</p></li>
+<li><p><strong>Lc</strong> (<em>float</em>) – Combustor nominal length (ft)</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Annulus height at combustor exit (ft)</p></li>
+<li><p><strong>Nfmax</strong> (<em>int</em>) – Total number of DAC fuel nozzles</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Combustor.calc">
+<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Combustor.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Combustor.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combustor source noise model based on the method for low-emissions combustors developed by Gliebe et al.
+(P. Gliebe, R. Mani, H. Shin, B. Mitchell, G. Ashford, S. Salamah and S. Connel. “Aeroacoustic Prediction
+Codes”. NASA-CR-210244). Includes model for SAC (Single-Annular Combustor) and DAC (Dual-Annular Combustor).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Nf</strong> (<em>int</em>) – Number of ignited fuel nozzles</p></li>
+<li><p><strong>pattern</strong> (<em>int/float</em>) – Fuel nozzle firing pattern</p></li>
+<li><p><strong>pa</strong> (<em>float</em>) – Atmosperic pressure (Pa)</p></li>
+<li><p><strong>p3</strong> (<em>float</em>) – Combustor inlet pressure (Pa)</p></li>
+<li><p><strong>p4</strong> (<em>float</em>) – Combustor exit pressure (Pa)</p></li>
+<li><p><strong>p7</strong> (<em>float</em>) – Tubine last stage exit pressure (Pa)</p></li>
+<li><p><strong>ta</strong> (<em>float</em>) – Atmosperic temperature (K)</p></li>
+<li><p><strong>t3</strong> (<em>float</em>) – Combustor inlet temperature (K)</p></li>
+<li><p><strong>t4</strong> (<em>float</em>) – Combustor exit temperature (K)</p></li>
+<li><p><strong>t5</strong> (<em>float</em>) – Tubine last stage exit temperature (K)</p></li>
+<li><p><strong>w3</strong> (<em>float</em>) – Combustor inlet flow (kg/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for combustor component</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Combustor.getDAC">
+<span class="sig-name descname"><span class="pre">getDAC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AA</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Combustor.getDAC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Combustor.getDAC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the noise level from a Dual Annular Combustor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Combustor.getSAC">
+<span class="sig-name descname"><span class="pre">getSAC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AA</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Combustor.getSAC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Combustor.getSAC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the noise level from a Single Annular Combustor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">FanCompressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MtipD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_rotors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_stators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate fan or compressor source noise prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component</strong> (<em>str</em>) – Compressor component, fan, LPC, IPC</p></li>
+<li><p><strong>MtipD</strong> (<em>float</em>) – Rotor tip relative inlet Mach number at design point</p></li>
+<li><p><strong>N_rotors</strong> (<em>int</em>) – Number of rotors</p></li>
+<li><p><strong>N_stators</strong> (<em>int</em>) – Number of stators</p></li>
+<li><p><strong>rss</strong> (<em>float</em>) – Rotor-stator spacing</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+<li><p><strong>f</strong> (<em>ndarray</em>) – 1D array containing frequencies (Hz)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.calc">
+<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operatingPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mtip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xnl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fan and compressor source noise model based on the methods developed by Heidman (M. F. Heidmann. “Interim
+Prediction Method for Fan and Compressor Source Noise”. NASA-TM-X71763) and updated by Kontos et al.
+(K. B. Kontos, B. A. Janardan and P. R. Gliebe. “Improved NASA-ANOPP Noise Prediction Computer Code for Advanced
+Subsonic Propulsion Systems”. NASA-CR-195480).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operatingPoint</strong> (<em>str</em>) – Approach, Cutback, Sideline</p></li>
+<li><p><strong>Mtip</strong> (<em>float</em>) – Rotor tip relative inlet Mach number at operating point</p></li>
+<li><p><strong>Mu</strong> (<em>float</em>) – Blade Mach number</p></li>
+<li><p><strong>dT</strong> (<em>float</em>) – Temperature rise across fan or compressor stage</p></li>
+<li><p><strong>xnl</strong> (<em>float</em>) – Fan rotational speed (rps)</p></li>
+<li><p><strong>g1</strong> (<em>float</em>) – Mass flow rate passing through fan or compressor (kg/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for tone, broadband and combination tone noise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.fanCompr_broadband">
+<span class="sig-name descname"><span class="pre">fanCompr_broadband</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operatingPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.fanCompr_broadband"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.fanCompr_broadband" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fan and compressor broadband noise estimation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.fanCompr_comb_tone">
+<span class="sig-name descname"><span class="pre">fanCompr_comb_tone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Mtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.fanCompr_comb_tone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.fanCompr_comb_tone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fan and compressor combination tone noise estimation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.fanCompr_tone">
+<span class="sig-name descname"><span class="pre">fanCompr_tone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operatingPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.fanCompr_tone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.fanCompr_tone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fan and compressor discrete tone noise estimation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_C">
+<span class="sig-name descname"><span class="pre">get_C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nthet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_C"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_C" title="Permalink to this definition">¶</a></dt>
+<dd><p>C coefficient from eq. 12 in Heidmann</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig10a">
+<span class="sig-name descname"><span class="pre">get_Fig10a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M_tr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig10a"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig10a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get characteristic peak sound pressure level of fundamental discrete tone for inlet duct according to
+Fig. 10(a) in Heidmann and eq. 5 in Kontos.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig10b">
+<span class="sig-name descname"><span class="pre">get_Fig10b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M_tr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig10b"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig10b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get characteristic peak sound pressure level of fundamental discrete tone for discharge duct according to
+Fig. 10(b) in Heidmann.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig3a">
+<span class="sig-name descname"><span class="pre">get_Fig3a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_over_fb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig3a"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig3a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creating F4 according to eq. 2 in Heidmann</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig4a">
+<span class="sig-name descname"><span class="pre">get_Fig4a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M_tr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig4a"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig4a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get peak broadband sound pressure levels from Fig 4(a) for inlet duct according to Heidmann.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig4b">
+<span class="sig-name descname"><span class="pre">get_Fig4b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M_tr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig4b"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig4b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get peak broadband sound pressure levels from Fig 4(b) for discharge duct according to Heidmann and
+eq. 3a-3b in Kontos.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig8">
+<span class="sig-name descname"><span class="pre">get_Fig8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">igv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig8"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get rotor-stator interaction discrete tone harmonic levels from Fig 8 in Heidmann and eq. 7a-8c in
+Kontos.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.get_Fig9">
+<span class="sig-name descname"><span class="pre">get_Fig9</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">no_fan_stages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.get_Fig9"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.get_Fig9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get inlet flow distortion discrete tone harmonic levels for inlet duct from Fig 9 in Heidmann.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_physics.Jet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">Jet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A_core_caj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_bypass_caj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Jet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Jet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate jet source noise prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A_core_caj</strong> (<em>float</em>) – Nozzle exit flow area of inner stream or circular jet (m^2)</p></li>
+<li><p><strong>A_bypass_caj</strong> (<em>float</em>) – Nozzle exit flow area of outer stream (m^2)</p></li>
+<li><p><strong>type</strong> (<em>str</em>) – Nozzle type, mix or separate</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Jet.calc">
+<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dmdt_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmdt_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Jet.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Jet.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Jet source noise model for circular and coaxial jets based on the methods presented by Russel (J. W. Russel.
+“An empirical Method for Predicting the mixing Noise Levels of Subsonic Circular and Coaxial Jets”.
+NASA-CR-3786).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dmdt_1</strong> (<em>float</em>) – Mass flow rate of inner stream or circular jet (kg/s)</p></li>
+<li><p><strong>dmdt_2</strong> (<em>float</em>) – Mass flow rate of outer stream (kg/s)</p></li>
+<li><p><strong>v_1</strong> (<em>float</em>) – Nozzle exit flow velocity of inner stream or circular jet (m/s)</p></li>
+<li><p><strong>v_2</strong> (<em>float</em>) – Nozzle exit flow velocity of outer stream (m/s)</p></li>
+<li><p><strong>T_1</strong> (<em>float</em>) – Nozzle exit flow total temperature of inner stream or circular jet (K)</p></li>
+<li><p><strong>T_2</strong> (<em>float</em>) – Nozzle exit flow total temperature of outer stream (K)</p></li>
+<li><p><strong>Ta</strong> (<em>float</em>) – Ambient static temperature (K)</p></li>
+<li><p><strong>Pa</strong> (<em>float</em>) – Ambient pressure (Pa)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for jet component</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">PropagationEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ground_refl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spherical_spr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atm_atten</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphai</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate noise estimation at microphone/observer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ymic</strong> (<em>float</em>) – Microphone height (m)</p></li>
+<li><p><strong>use_ground_refl</strong> (<em>bool</em>) – True to account for ground reflection or False else</p></li>
+<li><p><strong>spherical_spr</strong> (<em>bool</em>) – True to account for spherical spreading or False else</p></li>
+<li><p><strong>atm_atten</strong> (<em>bool</em>) – True to account for atmospheric attenuation or False else</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+<li><p><strong>xsii</strong> (<em>ndarray</em>) – 1D array containing observation angles (rad)</p></li>
+<li><p><strong>Mai</strong> (<em>ndarray</em>) – 1D array containing Mach number</p></li>
+<li><p><strong>alphai</strong> (<em>ndarray</em>) – 1D array containing Angle of attack (deg)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.flightEffects">
+<span class="sig-name descname"><span class="pre">flightEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SPLi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.flightEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.flightEffects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the sound pressure level and the acoustic pressure matrices accounting for propagation effects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nti</strong> (<em>int</em>) – Number of trajectory points</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>x</strong> (<em>ndarray</em>) – 1D array containing aircraft horizontal distance relative to the microphone (m)</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – 1D array containing aircraft altitude relative to the microphone (m)</p></li>
+<li><p><strong>r1</strong> (<em>ndarray</em>) – 1D array containing aircraft distance relative to the microphone (m)</p></li>
+<li><p><strong>tai</strong> (<em>ndarray</em>) – 1D array containing atmospheric temperature (K)</p></li>
+<li><p><strong>SPLi</strong> (<em>ndarray</em>) – 3D array containing Sound pressure level at the source (dB)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An SPL and a prms array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.getDopplerShift">
+<span class="sig-name descname"><span class="pre">getDopplerShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.getDopplerShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.getDopplerShift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the frequency shift due to the movement of the aircraft.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.get_atm_abs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_atm_abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relHum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.get_atm_abs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.get_atm_abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the SAE ARP
+866A report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_k</strong> – 1D array containing atmospheric temperature (K)</p></li>
+<li><p><strong>relHum</strong> (<em>float</em>) – Relative humidity</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D array containing the atmospheric absorption in dB per 100 m</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.get_theta">
+<span class="sig-name descname"><span class="pre">get_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xsi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphai</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.get_theta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.get_theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes directivity angle (from aircraft body axis to sound propagation path).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xsi</strong> (<em>ndarray</em>) – 1D array containing observation angles (rad)</p></li>
+<li><p><strong>alphai</strong> (<em>ndarray</em>) – 1D array containing Angle of attack (deg)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D array containing directivity angle to microphone (rad)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.ground_reflection">
+<span class="sig-name descname"><span class="pre">ground_reflection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.ground_reflection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.ground_reflection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the ground effects factor for a sound wave that does not travel directly from the source to the
+observer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_plane</strong> (<em>float</em>) – Aircraft altitude relative to the microphone (m)</p></li>
+<li><p><strong>x1</strong> (<em>float</em>) – Aircraft horizontal distance relative to the microphone (m)</p></li>
+<li><p><strong>r1</strong> (<em>float</em>) – Aircraft distance relative to the microphone (m)</p></li>
+<li><p><strong>ta</strong> (<em>float</em>) – Atmospheric static temperature (K)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return array<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D array containg ground effects factor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_physics.Turbine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">Turbine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N_rotors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SRS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Turbine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Turbine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate turbine source noise prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N_rotors</strong> (<em>int</em>) – Number of rotors</p></li>
+<li><p><strong>n_stages</strong> (<em>int</em>) – Number of stages</p></li>
+<li><p><strong>SRS</strong> (<em>float</em>) – Stator-rotor spacing</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+<li><p><strong>f</strong> (<em>ndarray</em>) – 1D array containing frequencies (Hz)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.Turbine.calc">
+<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Vtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Texit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xnl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mcore</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Turbine.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Turbine.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turbine source noise model based on the method developed by Dunn and Peart (D. G. Dunn and N. A. Peart.
+“Aircraft Noise Source and Contour Estimation”. NASA-CR-114649).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Vtr</strong> (<em>float</em>) – Relative tip speed of turbine last rotor</p></li>
+<li><p><strong>Texit</strong> (<em>float</em>) – Exhaust temperature (K)</p></li>
+<li><p><strong>xnl</strong> (<em>float</em>) – Rotational speed (rps)</p></li>
+<li><p><strong>mcore</strong> (<em>float</em>) – Mass flow (kg/s)</p></li>
+<li><p><strong>Cax</strong> (<em>float</em>) – Axial velocity (m/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of Rms or effective acoustic pressure for turbine component</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-choice.choice_aux">
+<span id="general-functions"></span><h2>General functions<a class="headerlink" href="#module-choice.choice_aux" title="Permalink to this heading">¶</a></h2>
+<p>Module choice_aux</p>
+<p>Choice auxiliary routines such as error handling and file editing and writing.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.SPL2prms">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">SPL2prms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SPL</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#SPL2prms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.SPL2prms" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given SPL matrix computes the acoustic mean square pressure.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="choice.choice_aux.chapter3">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">chapter3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noEngines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MTOW</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#chapter3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.chapter3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the EPNL certification limits for every operating point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>noEngines</strong> (<em>int</em>) – Number of engines</p></li>
+<li><p><strong>MTOW</strong> (<em>float</em>) – Maximum take-off weight (tn)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_aux.chapter3.get_EPNL_approach">
+<span class="sig-name descname"><span class="pre">get_EPNL_approach</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#chapter3.get_EPNL_approach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.chapter3.get_EPNL_approach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes EPNL limit for Approach.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_aux.chapter3.get_EPNL_cutback">
+<span class="sig-name descname"><span class="pre">get_EPNL_cutback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#chapter3.get_EPNL_cutback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.chapter3.get_EPNL_cutback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes EPNL limit for Cutback.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_aux.chapter3.get_EPNL_lateral">
+<span class="sig-name descname"><span class="pre">get_EPNL_lateral</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#chapter3.get_EPNL_lateral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.chapter3.get_EPNL_lateral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes EPNL limit for Sideline.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.containsStars">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">containsStars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#containsStars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.containsStars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the file contains stars instead of data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.gen_noise_source_matr_subr">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">gen_noise_source_matr_subr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operatingPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_traj_pts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#gen_noise_source_matr_subr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.gen_noise_source_matr_subr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save component SPL matrices to files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operatingPoint</strong> (<em>str</em>) – Approach, Cutback, Sideline</p></li>
+<li><p><strong>nfreq</strong> (<em>int</em>) – Number of frequencies</p></li>
+<li><p><strong>nthet</strong> (<em>int</em>) – Number of directivity angles</p></li>
+<li><p><strong>n_traj_pts</strong> (<em>int</em>) – Number of trajectory points</p></li>
+<li><p><strong>prms</strong> (<a class="reference internal" href="#choice.choice_interf.Prms" title="choice.choice_interf.Prms"><em>Prms</em></a>) – Rms or effective acoustic pressure for all components</p></li>
+<li><p><strong>ext</strong> (<em>str</em>) – File extension for noise source matrices</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.getTotLevel">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">getTotLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#getTotLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.getTotLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the total PNLT for all noise sources.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.get_Cax">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">get_Cax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#get_Cax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.get_Cax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the axial flow speed from pressure, temperature, mass flow and area.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.get_M">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">get_M</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xfunc0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#get_M"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.get_M" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Mach number in the fan and compressor components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.get_R">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">get_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#get_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.get_R" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes gas constant.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.loadStorageMat">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">loadStorageMat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#loadStorageMat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.loadStorageMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads data from file and returns a 2D array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – File name</p></li>
+<li><p><strong>ndata</strong> (<em>int</em>) – Number of data loaded along the trajectory</p></li>
+<li><p><strong>nvars</strong> (<em>int</em>) – Number of variables stored for particular module</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array with the data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.preProcessFanFile">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">preProcessFanFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#preProcessFanFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.preProcessFanFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes missing data from fan performance file and saves new file. (This routine is only called if the file
+has stars)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.preProcessLptFile">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">preProcessLptFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">de</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ae</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#preProcessLptFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.preProcessLptFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes missing data from lpt performance file and saves new file.
+(This routine is only called if the file has stars)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.prms2SPL">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">prms2SPL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#prms2SPL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.prms2SPL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts rms acoustic pressure to Sound Pressure Level.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.report_error">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">report_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mod</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#report_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.report_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports error in file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mess</strong> (<em>str</em>) – Error message</p></li>
+<li><p><strong>rout</strong> (<em>str</em>) – Module where error occurred</p></li>
+<li><p><strong>mod</strong> (<em>str</em>) – Routine where error occurred</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.save_3D_matrix">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">save_3D_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_2d_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#save_3D_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.save_3D_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves a 3D matrix for in output file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.setMachNumbers">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">setMachNumbers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xnl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#setMachNumbers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.setMachNumbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the blade Mach numbers for a component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p1</strong> (<em>float</em>) – Pressure (Pa)</p></li>
+<li><p><strong>t1</strong> (<em>float</em>) – Temperature (K)</p></li>
+<li><p><strong>g1</strong> (<em>float</em>) – Mass flow (kg/s)</p></li>
+<li><p><strong>Ain</strong> (<em>float</em>) – Area (m**2)</p></li>
+<li><p><strong>D1</strong> (<em>float</em>) – Diameter (m)</p></li>
+<li><p><strong>xnl</strong> (<em>float</em>) – Rotational speed (rps)</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Heat capacity ratio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Blade and relative tip Mach number and mid point speed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.set_frequencies">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">set_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#set_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.set_frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the 1/3 octave band frequency, the mid-frequency of each band and all the frequencies from the given
+minimum to the maximum value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nb</strong> (<em>int</em>) – Number of bands</p></li>
+<li><p><strong>nfreq</strong> (<em>int</em>) – Number of frequencies</p></li>
+<li><p><strong>fmin</strong> (<em>float</em>) – The minimum frequency value (Hz)</p></li>
+<li><p><strong>fmax</strong> (<em>float</em>) – The maximum frequency value (Hz)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed frequencies in 1D array form</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-choice.choice_data">
+<span id="data"></span><h2>Data<a class="headerlink" href="#module-choice.choice_data" title="Permalink to this heading">¶</a></h2>
+<p>Module choice_data</p>
+<p>Contains default data for components and tabulated data for noise empirical models.</p>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../../index.html" class="btn btn-neutral float-left" title="Welcome to CHOICE’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Marily Thoma
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

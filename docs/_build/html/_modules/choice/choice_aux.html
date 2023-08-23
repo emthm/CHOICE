@@ -1,0 +1,634 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>choice.choice_aux &mdash; CHOICE  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CHOICE
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/api/choice.html">CHOICE</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CHOICE</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>choice.choice_aux</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for choice.choice_aux</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module choice_aux</span>
+
+<span class="sd">Choice auxiliary routines such as error handling and file editing and writing.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">choice.choice_data</span> <span class="k">as</span> <span class="nn">choice_data</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+
+<span class="n">release_version</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">error_file_open</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="loadStorageMat"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.loadStorageMat">[docs]</a><span class="k">def</span> <span class="nf">loadStorageMat</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">ndata</span><span class="p">,</span> <span class="n">nvars</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads data from file and returns a 2D array.</span>
+
+<span class="sd">    :param str fname: File name</span>
+<span class="sd">    :param int ndata: Number of data loaded along the trajectory</span>
+<span class="sd">    :param int nvars: Number of variables stored for particular module</span>
+
+<span class="sd">    :return ndarray: 2D array with the data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ndata</span><span class="p">,</span> <span class="n">nvars</span><span class="p">))</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>  <span class="c1"># data line</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+                    <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">ndata</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;confusion in number of data - ndata different from number of lines in file&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mat</span></div>
+
+
+<div class="viewcode-block" id="preProcessFanFile"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.preProcessFanFile">[docs]</a><span class="k">def</span> <span class="nf">preProcessFanFile</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">a2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes missing data from fan performance file and saves new file. (This routine is only called if the file</span>
+<span class="sd">    has stars) &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">parseFanLine</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">a2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes missing data from a line in the fan performance file.&quot;&quot;&quot;</span>
+        <span class="n">maxNchars</span> <span class="o">=</span> <span class="mi">18</span>
+        <span class="n">xnl</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">mdot</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        <span class="p">[</span><span class="n">Mtip</span><span class="p">,</span> <span class="n">Mu</span><span class="p">,</span> <span class="n">Umid</span><span class="p">]</span> <span class="o">=</span> <span class="n">setMachNumbers</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">mdot</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">xnl</span><span class="p">,</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">gamma_air</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">varStr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Mtip</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varStr</span> <span class="o">+</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+        <span class="n">varStr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Mu</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varStr</span> <span class="o">+</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">maxNchars</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">fanLine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fanLine</span>
+
+    <span class="c1"># maxNCols = 8  # valid for fan files with stars</span>
+    <span class="n">newFile</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fp</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+                <span class="n">newFile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">nvars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nvars</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">nvars</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;failure in parsing logic - expected 8 number of columns in fan file&#39;</span><span class="p">)</span>
+                <span class="c1"># consistency check to not forget that this logic is specific - avoid future simulation errors</span>
+            <span class="n">newFile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parseFanLine</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">a2</span><span class="p">))</span>
+
+    <span class="c1"># dump newFile onto file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="n">newFile</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nf</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="preProcessLptFile"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.preProcessLptFile">[docs]</a><span class="k">def</span> <span class="nf">preProcessLptFile</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">ae</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes missing data from lpt performance file and saves new file.</span>
+<span class="sd">    (This routine is only called if the file has stars) &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">parseLptLine</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">ae</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes missing data from a line in the lpt performance file.&quot;&quot;&quot;</span>
+        <span class="n">maxNchars</span> <span class="o">=</span> <span class="mi">18</span>
+        <span class="n">xnl</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">mdot</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">Cax</span> <span class="o">=</span> <span class="n">get_Cax</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">gamma_gas</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">mdot</span><span class="p">,</span> <span class="n">ae</span><span class="p">)</span>
+        <span class="n">Vtr</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">de</span><span class="p">)</span> <span class="o">*</span> <span class="n">xnl</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">varStr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Vtr</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varStr</span> <span class="o">+</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">maxNchars</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="c1"># i = 4</span>
+        <span class="n">varStr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Cax</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">varStr</span> <span class="o">+</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+        <span class="n">lptLine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="n">lptLine</span>
+
+    <span class="n">new_file</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
+                <span class="n">new_file</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="c1"># data line</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">nvars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nvars</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">nvars</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;failure in parsing logic - expected 8 number of columns in Lpt file&#39;</span><span class="p">)</span>
+                <span class="c1"># consistency check to not forget that this logic is specific - avoid future simulation errors</span>
+            <span class="n">new_file</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parseLptLine</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">ae</span><span class="p">))</span>
+
+    <span class="c1"># dump new_file onto file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="n">new_file</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nf</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="containsStars"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.containsStars">[docs]</a><span class="k">def</span> <span class="nf">containsStars</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Checks if the file contains stars instead of data. &quot;&quot;&quot;</span>
+    <span class="n">stars</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span> <span class="k">continue</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;*****&#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                    <span class="n">stars</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">stars</span><span class="p">:</span> <span class="k">break</span>
+    <span class="k">return</span> <span class="n">stars</span></div>
+
+
+<div class="viewcode-block" id="set_frequencies"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.set_frequencies">[docs]</a><span class="k">def</span> <span class="nf">set_frequencies</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the 1/3 octave band frequency, the mid-frequency of each band and all the frequencies from the given</span>
+<span class="sd">    minimum to the maximum value.</span>
+
+<span class="sd">    :param int nb: Number of bands</span>
+<span class="sd">    :param int nfreq: Number of frequencies</span>
+<span class="sd">    :param float fmin: The minimum frequency value (Hz)</span>
+<span class="sd">    :param float fmax: The maximum frequency value (Hz)</span>
+
+<span class="sd">    :return ndarray: The computed frequencies in 1D array form</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fband</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nfreq</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nfreq</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">fband</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fmin</span>
+    <span class="n">pot</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">nb</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">):</span>
+        <span class="n">fband</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fband</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">pot</span>
+        <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">fband</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fband</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="n">f</span><span class="p">[</span><span class="n">nfreq</span><span class="p">]</span> <span class="o">=</span> <span class="n">fband</span><span class="p">[</span><span class="n">nfreq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">fband</span><span class="p">[</span><span class="n">nfreq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">fband</span><span class="p">[</span><span class="n">nfreq</span> <span class="o">-</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fmin</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fmax</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">fmax</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">fmin</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">fband</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">freq</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_R"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.get_R">[docs]</a><span class="k">def</span> <span class="nf">get_R</span><span class="p">(</span><span class="n">fa</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes gas constant. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">Risa</span> <span class="o">/</span> <span class="p">(</span><span class="n">fa</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_M"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.get_M">[docs]</a><span class="k">def</span> <span class="nf">get_M</span><span class="p">(</span><span class="n">gam</span><span class="p">,</span> <span class="n">xfunc0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes the Mach number in the fan and compressor components. &quot;&quot;&quot;</span>
+    <span class="n">rpar</span> <span class="o">=</span> <span class="p">[</span><span class="n">gam</span><span class="p">,</span> <span class="n">xfunc0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">xfunc_err</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rpar</span><span class="p">)</span> <span class="o">*</span> <span class="n">xfunc_err</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">rpar</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="p">[</span><span class="n">M</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="n">xfunc_err</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">rpar</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="o">.</span><span class="n">converged</span><span class="p">:</span>
+            <span class="n">report_error</span><span class="p">(</span><span class="s1">&#39;failed to bracket M&#39;</span><span class="p">,</span> <span class="s1">&#39;get_M&#39;</span><span class="p">,</span> <span class="s1">&#39;physics&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="mf">0.999</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<span class="k">def</span> <span class="nf">xfunc_err</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">rpar</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">xfunc</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">rpar</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rpar</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">xfunc</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">gam</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gam</span><span class="p">)</span> <span class="o">*</span> <span class="n">M</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">gam</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">M</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">((</span><span class="n">gam</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">gam</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))))</span>
+
+
+<div class="viewcode-block" id="report_error"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.report_error">[docs]</a><span class="k">def</span> <span class="nf">report_error</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="n">rout</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reports error in file.</span>
+
+<span class="sd">    :param str mess: Error message</span>
+<span class="sd">    :param str rout: Module where error occurred</span>
+<span class="sd">    :param str mod: Routine where error occurred</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">error_file_open</span><span class="p">,</span> <span class="n">error_file</span>
+    <span class="k">if</span> <span class="n">release_version</span><span class="p">:</span> <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">error_file_open</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">error_file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mess</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;occurred in module &#39;</span> <span class="o">+</span> <span class="n">mod</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;in routine &#39;</span> <span class="o">+</span> <span class="n">rout</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_file_open</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">error_file</span> <span class="o">=</span> <span class="s1">&#39;weicoErrorReport.txt&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">error_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mess</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; occurred in module &#39;</span> <span class="o">+</span> <span class="n">mod</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; in routine &#39;</span> <span class="o">+</span> <span class="n">rout</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="gen_noise_source_matr_subr"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.gen_noise_source_matr_subr">[docs]</a><span class="k">def</span> <span class="nf">gen_noise_source_matr_subr</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">prms</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save component SPL matrices to files.</span>
+
+<span class="sd">    :param str operatingPoint: Approach, Cutback, Sideline</span>
+<span class="sd">    :param int nfreq: Number of frequencies</span>
+<span class="sd">    :param int nthet: Number of directivity angles</span>
+<span class="sd">    :param int n_traj_pts: Number of trajectory points</span>
+<span class="sd">    :param Prms prms: Rms or effective acoustic pressure for all components</span>
+<span class="sd">    :param str ext: File extension for noise source matrices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">directory</span> <span class="o">=</span> <span class="n">output_folder</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_inlet</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_inlet</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanInlet&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Fan_inlet</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_discharge</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_discharge</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanDischarge&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Fan_discharge</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Lpc_inlet</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Lpc_inlet</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_lpcInlet&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Lpc_inlet</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Lpt</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Lpt</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_Lpt&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Lpt</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Comb</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Comb</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_Comb&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Comb</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Caj</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Caj</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_Caj&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Caj</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Airfrm</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Airfrm</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_Airfrm&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Airfrm</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_inlet_tone</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_inlet_tone</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanInletTone&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Fan_inlet_tone</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_discharge_tone</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_discharge_tone</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanDischargeTone&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Fan_discharge_tone</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_inlet_broadband</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_inlet_broadband</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanInletBroadband&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Fan_inlet_broadband</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_discharge_broadband</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_discharge_broadband</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanDischargeBroadband&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Fan_discharge_broadband</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Fan_inlet_combination</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Fan_inlet_combination</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_fanInletCombination&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Fan_inlet_combination</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Lpc_inlet_tone</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Lpc_inlet_tone</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_LpcInletTone&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Lpc_inlet_tone</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Lpc_inlet_broadband</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Lpc_inlet_broadband</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_LpcInletBroadband&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Lpc_inlet_broadband</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Lpc_inlet_broadband</span> <span class="o">=</span> <span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">Lpc_inlet_combination</span><span class="p">)</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_LpcInletCombination&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span>
+                   <span class="n">temp3DMatrix_Lpc_inlet_broadband</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">temp3DMatrix_Total</span> <span class="o">=</span> <span class="n">getTotLevel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">temp3DMatrix_Fan_inlet</span><span class="p">,</span> <span class="n">temp3DMatrix_Fan_discharge</span><span class="p">,</span>
+                                               <span class="n">temp3DMatrix_Lpc_inlet</span><span class="p">,</span> <span class="n">temp3DMatrix_Lpt</span><span class="p">,</span> <span class="n">temp3DMatrix_Comb</span><span class="p">,</span>
+                                               <span class="n">temp3DMatrix_Caj</span><span class="p">,</span> <span class="n">temp3DMatrix_Airfrm</span><span class="p">]))</span>
+    <span class="n">save_3D_matrix</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_Total&#39;</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">n_traj_pts</span><span class="p">,</span> <span class="n">temp3DMatrix_Total</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="prms2SPL"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.prms2SPL">[docs]</a><span class="k">def</span> <span class="nf">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Converts rms acoustic pressure to Sound Pressure Level. &quot;&quot;&quot;</span>
+    <span class="n">castSPL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">prms</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">castSPL</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">prms</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">prms</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">prms</span><span class="p">)]</span> <span class="o">/</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">castSPL</span></div>
+
+
+<div class="viewcode-block" id="SPL2prms"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.SPL2prms">[docs]</a><span class="k">def</span> <span class="nf">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; For a given SPL matrix computes the acoustic mean square pressure.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span> <span class="o">*</span> <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="n">SPL</span> <span class="o">/</span> <span class="mf">20.0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getTotLevel"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.getTotLevel">[docs]</a><span class="k">def</span> <span class="nf">getTotLevel</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes the total PNLT for all noise sources. &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">10.00</span> <span class="o">**</span> <span class="p">(</span><span class="n">L</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="save_3D_matrix"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.save_3D_matrix">[docs]</a><span class="k">def</span> <span class="nf">save_3D_matrix</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">,</span> <span class="n">n_2d_mat</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Saves a 3D matrix for in output file. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">&#39;csv&#39;</span> <span class="ow">in</span> <span class="n">ext</span><span class="p">:</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;.csv&#39;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;choice3DMatrix&#39;</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating file &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;choice3DMatrix&#39;</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">imat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_2d_mat</span><span class="p">):</span>
+                <span class="n">csvwriter</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">csvwriter</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">mat</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">imat</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="s1">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">ext</span><span class="p">:</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;choice3DMatrix.m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating file &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;choice3DMatrix.m&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">imat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_2d_mat</span><span class="p">):</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;chMat(:,:,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">imat</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;) = [&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_rows</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cols</span><span class="p">):</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">imat</span><span class="p">],</span> <span class="s1">&#39;20.10f&#39;</span><span class="p">)))</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;];</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="setMachNumbers"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.setMachNumbers">[docs]</a><span class="k">def</span> <span class="nf">setMachNumbers</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">Ain</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">xnl</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the blade Mach numbers for a component.</span>
+
+<span class="sd">    :param float p1: Pressure (Pa)</span>
+<span class="sd">    :param float t1: Temperature (K)</span>
+<span class="sd">    :param float g1: Mass flow (kg/s)</span>
+<span class="sd">    :param float Ain: Area (m**2)</span>
+<span class="sd">    :param float D1: Diameter (m)</span>
+<span class="sd">    :param float xnl: Rotational speed (rps)</span>
+<span class="sd">    :param float gamma: Heat capacity ratio</span>
+
+<span class="sd">    :return: Blade and relative tip Mach number and mid point speed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rt</span> <span class="o">=</span> <span class="n">D1</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">rh</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rt</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">Ain</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">get_R</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">xfunc0</span> <span class="o">=</span> <span class="n">g1</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span> <span class="o">*</span> <span class="n">t1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">p1</span> <span class="o">*</span> <span class="n">Ain</span><span class="p">)</span>
+    <span class="n">Max</span> <span class="o">=</span> <span class="n">get_M</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">xfunc0</span><span class="p">)</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">Max</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">Utip</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">rt</span> <span class="o">*</span> <span class="n">xnl</span>
+    <span class="n">Umid</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">((</span><span class="n">rt</span> <span class="o">+</span> <span class="n">rh</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">xnl</span>
+    <span class="n">Mu</span> <span class="o">=</span> <span class="n">Utip</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">ts</span><span class="p">)</span>  <span class="c1"># blade Mach number</span>
+    <span class="n">Mtip</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Mu</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">Max</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># use Mach number triangle, assume zero swirl</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Mtip</span><span class="p">,</span> <span class="n">Mu</span><span class="p">,</span> <span class="n">Umid</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_Cax"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.get_Cax">[docs]</a><span class="k">def</span> <span class="nf">get_Cax</span><span class="p">(</span><span class="n">gam</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes the axial flow speed from pressure, temperature, mass flow and area. &quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">get_R</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">xfunc0</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">A</span><span class="p">)</span>
+    <span class="n">Max</span> <span class="o">=</span> <span class="n">get_M</span><span class="p">(</span><span class="n">gam</span><span class="p">,</span> <span class="n">xfunc0</span><span class="p">)</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">gam</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">Max</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">Cax</span> <span class="o">=</span> <span class="n">Max</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gam</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">ts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Cax</span></div>
+
+
+<div class="viewcode-block" id="chapter3"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.chapter3">[docs]</a><span class="k">class</span> <span class="nc">chapter3</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Instantiate the EPNL certification limits for every operating point.</span>
+
+<span class="sd">    :param int noEngines: Number of engines</span>
+<span class="sd">    :param float MTOW: Maximum take-off weight (tn)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">noEngines</span><span class="p">,</span> <span class="n">MTOW</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noEng</span> <span class="o">=</span> <span class="n">noEngines</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">=</span> <span class="n">MTOW</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lateral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_EPNL_lateral</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_EPNL_cutback</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approach</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_EPNL_approach</span><span class="p">()</span>
+
+<div class="viewcode-block" id="chapter3.get_EPNL_approach"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.chapter3.get_EPNL_approach">[docs]</a>    <span class="k">def</span> <span class="nf">get_EPNL_approach</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Computes EPNL limit for Approach. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">35.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">86.03</span> <span class="o">+</span> <span class="mf">7.75</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">35.0</span><span class="p">)</span>  <span class="c1"># 97.9965</span>
+        <span class="k">elif</span> <span class="mf">35.0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">400.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">86.03</span> <span class="o">+</span> <span class="mf">7.75</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">86.03</span> <span class="o">+</span> <span class="mf">7.75</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">400.0</span><span class="p">)</span>  <span class="c1"># 104.995</span></div>
+
+<div class="viewcode-block" id="chapter3.get_EPNL_cutback"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.chapter3.get_EPNL_cutback">[docs]</a>    <span class="k">def</span> <span class="nf">get_EPNL_cutback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Computes EPNL limit for Cutback. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">noEng</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">48.1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">66.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">48.1</span><span class="p">)</span>  <span class="c1"># 89.0057</span>
+            <span class="k">elif</span> <span class="mf">48.1</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">385.0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">66.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">66.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">385.0</span><span class="p">)</span>  <span class="c1"># 101.01077</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">noEng</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">28.6</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">69.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">28.6</span><span class="p">)</span>  <span class="c1"># 89.0051</span>
+            <span class="k">elif</span> <span class="mf">48.1</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">385.0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">69.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">69.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">385.0</span><span class="p">)</span>  <span class="c1"># 104.01077</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">noEng</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">20.2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">71.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">20.2</span><span class="p">)</span>  <span class="c1"># 88.998</span>
+            <span class="k">elif</span> <span class="mf">48.1</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">385.0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">71.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">71.65</span> <span class="o">+</span> <span class="mf">13.29</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">385.0</span><span class="p">)</span>  <span class="c1"># 106.01077</span></div>
+
+<div class="viewcode-block" id="chapter3.get_EPNL_lateral"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_aux.chapter3.get_EPNL_lateral">[docs]</a>    <span class="k">def</span> <span class="nf">get_EPNL_lateral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Computes EPNL limit for Sideline. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">35.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">80.57</span> <span class="o">+</span> <span class="mf">8.51</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">35.0</span><span class="p">)</span>  <span class="c1"># 93.71</span>
+        <span class="k">elif</span> <span class="mf">35.0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span> <span class="o">&lt;</span> <span class="mf">400.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">80.57</span> <span class="o">+</span> <span class="mf">8.51</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MTOW</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">80.57</span> <span class="o">+</span> <span class="mf">8.51</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">400.0</span><span class="p">)</span>  <span class="c1"># 102.71</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Marily Thoma
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
