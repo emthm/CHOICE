@@ -1417,7 +1417,7 @@ class FanCompressor(NoiseSource):
 
         if self.comp == 'Fan' and choice_data.no_fan_stages == 1 and choice_data.fan_IGV:
             C = -5.0
-        elif self.comp == 'fuselage_fan' and choice_data.no_ff_stages == 1 and choice_data.ff_IGV:
+        elif self.comp == 'Fuselage_fan' and choice_data.no_ff_stages == 1 and choice_data.ff_IGV:
             C = -5.0
         else:
             C = 0.0
@@ -1474,7 +1474,7 @@ class FanCompressor(NoiseSource):
             BPF2 = interpolate.interp1d(self.angles, self.approach_2BPF, fill_value="extrapolate")(theta)
 
         # set inlet data
-        if self.comp == 'fuselage_fan':
+        if self.comp == 'Fuselage_fan':
             F5 = self.get_Fig9(choice_data.no_ff_stages, k)
         else:
             F5 = self.get_Fig9(choice_data.no_fan_stages, k)
@@ -1484,7 +1484,7 @@ class FanCompressor(NoiseSource):
         F4a = np.zeros(nk)
         if self.comp.strip() == 'Fan':
             F4a = self.get_Fig8(choice_data.fan_IGV, Mtr, k, delta_cutoff)
-        elif self.comp == 'fuselage_fan':
+        elif self.comp == 'Fuselage_fan':
             F4a = self.get_Fig8(choice_data.ff_IGV, Mtr, k, delta_cutoff)
 
         SPL_inlet = np.zeros((nfreq, nthet))
@@ -1530,17 +1530,17 @@ class FanCompressor(NoiseSource):
 
         prms_inlet = choice_aux.SPL2prms(SPL_inlet)
 
-        if self.comp == 'Fan' or self.comp == 'fuselage_fan':
+        if self.comp == 'Fan' or self.comp == 'Fuselage_fan':
             # set discharge data
             F4b = np.zeros(nk)
             if self.comp == 'Fan':
                 F4b = self.get_Fig8(choice_data.fan_IGV, Mtr, k, delta_cutoff)
-            elif self.comp == 'fuselage_fan':
+            elif self.comp == 'Fuselage_fan':
                 F4b = self.get_Fig8(choice_data.ff_IGV, Mtr, k, delta_cutoff)
 
             liner_data = np.zeros(nthet)
             if self.liners_tone:
-                if self.comp == 'Fan' or self.comp == 'fuselage_fan':
+                if self.comp == 'Fan' or self.comp == 'Fuselage_fan':
                     if operatingPoint.strip() == 'Sideline':
                         liner_data = self.liner_data_sid
                     elif operatingPoint.strip() == 'Cutback':
@@ -1598,7 +1598,7 @@ class FanCompressor(NoiseSource):
         SPL_inlet = Lc_inlet + self.get_Fig3a(fband.reshape((nfreq, 1)) / fb)  # eq 5
         prms_inlet = choice_aux.SPL2prms(SPL_inlet)
 
-        if self.comp == 'Fan' or self.comp == 'fuselage_fan':
+        if self.comp == 'Fan' or self.comp == 'Fuselage_fan':
             liner_data = np.zeros(nthet)
             if self.liners:
                 if operatingPoint.strip() == 'Sideline':
@@ -1779,7 +1779,7 @@ class PropagationEffects:
             SPLp = choice_aux.prms2SPL(prmsp / r1)
         elif self.atm_atten:
             SPLp = SPLp - (r1 / 100.0) * atm_absorption.T
-        SPLp[SPLp < 0] = 0.0
+        
         prmsp = choice_aux.SPL2prms(SPLp)
 
         # Ground Reflection

@@ -20,23 +20,23 @@ class CHOICE:
     :param str input_folder: input files folder path
     :param str output_folder: output files folder path
     :param str perf_file: file containing the engine performance parameters
-    :param str dim_file: file containing the modules of the engine architecture
     :param str weight_file: file containing engine sizing data
     :param str noise_file: file that is used to define the noise calculation study
+    :param str file_type: file type for noise source matrices (csv, m, None)
     """
     def __init__(self, input_folder='Input/', output_folder='Output/', perf_file='performanceResults.txt',
-                 dim_file='dimensionsWeight.txt', weight_file='weightAircraft.txt', noise_file='inputNoise.txt'):
+                 weight_file='weightAircraft.txt', noise_file='inputNoise.txt', file_type=None):
         self.perf_file = input_folder + '/' + perf_file
-        self.dim_file = input_folder + '/' + dim_file
         self.weight_file = input_folder + '/' + weight_file
         self.noise_file = input_folder + '/' + noise_file
         self.output_folder = output_folder
+        self.ext = file_type
         self.input_folder = input_folder
 
     def run_choice(self):
         """ Sets the required parameters and performs the noise calculation"""
 
-        input = ReadFiles(self.dim_file, self.weight_file, self.noise_file, self.perf_file)
+        input = ReadFiles(self.weight_file, self.noise_file, self.perf_file)
         weight_choice = WeightChoice(input.weightFile)
         noise_choice = NoiseChoice(input.noiseFile)
 
@@ -52,7 +52,7 @@ class CHOICE:
             trajectory = Trajectory.set(0, noise_choice.opPnt[0], noise_choice, self.input_folder)
             # Compute r, clgr and xsi, time
             self.calc_noise_points(0, trajectory, input.modules, input.mpd, noise_choice, weight_choice,
-                                   self.input_folder, self.output_folder)
+                                   self.input_folder, self.output_folder, self.ext)
         else:
             for i in range(noise_choice.nops):
                 trajectory = Trajectory.set(i, noise_choice.opPnt[i], noise_choice, self.input_folder)
@@ -63,19 +63,19 @@ class CHOICE:
         certificationLimits(noise_choice.no_engines, noise_choice.total_weight_airfrm / 1000)
 
     @staticmethod
-    def calc_noise_points(i, trajectory, modules, mpd, noise_choice, weight_choice, input_folder, output_folder):
+    def calc_noise_points(i, trajectory, modules, mpd, noise_choice, weight_choice, input_folder, output_folder, ext):
         if not noise_choice.trajectory_performance:
             mpd = set_rotational_speeds_choice(mpd, weight_choice, 'Fan')
             # estimate absolute speeds from relative rotating speeds (from performance) using several points
             if noise_choice.fuselage_fan:
-                mpd = set_rotational_speeds_choice_ff(mpd, weight_choice, 'fuselage_fan')
+                mpd = set_rotational_speeds_choice(mpd, weight_choice, 'Fuselage_fan')
                 # estimate absolute speeds from relative rotating speeds (from performance) using several points
 
         performance_choice = PerformanceChoice.set(i, modules, trajectory.n_traj_pts, mpd, noise_choice, weight_choice,
                                                    input_folder)
 
         noise_sources = NoiseSources.compute(trajectory, modules, noise_choice, weight_choice, performance_choice, i,
-                                             output_folder)
+                                             output_folder, ext)
         [SPLi, xsii, Mai, Tai, alphai] = interpolate_to_t_source(trajectory, modules, noise_sources.prms)
         ground_noise = \
             GroundNoise.compute_flight_effects(noise_choice.use_ground_reflection, noise_choice.use_spherical_spreading,

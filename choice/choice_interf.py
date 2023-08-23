@@ -445,7 +445,6 @@ class Trajectory:
         y = []
         Va = []
         alpha = []
-              
 
         with open(file) as fp:
             for line in fp:
@@ -457,10 +456,7 @@ class Trajectory:
                         y.append(float(string[1]))
                         Va.append(float(string[2]))
                         alpha.append(float(string[3]))
-                                            
-                                                      
-                             
-                                       
+
                     else:
                         continue
 
@@ -503,7 +499,7 @@ def set_rotational_speeds_choice(mpd, weightChoice, comp):
     if comp == 'Fan':
         param = 'NL'
         xnlD = weightChoice.xnlD_fan
-    elif comp == 'fuselage_fan':
+    elif comp == 'Fuselage_fan':
         param = 'NFF'
         xnlD = weightChoice.xnlD_ff
 
@@ -832,9 +828,9 @@ class PerformanceChoice:
             if module == 'Ipc' or module == 'Lpc': performance_choice.setLpc()
             if module == 'Lpt': performance_choice.setLpt()
             if module == 'Comb': performance_choice.setComb()
-            if module == 'cold_nozzle': performance_choice.coAxialJet()
-            if module == 'fuselage_fan': performance_choice.setff()
-            if module == 'ff_nozzle': performance_choice.coAxialJet_ffn()
+            if module == 'Cold_nozzle': performance_choice.coAxialJet()
+            if module == 'Fuselage_fan': performance_choice.setff()
+            if module == 'Ff_nozzle': performance_choice.coAxialJet_ffn()
 
         performance_choice.setAirfrm(noise_choice)
 
@@ -895,7 +891,7 @@ class NoiseSources:
         self.fband = fband
 
     @classmethod
-    def compute(cls, traj, modules, noise, weight, performance, nop, output_folder):
+    def compute(cls, traj, modules, noise, weight, performance, nop, output_folder, ext=None):
         """
         Compute the acoustic pressure for each noise component.
 
@@ -906,6 +902,7 @@ class NoiseSources:
         :param PerformanceChoice performance: A PerformanceChoice object with the engine performance data
         :param int nop: Number of operating point
         :param str output_folder: Output folder path
+        :param str ext: File extension for noise source matrices
 
         :return NoiseSources: A Prms object with the rms acoustic pressure for each component, the directivity angles
                              and the 1/3 octave band frequencies
@@ -925,7 +922,7 @@ class NoiseSources:
                                            noise.span_flap_airfrm, noise.Sw_airfrm, noise.span_airfrm, noise.ND,
                                            noise.span_hor_tail, noise.Sht, noise.span_ver_tail, noise.Svt,
                                            noise.flap_type, noise.slat_type, theta, fband)
-        if 'cold_nozzle' in modules: jet = choice_physics.Jet(weight.A_core_caj, weight.A_bypass_caj,
+        if 'Cold_nozzle' in modules: jet = choice_physics.Jet(weight.A_core_caj, weight.A_bypass_caj,
                                                               noise.type_nozzles, theta, fband)
         if 'Comb' in modules:
             comb = choice_physics.Combustor(weight.type_comb, weight.Aec_comb, weight.De_comb, weight.Dh_comb,
@@ -941,10 +938,10 @@ class NoiseSources:
         if 'Lpc' in modules:
             lpc = choice_physics.FanCompressor('Lpc', weight.MtipD_lpc, weight.N_rotors_lpc, weight.N_stators_lpc,
                                                weight.rss_lpc, theta, fband, f)
-        if 'fuselage_fan' in modules:
-            ffan = choice_physics.FanCompressor('fuselage_fan', weight.MtipD_ff, weight.N_rotors_ff,
+        if 'Fuselage_fan' in modules:
+            ffan = choice_physics.FanCompressor('Fuselage_fan', weight.MtipD_ff, weight.N_rotors_ff,
                                                 weight.N_stators_ff, weight.rss_ff, theta, fband, f)
-        if 'ff_nozzle' in modules: ffjet = choice_physics.Jet(weight.A_core_caj_ffn, weight.A_bypass_caj_ffn, 'mix')
+        if 'Ff_nozzle' in modules: ffjet = choice_physics.Jet(weight.A_core_caj_ffn, weight.A_bypass_caj_ffn, 'mix')
 
         # evaluate component noise models
         for i in range(traj.n_traj_pts):  # for all points along trajectory - evaluate noise sources
@@ -985,11 +982,11 @@ class NoiseSources:
                                                    performance.P4_comb[i], performance.P7_comb[i], traj.ta[i],
                                                    performance.T3_comb[i], performance.T4_comb[i],
                                                    performance.T5_comb[i], performance.W3_comb[i])
-                elif module == 'cold_nozzle':
+                elif module == 'Cold_nozzle':
                     prms.Caj[:, :, i] = jet.calc(performance.dmdt_1_caj[i], performance.dmdt_2_caj[i],
                                                  performance.v_1_caj[i], performance.v_2_caj[i], performance.T_1_caj[i],
                                                  performance.T_2_caj[i], traj.ta[i], pa)
-                elif module == 'fuselage_fan':
+                elif module == 'Fuselage_fan':
                     temp = ffan.calc(module, operatingPoint, performance.Mtip_ff[i], performance.Mu_ff[i],
                                      performance.dt_ff[i], performance.xnl_ff[i], performance.g1_ff[i])
                     prms.Ff_inlet_tone[:, :, i] = temp[0]
@@ -1016,7 +1013,7 @@ class NoiseSources:
 
         if noise.gen_noise_source_matr:
             choice_aux.gen_noise_source_matr_subr(output_folder, operatingPoint, choice_data.nfreq, choice_data.nthet,
-                                                  traj.n_traj_pts, prms)
+                                                  traj.n_traj_pts, prms, ext)
 
         return cls(prms, theta, fband)
 
@@ -1042,11 +1039,11 @@ class NoiseMatrices:
             if 'Ipc' or 'Lpc' in modules: self.Lpc_inlet = []
             if 'Lpt' in modules: self.Lpt = []
             if 'Comb' in modules: self.Comb = []
-            if 'cold_nozzle' in modules: self.Caj = []
-            if 'fuselage_fan' in modules:
+            if 'Cold_nozzle' in modules: self.Caj = []
+            if 'Fuselage_fan' in modules:
                 self.Ff_inlet = []
                 self.Ff_discharge = []
-            if 'ff_nozzle' in modules:
+            if 'Ff_nozzle' in modules:
                 self.Caj_ffn = []
             self.Airfrm = []
 

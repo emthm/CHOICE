@@ -14,14 +14,12 @@ class ReadFiles:
     """
     Instantiate files to be read.
 
-    :param str dim_file: File with the modules and engine architecture details
     :param str weight_file: File with data on engine sizing
     :param str noise_file: File to define the cases to be run and required inputs for noise prediction
     :param str perf_file: File containing the engine performance data for every point
     """
 
-    def __init__(self, dim_file, weight_file, noise_file, perf_file):
-        self.dim_file = dim_file
+    def __init__(self, weight_file, noise_file, perf_file):
         self.weight_file = weight_file
         self.noise_file = noise_file
         self.perf_file = perf_file
@@ -58,11 +56,12 @@ class ReadFiles:
 
     def set_modules(self):
         """ Returns a list of the modules in the dimensionsWeight.txt file"""
-        with open(self.dim_file) as df:
-            for line in df:
-                if line and not line.startswith('!'):
-                    if 'end module' in line:
-                        self.modules.append(line.split()[2].strip())
+        available_modules = ['fan', 'lpc', 'ipc', 'comb', 'lpt', 'cold_nozzle', 'fuselage_fan', 'ff_nozzle']
+        input_modules = self.noiseFile.get('modules').split()
+        for module in input_modules:
+            if module.lower() in available_modules:
+                self.modules.append(module.capitalize())
+        return
 
     def open_performance_file(self):
         """ Reads a given performance file into a list. """
@@ -215,13 +214,13 @@ def preparse_trajectories(traj_perf, opPnt, modules, input_folder):
         if 'Comb' in modules:
             filename = opPnt.rstrip() + '_comb_performance.txt'
             parsePerfFile(filename, nBeg, input_folder)
-        if 'cold_nozzle' in modules:
+        if 'Cold_nozzle' in modules:
             filename = opPnt.rstrip() + '_coAxialJet_performance.txt'
             parsePerfFile(filename, nBeg, input_folder)
-        if 'fuselage_fan' in modules:
+        if 'Fuselage_fan' in modules:
             filename = opPnt.rstrip() + '_fuselagefan_performance.txt'
             parsePerfFile(filename, nBeg, input_folder)
-        if 'ff_nozzle' in modules:
+        if 'Ff_nozzle' in modules:
             filename = opPnt.rstrip() + '_ffnJet_performance.txt'
             parsePerfFile(filename, nBeg, input_folder)
         filename = opPnt.rstrip() + '_airfrm_performance.txt'

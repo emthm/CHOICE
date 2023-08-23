@@ -9,6 +9,7 @@ import math
 import numpy as np
 import choice.choice_data as choice_data
 from scipy.optimize import brentq
+import csv
 
 release_version = True
 error_file_open = False
@@ -227,7 +228,7 @@ def report_error(mess, rout, mod):
     return
 
 
-def gen_noise_source_matr_subr(output_folder, operatingPoint, nfreq, nthet, n_traj_pts, prms):
+def gen_noise_source_matr_subr(output_folder, operatingPoint, nfreq, nthet, n_traj_pts, prms, ext):
     """
     Save component SPL matrices to files.
 
@@ -236,70 +237,70 @@ def gen_noise_source_matr_subr(output_folder, operatingPoint, nfreq, nthet, n_tr
     :param int nthet: Number of directivity angles
     :param int n_traj_pts: Number of trajectory points
     :param Prms prms: Rms or effective acoustic pressure for all components
+    :param str ext: File extension for noise source matrices
     """
     directory = output_folder
     if not os.path.isdir(directory):
         os.mkdir(directory)
 
     temp3DMatrix_Fan_inlet = prms2SPL(prms.Fan_inlet)
-    save_3D_matrix(directory + operatingPoint.strip() + '_fanInlet', nfreq, nthet, n_traj_pts, temp3DMatrix_Fan_inlet)
+    save_3D_matrix(directory + operatingPoint.strip() + '_fanInlet', nfreq, nthet, n_traj_pts, temp3DMatrix_Fan_inlet, ext)
 
     temp3DMatrix_Fan_discharge = prms2SPL(prms.Fan_discharge)
     save_3D_matrix(directory + operatingPoint.strip() + '_fanDischarge', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Fan_discharge)
+                   temp3DMatrix_Fan_discharge, ext)
 
     temp3DMatrix_Lpc_inlet = prms2SPL(prms.Lpc_inlet)
-    save_3D_matrix(directory + operatingPoint.strip() + '_lpcInlet', nfreq, nthet, n_traj_pts, temp3DMatrix_Lpc_inlet)
+    save_3D_matrix(directory + operatingPoint.strip() + '_lpcInlet', nfreq, nthet, n_traj_pts, temp3DMatrix_Lpc_inlet, ext)
 
     temp3DMatrix_Lpt = prms2SPL(prms.Lpt)
-    save_3D_matrix(directory + operatingPoint.strip() + '_Lpt', nfreq, nthet, n_traj_pts, temp3DMatrix_Lpt)
+    save_3D_matrix(directory + operatingPoint.strip() + '_Lpt', nfreq, nthet, n_traj_pts, temp3DMatrix_Lpt, ext)
 
     temp3DMatrix_Comb = prms2SPL(prms.Comb)
-    save_3D_matrix(directory + operatingPoint.strip() + '_Comb', nfreq, nthet, n_traj_pts, temp3DMatrix_Comb)
+    save_3D_matrix(directory + operatingPoint.strip() + '_Comb', nfreq, nthet, n_traj_pts, temp3DMatrix_Comb, ext)
 
     temp3DMatrix_Caj = prms2SPL(prms.Caj)
-    save_3D_matrix(directory + operatingPoint.strip() + '_Caj', nfreq, nthet, n_traj_pts, temp3DMatrix_Caj)
+    save_3D_matrix(directory + operatingPoint.strip() + '_Caj', nfreq, nthet, n_traj_pts, temp3DMatrix_Caj, ext)
 
     temp3DMatrix_Airfrm = prms2SPL(prms.Airfrm)
-    save_3D_matrix(directory + operatingPoint.strip() + '_Airfrm', nfreq, nthet, n_traj_pts, temp3DMatrix_Airfrm)
+    save_3D_matrix(directory + operatingPoint.strip() + '_Airfrm', nfreq, nthet, n_traj_pts, temp3DMatrix_Airfrm, ext)
 
-    # implementation for URT
     temp3DMatrix_Fan_inlet_tone = prms2SPL(prms.Fan_inlet_tone)
     save_3D_matrix(directory + operatingPoint.strip() + '_fanInletTone', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Fan_inlet_tone)
+                   temp3DMatrix_Fan_inlet_tone, ext)
 
     temp3DMatrix_Fan_discharge_tone = prms2SPL(prms.Fan_discharge_tone)
     save_3D_matrix(directory + operatingPoint.strip() + '_fanDischargeTone', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Fan_discharge_tone)
+                   temp3DMatrix_Fan_discharge_tone, ext)
 
     temp3DMatrix_Fan_inlet_broadband = prms2SPL(prms.Fan_inlet_broadband)
     save_3D_matrix(directory + operatingPoint.strip() + '_fanInletBroadband', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Fan_inlet_broadband)
+                   temp3DMatrix_Fan_inlet_broadband, ext)
 
     temp3DMatrix_Fan_discharge_broadband = prms2SPL(prms.Fan_discharge_broadband)
     save_3D_matrix(directory + operatingPoint.strip() + '_fanDischargeBroadband', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Fan_discharge_broadband)
+                   temp3DMatrix_Fan_discharge_broadband, ext)
 
     temp3DMatrix_Fan_inlet_combination = prms2SPL(prms.Fan_inlet_combination)
     save_3D_matrix(directory + operatingPoint.strip() + '_fanInletCombination', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Fan_inlet_combination)
+                   temp3DMatrix_Fan_inlet_combination, ext)
 
     temp3DMatrix_Lpc_inlet_tone = prms2SPL(prms.Lpc_inlet_tone)
     save_3D_matrix(directory + operatingPoint.strip() + '_LpcInletTone', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Lpc_inlet_tone)
+                   temp3DMatrix_Lpc_inlet_tone, ext)
 
     temp3DMatrix_Lpc_inlet_broadband = prms2SPL(prms.Lpc_inlet_broadband)
     save_3D_matrix(directory + operatingPoint.strip() + '_LpcInletBroadband', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Lpc_inlet_broadband)
+                   temp3DMatrix_Lpc_inlet_broadband, ext)
 
     temp3DMatrix_Lpc_inlet_broadband = prms2SPL(prms.Lpc_inlet_combination)
     save_3D_matrix(directory + operatingPoint.strip() + '_LpcInletCombination', nfreq, nthet, n_traj_pts,
-                   temp3DMatrix_Lpc_inlet_broadband)
+                   temp3DMatrix_Lpc_inlet_broadband, ext)
 
     temp3DMatrix_Total = getTotLevel(np.array([temp3DMatrix_Fan_inlet, temp3DMatrix_Fan_discharge,
                                                temp3DMatrix_Lpc_inlet, temp3DMatrix_Lpt, temp3DMatrix_Comb,
                                                temp3DMatrix_Caj, temp3DMatrix_Airfrm]))
-    save_3D_matrix(directory + operatingPoint.strip() + '_Total', nfreq, nthet, n_traj_pts, temp3DMatrix_Total)
+    save_3D_matrix(directory + operatingPoint.strip() + '_Total', nfreq, nthet, n_traj_pts, temp3DMatrix_Total, ext)
 
 
 def prms2SPL(prms):
@@ -323,22 +324,27 @@ def getTotLevel(L):
 
 def save_3D_matrix(fname, n_rows, n_cols, n_2d_mat, mat, ext=None):
     """ Saves a 3D matrix for in output file. """
-    if ext is not None:
+    if ext is None or 'csv' in ext:
+        ext = '.csv'
         file = fname + 'choice3DMatrix' + ext
         print('Creating file ' + fname + 'choice3DMatrix' + ext)
-    else:
+        with open(file, 'w') as fp:
+            for imat in range(n_2d_mat):
+                csvwriter = csv.writer(fp, delimiter=',')
+                csvwriter.writerows(mat[:, :, imat])
+    elif 'm' in ext:
         file = fname + 'choice3DMatrix.m'
         print('Creating file ' + fname + 'choice3DMatrix.m')
 
-    with open(file, 'w') as fp:
-        for imat in range(n_2d_mat):
-            fp.write('chMat(:,:,' + str(imat + 1).strip() + ') = [')
-            for j in range(n_rows):
-                for k in range(n_cols):
-                    fp.write(str(format(mat[j, k, imat], '20.10f')))
-                    fp.write(' ')
-                fp.write('\n')
-            fp.write('];\n')
+        with open(file, 'w') as fp:
+            for imat in range(n_2d_mat):
+                fp.write('chMat(:,:,' + str(imat + 1).strip() + ') = [')
+                for j in range(n_rows):
+                    for k in range(n_cols):
+                        fp.write(str(format(mat[j, k, imat], '20.10f')))
+                        fp.write(' ')
+                    fp.write('\n')
+                fp.write('];\n')
 
 
 def setMachNumbers(p1, t1, g1, Ain, D1, xnl, gamma):
