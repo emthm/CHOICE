@@ -1,7 +1,6 @@
 # CHOICE - CHalmers nOIse CodE
-CHOICE is a Python Library used for predicting aircraft noise based on empirical and semi-empirical methods found in public literature. 
-The code is able to predict the noise at the source (aircraft), generating frequency and directivity dependend SPL (Sound Pressure Level) matrices, and to calculate the EPNL (Effective Perceived Noise Level) at the certification points on the ground (for 2D propagation only). 
-
+An aircraft noise prediction framework based on empirical and semi-empirical methods found in public literature. 
+The code is able to predict the noise at the source (aircraft) and at the certification points on the ground (so far for 2D propagation only).  
 
 -------------------------------------------------------------------------------
 
@@ -21,7 +20,7 @@ The code is able to predict the noise at the source (aircraft), generating frequ
 
 ## How to use CHOICE
 
-A sample script to run CHOICE is provided in main.py. Below a step by step guide:
+A sample script to run choice is provided in main.py. Below a step by step guide:
 
 1. Import the library:
    ```
@@ -31,17 +30,17 @@ A sample script to run CHOICE is provided in main.py. Below a step by step guide
    ```
    #  Input files folder path
    input_folder = 'Input/'
-   #  Output folder path
+   #  Output folder path and file type for noise source matrices
    output_folder = 'Output/'
+   file_type = 'csv'
    #  Specify input files
    perf_file = 'performanceResults.txt'
-   dim_file = 'dimensionsWeight.txt'
    weight_file = 'weightAircraft.txt'
    noise_file = 'inputNoise.txt'
    ```
 3. Instantiate a CHOICE object
    ```
-   noise = CHOICE(input_folder, output_folder, perf_file, dim_file, weight_file, noise_file)
+   noise = CHOICE(input_folder, output_folder, perf_file, weight_file, noise_file, file_type)
    ```
 4. Run choice
    ```
@@ -64,6 +63,7 @@ The following files are required as input to CHOICE
 - use_suppression_factor: true/false. If set to true, noise suppression is applied on certain components. Values should be provided on a later instance.
 - no_engines: number of engines on the aircraft
 - type_nozzles: separate/mix. To define separate or mix exhaust nozzles.
+- modules: specify for which components to calculate, eg. Fan Lpc Comb Lpt cold_nozzle (Airframe is always included)
 - xmic: distance of microphone from the landing point, along the runway path 
 - ymic: microphone height from ground 
 - zmic: lateral distance from runway. 
@@ -98,8 +98,6 @@ The following files are required as input to CHOICE
 - fan_inlet_suppression: noise suppression constant for fan inlet
 - fan_dis_suppression: noise suppression constant for fan inlet
 - lpt_suppression: noise suppression constant for fan inlet
-
-#### dimensionsWeight.txt --> The modules of the engine architecture are provided, e.g. Fan, Lpc, Comb, etc. The rest of the parameters are not used.
 
 #### weightAircraft.txt --> Engine sizing data. Metric system is used
 - GBX_ratio: gear box ratio. If the engine is direct driven, set this parameter to 1.0,
