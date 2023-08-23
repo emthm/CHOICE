@@ -1,13 +1,14 @@
 point:Approach
-trajectory_performance:true
+trajectory_performance: true
 use_trajectory_preparser: false
-generate_noise_sources:true
+generate_noise_sources: false
 use_ground_reflection: true
 use_spherical_spreading: true
 use_atmospheric_attenuation: true
 use_suppression_factor: true
 no_engines: 2
 type_nozzles: separate
+modules: Fan Lpc Comb Lpt cold_nozzle
 !
 xmic:-2000.0
 ymic:1.2
