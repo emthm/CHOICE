@@ -209,13 +209,13 @@ class Airframe(NoiseSource):
             if flaps:
                 for iflap in range(self.NoFlaps):
                     phi = 0
-                    flaps = self.get_te_flaps(Va, self.Sf[iflap], self.bf[iflap], defl_flap, self.flap_type, phi)
-                    ps_trailing_edge = ps_trailing_edge + pow(flaps, 2)
+                    flap = self.get_te_flaps(Va, self.Sf[iflap], self.bf[iflap], defl_flap, self.flap_type, phi)
+                    ps_trailing_edge = ps_trailing_edge + pow(flap, 2)
 
             if slats:
                 horizontal_factor = math.cos(np.radians(phi_sid))
-                slats = self.get_le_slats(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND, self.slat_type)
-                ps_trailing_edge = ps_trailing_edge + pow(slats, 2)
+                slat = self.get_le_slats(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND, self.slat_type)
+                ps_trailing_edge = ps_trailing_edge + pow(slat, 2)
 
             SPLte = choice_aux.prms2SPL(
                 np.sqrt(ps_trailing_edge)) - 3  # Method predicts the level 3 dB above free field
