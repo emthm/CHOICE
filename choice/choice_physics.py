@@ -1738,6 +1738,7 @@ class PropagationEffects:
         self.use_ground_refl = use_ground_refl
         self.spherical_spr = spherical_spr
         self.atm_atten = atm_atten
+        self.Mach = Mai
         if fband is not None:
             self.fobs = self.getDopplerShift(fband, xsii, Mai)
             self.nfreq = len(self.fobs)
@@ -1762,6 +1763,10 @@ class PropagationEffects:
 
         atm_absorption = np.array(
             [self.get_atm_abs(ta_i, choice_data.RH, self.fobs[:, i]) for i, ta_i in enumerate(tai)])
+
+        # Convective amplification - source motion effect
+        DF = np.array([1 / (1 - np.multiply(self.Mach, np.cos(np.radians(thet)))) for thet in theta])
+        SPLi = np.array([SPLi[i_f, :, :] - 40 * np.log10(1 / DF) for i_f in range(self.nfreq)])
 
         N_b = self.N_b
         # Only one directivity reaches the microphone. Here we choose the element in the directivity vector closest

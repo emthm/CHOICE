@@ -235,17 +235,18 @@ class NoiseChoice:
 
         self.psi_airfrm_vec = np.zeros(3)
         self.defl_flap_airfrm_vec = np.zeros(3)
+        self.defl_slat_airfrm_vec = np.zeros(3)
         self.LandingGear = np.zeros(3)
         if self.nops == 1:
             self.psi_airfrm_vec[0] = noiseFile.get('psi')
             self.defl_flap_airfrm_vec[0] = noiseFile.get('defl_flap')
+            self.defl_slat_airfrm_vec[0] = noiseFile.get('defl_slat')
             self.LandingGear[0] = noiseFile.get('LandingGear_vec')
         else:
             self.psi_airfrm_vec = np.array([float(psi) for psi in noiseFile.get('psi').split()])
             self.defl_flap_airfrm_vec = np.array([float(df) for df in noiseFile.get('defl_flap').split()])
+            self.defl_slat_airfrm_vec = np.array([float(ds) for ds in noiseFile.get('defl_slat').split()])
             self.LandingGear = np.array([int(lg) for lg in noiseFile.get('LandingGear_vec').split()])
-
-        self.defl_slat_airfrm_vec = np.array([0.0, 0.0, 22.0])
 
 
 class Trajectory:
@@ -401,7 +402,7 @@ class Trajectory:
         attempt1 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
         res = abs(attempt1 - tnext) / max(1.0, tnext)
 
-        if res < 10.0 * sys.float_info.epsilon:
+        if res < 1000 * sys.float_info.epsilon:
             dx = sol1
             solution_found = True
 
@@ -411,7 +412,7 @@ class Trajectory:
         attempt2 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
         res = abs(attempt2 - tnext) / max(1.0, tnext)
 
-        if res < 10.0 * sys.float_info.epsilon:
+        if res < 1000 * sys.float_info.epsilon:
             dx = sol2
             solution_found = True
 

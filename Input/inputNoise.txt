@@ -37,8 +37,8 @@ leading_edge_type: slat
 LandingGear_vec:1
 noLG: 3
 d_wheel: 1.2446 1.2446 0.762
-d_strut: 0.1524 0.1524 0.0889
-d_wire: 0.0254 0.0254 0.0381
+d_strut: 0.1524 0.1524 0.1524
+d_wire: 0.0254 0.0254 0.0254
 Nwheels: 2 2 2
 Nstruts: 1 1 1
 !
@@ -52,6 +52,7 @@ fuselage_fan: false
 !
 psi:0.048517
 defl_flap:0.436332
+defl_slat:0.383972
 !
 fan_inlet_suppression: 10
 fan_dis_suppression: 15

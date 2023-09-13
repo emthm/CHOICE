@@ -87,7 +87,7 @@ The following files are required as input to CHOICE
 - d_strut: typical strut diameter for each landing gear in m
 - d_wire:  typical wire or hydraulic pipe diameter for each landing gear in m
 - Nwheels: number of wheels on each landing gear
-- Nstruts: number of main strust on each landing gear
+- Nstruts: number of main struts on each landing gear
 - comb_ign_nozzles: ignitted nozzles for SAC (Single Annular Combustor)
 - dac_nozzle_pattern: nozzle firing pattern for DAC (Dual Annular Combustor). Can be 40/30/22.5/20, see relevant literature for more information.
 - fan_distortion: 0/1 to not account or account for distortion at the fan
@@ -95,6 +95,7 @@ The following files are required as input to CHOICE
 - fuselage_fan: false/true if fuselage fan exists or doesn't exist
 - psi: airctaft pitch angle in rad. Only used whe trajectory_performance is false
 - defl_flap: flap deflection angle in rad
+- defl_slat: slat deflection angle in rad
 - fan_inlet_suppression: noise suppression constant for fan inlet
 - fan_dis_suppression: noise suppression constant for fan inlet
 - lpt_suppression: noise suppression constant for fan inlet
