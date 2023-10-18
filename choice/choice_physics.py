@@ -193,7 +193,7 @@ class Airframe(NoiseSource):
             # Noise from wing
             ny = DynamicViscocity.calculate(Ta) / rho0
             phi_sid = 0  # Sideline angle (lateral directivity) is calculated from the flyover plane->In flyover, phi=0
-            horizontal_factor = math.cos(np.radians(phi_sid))
+            horizontal_factor = np.cos(np.radians(phi_sid))
             wing = self.get_wing_and_tail(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND)
             ps_trailing_edge = pow(wing, 2)
 
@@ -202,14 +202,13 @@ class Airframe(NoiseSource):
             ps_trailing_edge = pow(hor_tail, 2) + ps_trailing_edge
 
             # Noise from vertical tail (0 when lateral directivity is fixed to 90 degrees)
-            vertical_factor = math.sin(np.radians(phi_sid))
+            vertical_factor = np.sin(np.radians(phi_sid))
             ver_tail = self.get_wing_and_tail(Va, ny, self.Svt, self.bvt, vertical_factor, 0)
             ps_trailing_edge = pow(ver_tail, 2) + ps_trailing_edge
 
             if flaps:
                 for iflap in range(self.NoFlaps):
-                    phi = 0
-                    flap = self.get_te_flaps(Va, self.Sf[iflap], self.bf[iflap], defl_flap, self.flap_type, phi)
+                    flap = self.get_te_flaps(Va, self.Sf[iflap], self.bf[iflap], defl_flap, self.flap_type, phi_sid)
                     ps_trailing_edge = ps_trailing_edge + pow(flap, 2)
 
             if slats:
@@ -1082,7 +1081,7 @@ class Combustor(NoiseSource):
 
         prms_total = np.sqrt(prms[:, :, 0] ** 2 + prms[:, :, 1] ** 2 + prms[:, :, 2] ** 2)
 
-        prms_total[np.where(prms_total < choice_data.p0)] = choice_data.p0
+        prms_total[prms_total < choice_data.p0] = choice_data.p0
 
         return choice_aux.prms2SPL(prms_total)
 
@@ -1159,7 +1158,7 @@ class Combustor(NoiseSource):
         prms = choice_aux.SPL2prms(SPL)
         prms_total = np.sqrt(prms[:, :, 0] ** 2 + prms[:, :, 1] ** 2)
 
-        prms_total[np.where(prms_total < choice_data.p0)] = choice_data.p0
+        prms_total[prms_total < choice_data.p0] = choice_data.p0
 
         return choice_aux.prms2SPL(prms_total)
 
@@ -1283,7 +1282,7 @@ class FanCompressor(NoiseSource):
     :param ndarray f: 1D array containing frequencies (Hz)
     """
 
-    def __init__(self, component, MtipD, N_rotors, N_stators, rss, theta, fband, f):
+    def __init__(self, component, MtipD, N_rotors, N_stators, rss, theta, fband, f, distortion=None):
         self.comp = component
         self.MtrD = MtipD
         self.N_rotors = N_rotors
@@ -1300,6 +1299,10 @@ class FanCompressor(NoiseSource):
             -11.75, -12.00, -12.25, -12.50, -12.75, -13.00, -13.25, -13.50])
         self.dTref = 0.5550
         self.mref = 0.4536
+        if distortion:
+            self.distortion = distortion
+        else:
+            self.distortion = False
         self.F3a_data = np.array([
             -3.00, -2.25, -1.50, -0.75, 0.00, 0.00, 0.00, 0.00, 0.00, -0.60, -1.20, -2.35, -3.50, -5.15, -6.80, -8.65,
             -10.50, -12.50, -14.50, -16.75, -19.00, -21.25, -23.50, -25.75, -28.00, -30.25, -32.50, -34.75, -37.00,
@@ -1317,38 +1320,6 @@ class FanCompressor(NoiseSource):
         self.approach_2BPF = np.array([5.4, 4.3, 3.4, 4.1, 2.0, 2.9, 1.6, 1.3, 1.5, 1.1, 1.4, 1.5, 1.0, 1.8, 1.6, 1.6])
         self.takeoff_BPF = np.array([4.8, 5.5, 5.5, 5.3, 5.3, 5.1, 4.4, 3.9, 2.6, 2.3, 1.8, 2.1, 1.7, 1.7, 2.6, 3.5])
         self.takeoff_2BPF = np.array([5.8, 3.8, 5.3, 6.4, 3.5, 3.0, 2.1, 2.1, 1.1, 1.4, 0.9, 0.7, 0.7, 0.4, 0.6, 0.8])
-
-        # Double layer Liner Data is from NASA CR-2002-211672 Report
-        # Advanced Nacelle Acoustic lining Concepts Development
-        # Linearly extrapolated from 0 - 90 deg and form 160-180
-        # The data was obtained only for broadband noise (data for tonal noise are needed)
-        self.liner_data_app = np.array([
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.31149048974951, -0.75394155342520, -1.19639261710089, -1.63884368077659,
-            -2.08129474445228, -2.52374580812797, -2.96619687180366, -3.40864793547935, -3.85109899915504,
-            -4.29355006283073, -4.73600112650642, -5.17845219018211, -5.62090325385780, -6.06335431753349,
-            -6.50580538120918, -6.55856451491287, -6.60963444765545, -6.01819645866627, -5.40364544803953,
-            -4.88024833985105, -4.36166961630789, -3.91871616323577, -3.47659239938625, -3.08872017651543,
-            -2.70434534445140, -2.53311635918184, -2.36917034195449, -2.20522432472714, -2.04127830749979,
-            -1.87733229027244, -1.71338627304509])
-        self.liner_data_cut = np.array([
-            -1.13306098626510, -1.45911467702874, -1.78516836779238, -2.11122205855601, -2.43727574931965,
-            -2.76332944008329, -3.08938313084693, -3.41543682161056, -3.74149051237420, -4.06754420313784,
-            -4.39359789390148, -4.71965158466511, -5.04570527542875, -5.37175896619239, -5.69781265695602,
-            -6.02386634771966, -6.34992003848330, -6.67597372924694, -7.00202742001057, -7.32808111077421,
-            -7.65413480153785, -7.30873649087542, -6.95315039191579, -7.17795829812488, -7.41074393672352,
-            -7.01984807951155, -6.61979710153490, -5.66478064174521, -4.68471569886730, -3.93953462123672,
-            -3.20789049050141, -2.75748299134357, -2.31773313596766, -1.87798328059175, -1.43823342521584,
-            -0.99848356983992, -0.55873371446401])
-        self.liner_data_sid = np.array([
-            -5.54049164663243, -5.69865908856118, -5.85682653048993, -6.01499397241868, -6.17316141434743,
-            -6.33132885627618, -6.48949629820493, -6.64766374013368, -6.80583118206242, -6.96399862399117,
-            -7.12216606591992, -7.28033350784867, -7.43850094977742, -7.59666839170617, -7.75483583363492,
-            -7.91300327556367, -8.07117071749241, -8.22933815942116, -8.38750560134991, -8.54567304327866,
-            -8.68994505933804, -8.32871946157918, -7.96749386382032, -7.48047644940415, -6.99409867992745,
-            -6.86526861357872, -6.73643854723000, -6.60760848088128, -6.47877841453256, -6.34994834818384,
-            -6.22111828183511, -6.09228821548639, -5.96345814913767, -5.83462808278895, -5.70579801644022,
-            -5.57696795009150, -5.44813788374278])
-        self.liners_tone = True
         self.f3a_data_broad = np.array([
             -2.0, -1.5, -1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, -2.0, -3.25, -4.5, -6.0, -7.5, -9.25, -11.0, -13.0,
             -15.0, -17.0, -19.0, -22.0, -25.0, -28.0, -31.0, -34.0, -37.0, -40.0, -43.0, -46.0, -49.0, -52.0, -55.0,
@@ -1357,7 +1328,6 @@ class FanCompressor(NoiseSource):
             -41.600, -39.450, -37.300, -35.150, -33.000, -30.850, -28.700, -26.550, -24.400, -22.250, -20.100, -17.950,
             -15.8000, -13.650, -11.500, -9.750, -8.000, -6.500, -5.000, -3.850, -2.700, -1.950, -1.200, -0.750, -0.300,
             -0.1500, 0.000, -1.000, -2.000, -4.000, -6.000, -8.000, -10.000, -12.500, -15.000, -17.500, -20.000])
-        self.liners = True
 
     def calc(self, operatingPoint, Mtip, Mu, dT, xnl, g1):
         """
@@ -1474,18 +1444,22 @@ class FanCompressor(NoiseSource):
             BPF2 = interpolate.interp1d(self.angles, self.approach_2BPF, fill_value="extrapolate")(theta)
 
         # set inlet data
-        if self.comp == 'Fuselage_fan':
-            F5 = self.get_Fig9(choice_data.no_ff_stages, k)
-        else:
-            F5 = self.get_Fig9(choice_data.no_fan_stages, k)
-
         Lc_inlet = 20.0 * np.log10(dT / self.dTref) + 10.0 * np.log10(g1 / self.mref) + F1a + F2a + self.F3a_data  # eq6
 
         F4a = np.zeros(nk)
         if self.comp.strip() == 'Fan':
             F4a = self.get_Fig8(choice_data.fan_IGV, Mtr, k, delta_cutoff)
-        elif self.comp == 'Fuselage_fan':
+        elif self.comp == 'fuselage_fan':
             F4a = self.get_Fig8(choice_data.ff_IGV, Mtr, k, delta_cutoff)
+
+        if self.distortion:
+            if self.comp == 'fuselage_fan':
+                F5 = self.get_Fig9(choice_data.no_ff_stages, k)
+            else:
+                F5 = self.get_Fig9(choice_data.no_fan_stages, k)
+            F4F5 = 10.0 * np.log10(10 ** (0.10 * F4a) + 10 ** (0.1 * F5))
+        else:
+            F4F5 = F4a
 
         SPL_inlet = np.zeros((nfreq, nthet))
         prms_inlet = np.zeros((nfreq, nthet))
@@ -1502,28 +1476,19 @@ class FanCompressor(NoiseSource):
 
                 if SPL_inlet[pos, i] == 0.0:
                     if j == 0:  # first tone
-                        SPL_inlet[pos, i] = Lc_inlet[i] + 10.0 * np.log10(10.0 ** (0.10 * F4a[0]) +
-                                                                          10.0 ** (-0.10 * BPF1[i]))
+                        SPL_inlet[pos, i] = Lc_inlet[i] + F4F5[j] - BPF1[i]
                     elif j == 1:  # second tone
-                        SPL_inlet[pos, i] = Lc_inlet[i] + 10.0 * np.log10(10.0 ** (0.10 * F4a[1]) +
-                                                                          10.0 ** (-0.10 * BPF2[i]))
+                        SPL_inlet[pos, i] = Lc_inlet[i] + F4F5[j] - BPF2[i]
                     else:
-                        SPL_inlet[pos, i] = Lc_inlet[i] + 10.0 * np.log10(10.0 ** (0.10 * F4a[j]) +
-                                                                          10.0 ** (0.10 * F5[j]))
+                        SPL_inlet[pos, i] = Lc_inlet[i] + F4F5[j]
                 else:  # coinciding tones
                     prms_temp = choice_aux.SPL2prms(SPL_inlet[pos, i])
                     if j == 0:  # first tone
-                        prms_inlet[pos, i] = choice_aux.SPL2prms((Lc_inlet[i] +
-                                                                  10.0 * np.log10(10.0 ** (0.10 * F4a[0]) +
-                                                                                  10.0 ** (-0.10 ** BPF1[i]))))
+                        prms_inlet[pos, i] = choice_aux.SPL2prms((Lc_inlet[i] + F4F5[j] - BPF1[i]))
                     elif j == 1:  # second tone
-                        prms_inlet[pos, i] = choice_aux.SPL2prms((Lc_inlet[i] +
-                                                                  10.0 * np.log10(10.0 ** (0.10 * F4a[1]) +
-                                                                                  10.0 ** (-0.10 ** BPF2[i]))))
+                        prms_inlet[pos, i] = choice_aux.SPL2prms((Lc_inlet[i] + F4F5[j] - BPF2[i]))
                     else:
-                        prms_inlet[pos, i] = choice_aux.SPL2prms((Lc_inlet[i] +
-                                                                  10.0 * np.log10(10.0 ** (0.10 * F4a[j]) +
-                                                                                  10.0 ** (0.10 * F5[j]))))
+                        prms_inlet[pos, i] = choice_aux.SPL2prms((Lc_inlet[i] + F4F5[j]))
 
                     prms_tot = math.sqrt(prms_temp ** 2 + prms_inlet[pos, i] ** 2)
                     SPL_inlet[pos, i] = 20.0 * np.log10(prms_tot / choice_data.p0)
@@ -1538,18 +1503,8 @@ class FanCompressor(NoiseSource):
             elif self.comp == 'Fuselage_fan':
                 F4b = self.get_Fig8(choice_data.ff_IGV, Mtr, k, delta_cutoff)
 
-            liner_data = np.zeros(nthet)
-            if self.liners_tone:
-                if self.comp == 'Fan' or self.comp == 'Fuselage_fan':
-                    if operatingPoint.strip() == 'Sideline':
-                        liner_data = self.liner_data_sid
-                    elif operatingPoint.strip() == 'Cutback':
-                        liner_data = self.liner_data_cut
-                    elif operatingPoint.strip() == 'Approach':
-                        liner_data = self.liner_data_app
-
             Lc_discharge = 20.0 * np.log10(dT / self.dTref) + 10.0 * np.log10(g1 / self.mref) + F1b + F2b + \
-                           self.F3b_data + self.get_C(nthet) + liner_data  # eq 6
+                           self.F3b_data + self.get_C(nthet)  # eq 6
 
             SPL_discharge = np.zeros((nfreq, nthet))
             prms_discharge = np.zeros((nfreq, nthet))
@@ -1599,17 +1554,9 @@ class FanCompressor(NoiseSource):
         prms_inlet = choice_aux.SPL2prms(SPL_inlet)
 
         if self.comp == 'Fan' or self.comp == 'Fuselage_fan':
-            liner_data = np.zeros(nthet)
-            if self.liners:
-                if operatingPoint.strip() == 'Sideline':
-                    liner_data = self.liner_data_sid
-                elif operatingPoint.strip() == 'Cutback':
-                    liner_data = self.liner_data_cut
-                elif operatingPoint.strip() == 'Approach':
-                    liner_data = self.liner_data_app
 
             Lc_discharge = np.full((nfreq, nthet), 20.0 * np.log10(dT / self.dTref) + 10.0 * np.log10(g1 / self.mref) +
-                                   F1b + F2b + self.f3b_data_broad + liner_data)  # eq 4
+                                   F1b + F2b + self.f3b_data_broad)  # eq 4
             SPL_discharge = Lc_discharge + self.get_Fig3a(fband.reshape((nfreq, 1)) / fb)  # eq 5
 
             prms_discharge = choice_aux.SPL2prms(SPL_discharge)
@@ -1731,9 +1678,10 @@ class PropagationEffects:
     :param ndarray xsii: 1D array containing observation angles (rad)
     :param ndarray Mai: 1D array containing Mach number
     :param ndarray alphai: 1D array containing Angle of attack (deg)
+    :param float dTisa: Deviation from ISA temperature (K)
     """
 
-    def __init__(self, ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai, alphai):
+    def __init__(self, ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai, alphai, dTisa):
         self.ymic = ymic
         self.use_ground_refl = use_ground_refl
         self.spherical_spr = spherical_spr
@@ -1745,6 +1693,7 @@ class PropagationEffects:
             self.xsii_alpha = self.get_theta(xsii, alphai)  # add aircraft alpha to xsii
         self.N_b = 5
         self.max_n_freqs = 150
+        self.dTisa = dTisa
 
     def flightEffects(self, nti, theta, x, y, r1, tai, SPLi):
         """
@@ -1777,14 +1726,22 @@ class PropagationEffects:
         SPLp = np.array([SPLi[:, closest_value_ptr[j], j] for j in range(nti)]).T
         prmsp = choice_aux.SPL2prms(SPLp)
 
-        # atmospheric attenuation  spherical spreading
+        pa = np.array([AtmosphericEffects.get_p_ambient(h) for h in y + self.ymic])
+        rho_ac = pa / (choice_data.Risa * tai)
+        c_ac = choice_data.cisa * np.sqrt(tai / choice_data.Tisa)
+        pa_mic = AtmosphericEffects.get_p_ambient(self.ymic)
+        t_mic = AtmosphericEffects.get_t_ambient(self.ymic, self.dTisa)
+        rho_mic = pa_mic / (choice_data.Risa * t_mic)
+        c_mic = choice_data.cisa * np.sqrt(t_mic / choice_data.Tisa)
+        impedance_factor = np.sqrt((rho_mic * c_mic) / (rho_ac * c_ac))
+        # atmospheric attenuation / spherical spreading/ characteristic impedance
         if self.spherical_spr and self.atm_atten:
-            SPLp = choice_aux.prms2SPL(prmsp / r1) - (r1 / 100.0) * atm_absorption.T
+            SPLp = choice_aux.prms2SPL(prmsp / r1 * impedance_factor) - (r1 / 100.0) * atm_absorption.T
         elif self.spherical_spr:
-            SPLp = choice_aux.prms2SPL(prmsp / r1)
+            SPLp = choice_aux.prms2SPL(prmsp / r1 * impedance_factor)
         elif self.atm_atten:
             SPLp = SPLp - (r1 / 100.0) * atm_absorption.T
-        
+            
         prmsp = choice_aux.SPL2prms(SPLp)
 
         # Ground Reflection
@@ -2026,7 +1983,7 @@ class PerceivedNoiseMetrics:
         SPLnew = np.zeros((nfr, nti))
 
         SPLnew[0, :] = SPL[0, :]
-        SPLnew[np.where(encircled == 0.0)] = SPL[np.where(encircled == 0.0)]
+        SPLnew[encircled == 0.0] = SPL[encircled == 0.0]
         for i in range(nfr):
             for k in range(nti):
                 if i < 23 and encircled[i, k] != 0.0:
@@ -2049,7 +2006,7 @@ class PerceivedNoiseMetrics:
         # difference
         F = SPL - SPLfinal
 
-        F[np.where(F < 3.0)] = 0.0
+        F[F < 3.0] = 0.0
         F[0:2, :] = 0.0
 
         for i in range(2, nfr):
