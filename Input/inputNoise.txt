@@ -8,7 +8,7 @@ use_atmospheric_attenuation: true
 use_suppression_factor: true
 no_engines: 2
 type_nozzles: separate
-modules: Fan Lpc Comb Lpt cold_nozzle
+modules: Fan Lpc Comb Lpt Cold_nozzle
 !
 xmic:-2000.0
 ymic:1.2
