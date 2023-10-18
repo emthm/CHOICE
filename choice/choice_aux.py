@@ -59,7 +59,7 @@ def preProcessFanFile(fname, d1, a2):
         l.append(varStr + '  ')
         for i in range(2, 5):
             l.append(s[i][0:maxNchars - 1] + ' ')
-        fanLine = ''.join(l)
+        fanLine = ''.join(l) + '\n'
         return fanLine
 
     # maxNCols = 8  # valid for fan files with stars
@@ -81,7 +81,7 @@ def preProcessFanFile(fname, d1, a2):
     # dump newFile onto file
     with open(fname, 'w') as fp:
         for nf in newFile:
-            fp.write(nf + '\n')
+            fp.write(nf)
 
 
 def preProcessLptFile(fname, de, ae):

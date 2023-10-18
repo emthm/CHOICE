@@ -55,7 +55,7 @@ class ReadFiles:
         return file_data
 
     def set_modules(self):
-        """ Returns a list of the modules in the dimensionsWeight.txt file"""
+        """ Returns a list of the modules in the inputNoise.txt file"""
         available_modules = ['fan', 'lpc', 'ipc', 'comb', 'lpt', 'cold_nozzle', 'fuselage_fan', 'ff_nozzle']
         input_modules = self.noiseFile.get('modules').split()
         for module in input_modules:
@@ -267,19 +267,29 @@ def preparse_trajectories(traj_perf, opPnt, modules, input_folder):
 
 def save_noise_points(fname, opPoint, fuselage_fan, EPNL):
     """ Saves the EPNL for each component and for the total in output file. """
+
+    kernel = 0
     with open(fname, 'a') as fp:
         fp.write('\n' + '***Operating point is ' + opPoint + '\n')
-        fp.write('Fan inlet EPNL is'.rjust(23) + str(format(round(EPNL.Fan_inlet, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Fan discharge EPNL is'.rjust(23) + str(format(round(EPNL.Fan_discharge, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Inlet LPC EPNL is'.rjust(23) + str(format(round(EPNL.Lpc_inlet, 4), '.4f')).rjust(17) + '\n')
-        fp.write('LPT EPNL is'.rjust(23) + str(format(round(EPNL.Lpt, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Comb EPNL is'.rjust(23) + str(format(round(EPNL.Comb, 4), '.4f')).rjust(17) + '\n')
-        fp.write('Caj EPNL is'.rjust(23) + str(format(round(EPNL.Caj, 4), '.4f')).rjust(17) + '\n')
+        if 'Fan_inlet' in EPNL.__dict__:
+            fp.write('Fan inlet EPNL is'.rjust(23) + str(format(round(EPNL.Fan_inlet, 4), '.4f')).rjust(17) + '\n')
+            kernel += 10.0 ** (EPNL.Fan_inlet / 10.0)
+        if 'Fan_discharge' in EPNL.__dict__:
+            fp.write('Fan discharge EPNL is'.rjust(23) + str(format(round(EPNL.Fan_discharge, 4), '.4f')).rjust(17) + '\n')
+            kernel += 10.0 ** (EPNL.Fan_discharge / 10.0)
+        if 'Lpc_inlet' in EPNL.__dict__:
+            fp.write('Inlet LPC EPNL is'.rjust(23) + str(format(round(EPNL.Lpc_inlet, 4), '.4f')).rjust(17) + '\n')
+            kernel += 10.0 ** (EPNL.Lpc_inlet / 10.0)
+        if 'Lpt' in EPNL.__dict__:
+            fp.write('LPT EPNL is'.rjust(23) + str(format(round(EPNL.Lpt, 4), '.4f')).rjust(17) + '\n')
+            kernel += 10.0 ** (EPNL.Lpt / 10.0)
+        if 'Comb' in EPNL.__dict__:
+            fp.write('Comb EPNL is'.rjust(23) + str(format(round(EPNL.Comb, 4), '.4f')).rjust(17) + '\n')
+            kernel += 10.0 ** (EPNL.Comb / 10.0)
+        if 'Caj' in EPNL.__dict__:
+            fp.write('Caj EPNL is'.rjust(23) + str(format(round(EPNL.Caj, 4), '.4f')).rjust(17) + '\n')
+            kernel += 10.0 ** (EPNL.Caj / 10.0)
 
-        # Engine total noise
-        kernel = (10.0 ** (EPNL.Fan_inlet / 10.0) + 10.0 ** (EPNL.Fan_discharge / 10.0) +
-                  10.0 ** (EPNL.Lpc_inlet / 10) + 10.0 ** (EPNL.Lpt / 10.0) + 10.0 **
-                  (EPNL.Comb / 10.0) + 10.0 ** (EPNL.Caj / 10.0))
         fp.write(
             'EPNL_tot_engine is'.rjust(23) + str(format(round(10.0 * math.log10(kernel), 4), '.4f')).rjust(17) + '\n')
 
@@ -287,14 +297,19 @@ def save_noise_points(fname, opPoint, fuselage_fan, EPNL):
             'Airframe EPNL is'.rjust(23) + str(format(round(EPNL.Airfrm, 4), '.4f')).rjust(17) + '\n')
 
         if fuselage_fan:
-            fp.write('EPNL_inlet_ff is' + str(format(round(EPNL.Ff_inlet, 4), '.4f')).rjust(17) + '\n')
-            fp.write('EPNL_discharge_ff is' + str(format(round(EPNL.Ff_discharge, 4), '.4f')).rjust(17) + '\n')
-            fp.write('EPNL_caj_ff is'.rjust(23) + str(format(round(EPNL.Caj_ffn, 4), '.4f')).rjust(17) + '\n')
+            kernel_ff = 0
+            if 'Ff_inlet' in EPNL.__dict__:
+                fp.write('EPNL_inlet_ff is' + str(format(round(EPNL.Ff_inlet, 4), '.4f')).rjust(17) + '\n')
+                kernel_ff += 10.0 ** (EPNL.Ff_inlet / 10.0)
+            if 'Ff_discharge' in EPNL.__dict__:
+                fp.write('EPNL_discharge_ff is' + str(format(round(EPNL.Ff_discharge, 4), '.4f')).rjust(17) + '\n')
+                kernel_ff += 10.0 ** (EPNL.Ff_discharge / 10.0)
+            if 'Caj_ffn' in EPNL.__dict__:
+                fp.write('EPNL_caj_ff is'.rjust(23) + str(format(round(EPNL.Caj_ffn, 4), '.4f')).rjust(17) + '\n')
+                kernel_ff += 10.0 ** (EPNL.Caj_ffn / 10.0)
             # EPNL_tot_ff is the total EPNL of the fuselage fan assembly which includes the fuselage fan and the nozzle
             fp.write('EPNL_tot_ff is'.rjust(23) +
-                     str(format(round(10. * math.log10(10.0 ** (EPNL.Ff_inlet / 10.0) +
-                                                       10.0 ** (EPNL.Ff_discharge / 10.0) +
-                                                       10.0 ** (EPNL.Caj_ffn / 10.0)), 4), '.4f')).rjust(17) + '\n')
+                     str(format(round(10. * math.log10(kernel_ff), 4), '.4f')).rjust(17) + '\n')
 
         fp.write('EPNL_tot with D is'.rjust(23) + str(format(round(EPNL.tot, 4), '.4f')).rjust(17))
 
