@@ -12,6 +12,7 @@ from scipy.optimize import brentq
 import csv
 
 release_version = True
+error_file_open = False
 
 
 def loadStorageMat(fname, ndata, nvars):
@@ -183,7 +184,7 @@ def get_M(gam, xfunc0):
     if xfunc_err(0, rpar) * xfunc_err(1, rpar) < 0:
         [M, r] = brentq(xfunc_err, 0.0, 1.0, args=rpar, full_output=True)
         if not r.converged:
-            print('failed to bracket M in get_M in choice_aux')
+            report_error('failed to bracket M', 'get_M', 'physics')
     else:
         M = 0.999
 
@@ -196,6 +197,35 @@ def xfunc_err(M, rpar):
 
 def xfunc(M, gam):
     return math.sqrt(gam) * M / ((1 + (gam - 1) * M * M / 2.0) ** ((gam + 1) / (2.0 * (gam - 1))))
+
+
+def report_error(mess, rout, mod):
+    """
+    Reports error in file.
+
+    :param str mess: Error message
+    :param str rout: Module where error occurred
+    :param str mod: Routine where error occurred
+    """
+    global error_file_open, error_file
+    if release_version: return
+
+    if error_file_open:
+        with open(error_file, 'a') as f:
+            f.write(mess)
+            f.write('occurred in module ' + mod)
+            f.write('in routine ' + rout)
+            f.close()
+    else:
+        error_file_open = True
+        error_file = 'weicoErrorReport.txt'
+        with open(error_file, 'w') as f:
+            f.write(mess)
+            f.write(' occurred in module ' + mod)
+            f.write(' in routine ' + rout)
+            f.close()
+
+    return
 
 
 def gen_noise_source_matr_subr(output_folder, operatingPoint, nfreq, nthet, n_traj_pts, prms, ext):

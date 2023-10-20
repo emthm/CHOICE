@@ -1331,7 +1331,7 @@ class FanCompressor(NoiseSource):
 
     def calc(self, operatingPoint, Mtip, Mu, dT, xnl, g1):
         """
-        Fan and compressor source noise model based on the methods developed by Heidmann (M. F. Heidmann. "Interim
+        Fan and compressor source noise model based on the methods developed by Heidman (M. F. Heidmann. "Interim
         Prediction Method for Fan and Compressor Source Noise". NASA-TM-X71763) and updated by Kontos et al.
         (K. B. Kontos, B. A. Janardan and P. R. Gliebe. "Improved NASA-ANOPP Noise Prediction Computer Code for Advanced
         Subsonic Propulsion Systems". NASA-CR-195480).
@@ -1366,6 +1366,8 @@ class FanCompressor(NoiseSource):
         prms_inlet = np.sqrt(prms_broadband_inlet ** 2 + prms_tone_inlet ** 2 + prms_inlet_combination ** 2)
         # create outlet combination (tone + broadband)
         prms_discharge = np.sqrt(prms_tone_discharge ** 2 + prms_broadband_discharge ** 2)
+
+        if np.isnan(prms_discharge).any() or np.isnan(prms_inlet).any(): print('something wrong')
 
         return [prms_tone_inlet, prms_tone_discharge, prms_broadband_inlet, prms_broadband_discharge,
                 prms_inlet_combination, prms_inlet, prms_discharge]
@@ -1587,7 +1589,7 @@ class FanCompressor(NoiseSource):
         elif self.MtrD > 1.0 and M_tr > 0.9:
             return 58.5 + 20.0 * math.log10(self.MtrD) - 50.0 * math.log10(M_tr / 0.9)  # ANOPP update (1996 - Kontos)
         else:
-            print('unexpected combination of tip Mach numbers in get_Fig4a in choice_physics')
+            choice_aux.report_error('unexpected combination of tip Mach numbers', 'get_Fig4a', 'choice_physics')
             return 0.0
 
     def get_Fig4b(self, M_tr):
@@ -1600,7 +1602,7 @@ class FanCompressor(NoiseSource):
         elif self.MtrD > 1.0 and M_tr > 1.0:
             return 63.0 + 20.0 * math.log10(self.MtrD) - 30.0 * math.log10(M_tr)  # ANOPP update (1996 - Kontos)
         else:
-            print('unexpected combination of tip Mach numbers in get_Fig4b in choice_physics')
+            choice_aux.report_error('unexpected combination of tip Mach numbers', 'get_Fig4b', 'choice_physics')
             return 0.0
 
     def get_Fig8(self, igv, Mtr, k, delta):
@@ -1636,7 +1638,7 @@ class FanCompressor(NoiseSource):
             nk = len(k)
             return np.zeros(nk)
         else:
-            print('Unexpected number of stages in get_Fig9 in choice_physics')
+            choice_aux.report_error('Unexpected number of stages', 'get_Fig9', 'choice_physics')
             return 0.0
 
     def get_Fig10a(self, M_tr):
