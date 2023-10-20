@@ -114,10 +114,6 @@ class MultptPerfData:
                     spos = i + 3
                     tag_found = True
                     self.perf_file_to = self.load_dict(spos, pf)
-                if not tag_found:
-                    choice_aux.report_error(
-                        'Point name specifier likely to have been misspelt. You wrote ' + pf[i].strip() +
-                        '. Try Take-off, Top-of-climb or Cruise', 'split_performance_file', 'read_and_write_files')
             else:
                 continue
 

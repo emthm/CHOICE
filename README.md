@@ -6,13 +6,13 @@ The code is able to predict the noise at the source (aircraft) and at the certif
 
 ## How to install the library
  
-1. Download or clone the respiratory
+1. Download or clone the repository
 2. (Optional) Create and activate a virtual environment. The following commands can be used in Anaconda prompt:
    ```
    conda create -n env_choice python==3.8
    conda activate env_choice
    ```
-3. Navigate to the downloaded respiratory path (CHOICE library folder) and run the following commands in order to install all package requirements and dependencies:
+3. Navigate to the downloaded repository path (CHOICE library folder) and run the following commands in order to install all package requirements and dependencies:
    ```
    pip install -r requirements.txt
    python setup.py install

@@ -1,151 +1,73 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>choice.choice_physics &mdash; CHOICE  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home"> CHOICE
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            CHOICE
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../source/api/choice.html">CHOICE</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">CHOICE</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-        
-      <li>choice.choice_physics</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">choice.choice_physics</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for choice.choice_physics</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: cp1252 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -167,7 +89,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_t_ambient</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="n">dTisa</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the ambient temperature at a given altitude.</span>
 
 <span class="sd">        :param float alt: Altitude (m)</span>
@@ -184,7 +106,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_p_ambient</span><span class="p">(</span><span class="n">alt</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the ambient pressure at a given altitude.</span>
 
 <span class="sd">        :param float altitude: Altitude (m)</span>
@@ -200,7 +122,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">getVel</span><span class="p">(</span><span class="n">gam</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes speed from temperature and Mach number.</span>
 
 <span class="sd">        :param float gam: Specific hear ratio</span>
@@ -217,12 +139,14 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">suppression</span><span class="p">(</span><span class="n">prms</span><span class="p">,</span> <span class="n">s_db</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Calculates the suppressed acoustic pressure. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Calculates the suppressed acoustic pressure. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">prms</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">s_db</span> <span class="o">/</span> <span class="mi">10</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="Airframe"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe">[docs]</a><span class="k">class</span> <span class="nc">Airframe</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Airframe">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe">[docs]</a>
+<span class="k">class</span> <span class="nc">Airframe</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiate airframe source noise prediction.</span>
 
 <span class="sd">    :param list opPoint: Approach, Cutback, Sideline</span>
@@ -294,8 +218,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> \
             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">9.992824</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.587345</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.474888e1</span><span class="p">,</span> <span class="mf">3.307829e1</span><span class="p">,</span> <span class="mf">1.141251e2</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.080667e2</span><span class="p">,</span> <span class="mf">2.104914e2</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.519879e1</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Airframe.calc"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.calc">[docs]</a>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ta</span><span class="p">,</span> <span class="n">Ha</span><span class="p">,</span> <span class="n">Ma</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="n">defl_slat</span><span class="p">,</span> <span class="n">LG</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Airframe.calc">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.calc">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ta</span><span class="p">,</span> <span class="n">Ha</span><span class="p">,</span> <span class="n">Ma</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="n">defl_slat</span><span class="p">,</span> <span class="n">LG</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Airframe source noise model based on a combination of methods found in public literature. Trailing-edge and</span>
 <span class="sd">        landing gear noise are modelled separately. The references for each method are found in the description of the</span>
 <span class="sd">        corresponding functions.</span>
@@ -342,7 +268,7 @@
             <span class="c1"># Noise from wing</span>
             <span class="n">ny</span> <span class="o">=</span> <span class="n">DynamicViscocity</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">Ta</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho0</span>
             <span class="n">phi_sid</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Sideline angle (lateral directivity) is calculated from the flyover plane-&gt;In flyover, phi=0</span>
-            <span class="n">horizontal_factor</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_sid</span><span class="p">))</span>
+            <span class="n">horizontal_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_sid</span><span class="p">))</span>
             <span class="n">wing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wing_and_tail</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bw</span><span class="p">,</span> <span class="n">horizontal_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ND</span><span class="p">)</span>
             <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -351,20 +277,19 @@
             <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">hor_tail</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">ps_trailing_edge</span>
 
             <span class="c1"># Noise from vertical tail (0 when lateral directivity is fixed to 90 degrees)</span>
-            <span class="n">vertical_factor</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_sid</span><span class="p">))</span>
+            <span class="n">vertical_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_sid</span><span class="p">))</span>
             <span class="n">ver_tail</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wing_and_tail</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Svt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bvt</span><span class="p">,</span> <span class="n">vertical_factor</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">ver_tail</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">ps_trailing_edge</span>
 
             <span class="k">if</span> <span class="n">flaps</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">iflap</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NoFlaps</span><span class="p">):</span>
-                    <span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">flaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_te_flaps</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sf</span><span class="p">[</span><span class="n">iflap</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bf</span><span class="p">[</span><span class="n">iflap</span><span class="p">],</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flap_type</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
-                    <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="n">ps_trailing_edge</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">flaps</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">flap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_te_flaps</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sf</span><span class="p">[</span><span class="n">iflap</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bf</span><span class="p">[</span><span class="n">iflap</span><span class="p">],</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flap_type</span><span class="p">,</span> <span class="n">phi_sid</span><span class="p">)</span>
+                    <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="n">ps_trailing_edge</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">flap</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">slats</span><span class="p">:</span>
                 <span class="n">horizontal_factor</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_sid</span><span class="p">))</span>
-                <span class="n">slats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_le_slats</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bw</span><span class="p">,</span> <span class="n">horizontal_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ND</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slat_type</span><span class="p">)</span>
-                <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="n">ps_trailing_edge</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">slats</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">slat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_le_slats</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bw</span><span class="p">,</span> <span class="n">horizontal_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ND</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slat_type</span><span class="p">)</span>
+                <span class="n">ps_trailing_edge</span> <span class="o">=</span> <span class="n">ps_trailing_edge</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">slat</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
             <span class="n">SPLte</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ps_trailing_edge</span><span class="p">))</span> <span class="o">-</span> <span class="mi">3</span>  <span class="c1"># Method predicts the level 3 dB above free field</span>
@@ -389,8 +314,11 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">prms_trailing_edge</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">prms_lg</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Airframe.get_wing_and_tail"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.get_wing_and_tail">[docs]</a>    <span class="k">def</span> <span class="nf">get_wing_and_tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dir_factor</span><span class="p">,</span> <span class="n">ND</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Airframe.get_wing_and_tail">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.get_wing_and_tail">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_wing_and_tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dir_factor</span><span class="p">,</span> <span class="n">ND</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Trailing edge source noise model for wing and tail surfaces developed by Fink (M.R. Fink, &quot;Noise Component Method</span>
 <span class="sd">        for Airframe Noise&quot;).</span>
 
@@ -422,8 +350,11 @@
 
         <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Airframe.get_te_flaps"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.get_te_flaps">[docs]</a>    <span class="k">def</span> <span class="nf">get_te_flaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">Sf</span><span class="p">,</span> <span class="n">bf</span><span class="p">,</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="n">flap_type</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Airframe.get_te_flaps">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.get_te_flaps">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_te_flaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">Sf</span><span class="p">,</span> <span class="n">bf</span><span class="p">,</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="n">flap_type</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Trailing edge flap source noise model developed by Fink (M.R. Fink, &quot;Airframe Noise Prediction Method&quot;,</span>
 <span class="sd">        FAA-RD-77-29 and M.R. Fink, &quot;Noise Component Method for Airframe Noise&quot;).</span>
 
@@ -468,8 +399,11 @@
 
         <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Airframe.get_le_slats"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.get_le_slats">[docs]</a>    <span class="k">def</span> <span class="nf">get_le_slats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dir_factor</span><span class="p">,</span> <span class="n">ND</span><span class="p">,</span> <span class="n">slat_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Airframe.get_le_slats">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.get_le_slats">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_le_slats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dir_factor</span><span class="p">,</span> <span class="n">ND</span><span class="p">,</span> <span class="n">slat_type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Leading edge high-lift system source noise model developed by Fink (M.R. Fink, &quot;Airframe Noise Prediction</span>
 <span class="sd">        Method&quot;, FAA-RD-77-29 and M.R. Fink, &quot;Noise Component Method for Airframe Noise&quot;).</span>
 
@@ -508,8 +442,11 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">prmsi</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">prmsii</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Airframe.getLandingGear"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.getLandingGear">[docs]</a>    <span class="k">def</span> <span class="nf">getLandingGear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nt</span><span class="p">,</span> <span class="n">Ns</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">dtire</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Airframe.getLandingGear">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.getLandingGear">[docs]</a>
+    <span class="k">def</span> <span class="nf">getLandingGear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nt</span><span class="p">,</span> <span class="n">Ns</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">dtire</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Landing gear source noise model based on the method presented by Sen et al. (R. Sen, B. Hardy, K. Yamamoto,</span>
 <span class="sd">        Y. Guo., G. Miller &quot;Airframe Noise Sub-Component Definition and Model&quot;. NASA/CR-2004-213255.)</span>
 
@@ -598,8 +535,11 @@
 
         <span class="k">return</span> <span class="n">prms_tot</span></div>
 
-<div class="viewcode-block" id="Airframe.full_matrix"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.full_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">full_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mato</span><span class="p">,</span> <span class="n">nl</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Airframe.full_matrix">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.full_matrix">[docs]</a>
+    <span class="k">def</span> <span class="nf">full_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mato</span><span class="p">,</span> <span class="n">nl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the coefficients that are required for the landing gear calculation for every directivity angle and</span>
 <span class="sd">        returns a nc x nthet array where nc is the order of the equation of each noise component.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -620,11 +560,15 @@
                         <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)(</span><span class="n">th</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">th</span> <span class="o">&gt;=</span> <span class="mi">140</span><span class="p">:</span>
                 <span class="n">mat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mato</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">mat</span></div></div>
+        <span class="k">return</span> <span class="n">mat</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Jet"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Jet">[docs]</a><span class="k">class</span> <span class="nc">Jet</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Jet">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Jet">[docs]</a>
+<span class="k">class</span> <span class="nc">Jet</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiate jet source noise prediction.</span>
 
 <span class="sd">    :param float A_core_caj: Nozzle exit flow area of inner stream or circular jet (m^2)</span>
@@ -938,8 +882,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">table_vi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">table_vi_1</span><span class="p">,</span> <span class="n">table_vi_2</span><span class="p">,</span> <span class="n">table_vi_3</span><span class="p">,</span> <span class="n">table_vi_4</span><span class="p">,</span> <span class="n">table_vi_5</span><span class="p">,</span> <span class="n">table_vi_6</span><span class="p">,</span> <span class="n">table_vi_7</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Jet.calc"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Jet.calc">[docs]</a>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dmdt_1</span><span class="p">,</span> <span class="n">dmdt_2</span><span class="p">,</span> <span class="n">v_1</span><span class="p">,</span> <span class="n">v_2</span><span class="p">,</span> <span class="n">T_1</span><span class="p">,</span> <span class="n">T_2</span><span class="p">,</span> <span class="n">Ta</span><span class="p">,</span> <span class="n">Pa</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Jet.calc">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Jet.calc">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dmdt_1</span><span class="p">,</span> <span class="n">dmdt_2</span><span class="p">,</span> <span class="n">v_1</span><span class="p">,</span> <span class="n">v_2</span><span class="p">,</span> <span class="n">T_1</span><span class="p">,</span> <span class="n">T_2</span><span class="p">,</span> <span class="n">Ta</span><span class="p">,</span> <span class="n">Pa</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Jet source noise model for circular and coaxial jets based on the methods presented by Russel (J. W. Russel.</span>
 <span class="sd">        &quot;An empirical Method for Predicting the mixing Noise Levels of Subsonic Circular and Coaxial Jets&quot;.</span>
 <span class="sd">        NASA-CR-3786).</span>
@@ -1095,11 +1041,15 @@
         <span class="n">SPL_temp</span> <span class="o">=</span> <span class="n">RSL_p</span> <span class="o">+</span> <span class="n">OASPL_p</span>
         <span class="n">SPL</span> <span class="o">=</span> <span class="n">SPL_temp</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">F_p</span><span class="p">,</span> <span class="p">(</span><span class="n">nfreq</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">nthet</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Combustor"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor">[docs]</a><span class="k">class</span> <span class="nc">Combustor</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Combustor">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor">[docs]</a>
+<span class="k">class</span> <span class="nc">Combustor</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiate combustor source noise prediction.</span>
 
 <span class="sd">    :param str type_comb: Combustor type, SAC or DAC</span>
@@ -1126,8 +1076,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nthet</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fband</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Combustor.calc"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor.calc">[docs]</a>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nf</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p7</span><span class="p">,</span> <span class="n">ta</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="n">t5</span><span class="p">,</span> <span class="n">w3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Combustor.calc">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor.calc">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nf</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p7</span><span class="p">,</span> <span class="n">ta</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="n">t5</span><span class="p">,</span> <span class="n">w3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Combustor source noise model based on the method for low-emissions combustors developed by Gliebe et al.</span>
 <span class="sd">        (P. Gliebe, R. Mani, H. Shin, B. Mitchell, G. Ashford, S. Salamah and S. Connel. &quot;Aeroacoustic Prediction</span>
 <span class="sd">        Codes&quot;. NASA-CR-210244). Includes model for SAC (Single-Annular Combustor) and DAC (Dual-Annular Combustor).</span>
@@ -1170,8 +1122,11 @@
 
         <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Combustor.getSAC"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor.getSAC">[docs]</a>    <span class="k">def</span> <span class="nf">getSAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nf</span><span class="p">,</span> <span class="n">Pa</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">,</span> <span class="n">P7</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T5</span><span class="p">,</span> <span class="n">W3</span><span class="p">,</span> <span class="n">AA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Calculate the noise level from a Single Annular Combustor. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Combustor.getSAC">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor.getSAC">[docs]</a>
+    <span class="k">def</span> <span class="nf">getSAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nf</span><span class="p">,</span> <span class="n">Pa</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">,</span> <span class="n">P7</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T5</span><span class="p">,</span> <span class="n">W3</span><span class="p">,</span> <span class="n">AA</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Calculate the noise level from a Single Annular Combustor. &quot;&quot;&quot;</span>
         <span class="n">fband</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fband</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span>
         <span class="n">nfreq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span>
@@ -1231,12 +1186,15 @@
 
         <span class="n">prms_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prms</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">prms_total</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">prms_total</span> <span class="o">&lt;</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span>
+        <span class="n">prms_total</span><span class="p">[</span><span class="n">prms_total</span> <span class="o">&lt;</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span>
 
         <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms_total</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Combustor.getDAC"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor.getDAC">[docs]</a>    <span class="k">def</span> <span class="nf">getDAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">Pa</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">,</span> <span class="n">P7</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T5</span><span class="p">,</span> <span class="n">W3</span><span class="p">,</span> <span class="n">AA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Calculate the noise level from a Dual Annular Combustor. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Combustor.getDAC">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Combustor.getDAC">[docs]</a>
+    <span class="k">def</span> <span class="nf">getDAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">Pa</span><span class="p">,</span> <span class="n">P3</span><span class="p">,</span> <span class="n">P4</span><span class="p">,</span> <span class="n">P7</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T5</span><span class="p">,</span> <span class="n">W3</span><span class="p">,</span> <span class="n">AA</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Calculate the noise level from a Dual Annular Combustor. &quot;&quot;&quot;</span>
         <span class="n">fband</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fband</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span>
         <span class="n">nfreq</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">nfreq</span>
@@ -1308,13 +1266,17 @@
         <span class="n">prms</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL</span><span class="p">)</span>
         <span class="n">prms_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prms</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">prms_total</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">prms_total</span> <span class="o">&lt;</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span>
+        <span class="n">prms_total</span><span class="p">[</span><span class="n">prms_total</span> <span class="o">&lt;</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span>
 
-        <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms_total</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms_total</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Turbine"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Turbine">[docs]</a><span class="k">class</span> <span class="nc">Turbine</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Turbine">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Turbine">[docs]</a>
+<span class="k">class</span> <span class="nc">Turbine</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiate turbine source noise prediction.</span>
 
 <span class="sd">    :param int N_rotors: Number of rotors</span>
@@ -1344,8 +1306,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">turb_atm_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span>
                                       <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Turbine.calc"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Turbine.calc">[docs]</a>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vtr</span><span class="p">,</span> <span class="n">Texit</span><span class="p">,</span> <span class="n">xnl</span><span class="p">,</span> <span class="n">mcore</span><span class="p">,</span> <span class="n">Cax</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Turbine.calc">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Turbine.calc">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vtr</span><span class="p">,</span> <span class="n">Texit</span><span class="p">,</span> <span class="n">xnl</span><span class="p">,</span> <span class="n">mcore</span><span class="p">,</span> <span class="n">Cax</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Turbine source noise model based on the method developed by Dunn and Peart (D. G. Dunn and N. A. Peart.</span>
 <span class="sd">        &quot;Aircraft Noise Source and Contour Estimation&quot;. NASA-CR-114649).</span>
 
@@ -1415,11 +1379,15 @@
 
         <span class="n">SPL_1m</span> <span class="o">=</span> <span class="n">SPL_tot_46m</span> <span class="o">+</span> <span class="mf">33.2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">turb_atm_abs</span><span class="p">,</span> <span class="p">(</span><span class="n">nfreq</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nthet</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL_1m</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL_1m</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="FanCompressor"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor">[docs]</a><span class="k">class</span> <span class="nc">FanCompressor</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor">[docs]</a>
+<span class="k">class</span> <span class="nc">FanCompressor</span><span class="p">(</span><span class="n">NoiseSource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiate fan or compressor source noise prediction.</span>
 
 <span class="sd">    :param str component: Compressor component, fan, LPC, IPC</span>
@@ -1432,7 +1400,7 @@
 <span class="sd">    :param ndarray f: 1D array containing frequencies (Hz)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">MtipD</span><span class="p">,</span> <span class="n">N_rotors</span><span class="p">,</span> <span class="n">N_stators</span><span class="p">,</span> <span class="n">rss</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">MtipD</span><span class="p">,</span> <span class="n">N_rotors</span><span class="p">,</span> <span class="n">N_stators</span><span class="p">,</span> <span class="n">rss</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distortion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">=</span> <span class="n">component</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">=</span> <span class="n">MtipD</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">N_rotors</span> <span class="o">=</span> <span class="n">N_rotors</span>
@@ -1449,6 +1417,10 @@
             <span class="o">-</span><span class="mf">11.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.50</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dTref</span> <span class="o">=</span> <span class="mf">0.5550</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mref</span> <span class="o">=</span> <span class="mf">0.4536</span>
+        <span class="k">if</span> <span class="n">distortion</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distortion</span> <span class="o">=</span> <span class="n">distortion</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distortion</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">F3a_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
             <span class="o">-</span><span class="mf">3.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.60</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.20</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.35</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.15</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.80</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.65</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">10.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">14.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">23.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">25.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">28.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">30.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">32.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">34.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.00</span><span class="p">,</span>
@@ -1466,38 +1438,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">approach_2BPF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">takeoff_BPF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.8</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="mf">5.3</span><span class="p">,</span> <span class="mf">5.3</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">,</span> <span class="mf">3.9</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">takeoff_2BPF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.8</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="mf">5.3</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
-
-        <span class="c1"># Double layer Liner Data is from NASA CR-2002-211672 Report</span>
-        <span class="c1"># Advanced Nacelle Acoustic lining Concepts Development</span>
-        <span class="c1"># Linearly extrapolated from 0 - 90 deg and form 160-180</span>
-        <span class="c1"># The data was obtained only for broadband noise (data for tonal noise are needed)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_app</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.31149048974951</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75394155342520</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.19639261710089</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.63884368077659</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">2.08129474445228</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.52374580812797</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.96619687180366</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.40864793547935</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.85109899915504</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">4.29355006283073</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.73600112650642</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.17845219018211</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.62090325385780</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.06335431753349</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">6.50580538120918</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.55856451491287</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.60963444765545</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.01819645866627</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.40364544803953</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">4.88024833985105</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.36166961630789</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.91871616323577</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.47659239938625</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.08872017651543</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">2.70434534445140</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.53311635918184</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.36917034195449</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.20522432472714</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.04127830749979</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">1.87733229027244</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.71338627304509</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_cut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="o">-</span><span class="mf">1.13306098626510</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.45911467702874</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.78516836779238</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.11122205855601</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.43727574931965</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">2.76332944008329</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.08938313084693</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.41543682161056</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.74149051237420</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.06754420313784</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">4.39359789390148</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.71965158466511</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.04570527542875</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.37175896619239</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.69781265695602</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">6.02386634771966</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.34992003848330</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.67597372924694</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.00202742001057</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.32808111077421</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">7.65413480153785</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.30873649087542</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.95315039191579</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.17795829812488</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.41074393672352</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">7.01984807951155</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.61979710153490</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.66478064174521</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.68471569886730</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.93953462123672</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">3.20789049050141</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.75748299134357</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.31773313596766</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.87798328059175</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.43823342521584</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">0.99848356983992</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.55873371446401</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_sid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="o">-</span><span class="mf">5.54049164663243</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.69865908856118</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.85682653048993</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.01499397241868</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.17316141434743</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">6.33132885627618</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.48949629820493</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.64766374013368</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.80583118206242</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.96399862399117</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">7.12216606591992</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.28033350784867</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.43850094977742</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.59666839170617</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.75483583363492</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">7.91300327556367</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.07117071749241</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.22933815942116</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.38750560134991</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.54567304327866</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">8.68994505933804</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.32871946157918</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.96749386382032</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.48047644940415</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.99409867992745</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">6.86526861357872</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.73643854723000</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.60760848088128</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.47877841453256</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.34994834818384</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">6.22111828183511</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.09228821548639</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.96345814913767</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.83462808278895</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.70579801644022</span><span class="p">,</span>
-            <span class="o">-</span><span class="mf">5.57696795009150</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.44813788374278</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">liners_tone</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f3a_data_broad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
             <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.0</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">25.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">28.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">31.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">34.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">40.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">43.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">46.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">49.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">52.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">55.0</span><span class="p">,</span>
@@ -1506,11 +1446,12 @@
             <span class="o">-</span><span class="mf">41.600</span><span class="p">,</span> <span class="o">-</span><span class="mf">39.450</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.300</span><span class="p">,</span> <span class="o">-</span><span class="mf">35.150</span><span class="p">,</span> <span class="o">-</span><span class="mf">33.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">30.850</span><span class="p">,</span> <span class="o">-</span><span class="mf">28.700</span><span class="p">,</span> <span class="o">-</span><span class="mf">26.550</span><span class="p">,</span> <span class="o">-</span><span class="mf">24.400</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.250</span><span class="p">,</span> <span class="o">-</span><span class="mf">20.100</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.950</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">15.8000</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.650</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.500</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.750</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.500</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.850</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.700</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.950</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.750</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.300</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">0.1500</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.500</span><span class="p">,</span> <span class="o">-</span><span class="mf">15.000</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.500</span><span class="p">,</span> <span class="o">-</span><span class="mf">20.000</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">liners</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="FanCompressor.calc"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.calc">[docs]</a>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">Mtip</span><span class="p">,</span> <span class="n">Mu</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">xnl</span><span class="p">,</span> <span class="n">g1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fan and compressor source noise model based on the methods developed by Heidman (M. F. Heidmann. &quot;Interim</span>
+<div class="viewcode-block" id="FanCompressor.calc">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.calc">[docs]</a>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">Mtip</span><span class="p">,</span> <span class="n">Mu</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">xnl</span><span class="p">,</span> <span class="n">g1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fan and compressor source noise model based on the methods developed by Heidmann (M. F. Heidmann. &quot;Interim</span>
 <span class="sd">        Prediction Method for Fan and Compressor Source Noise&quot;. NASA-TM-X71763) and updated by Kontos et al.</span>
 <span class="sd">        (K. B. Kontos, B. A. Janardan and P. R. Gliebe. &quot;Improved NASA-ANOPP Noise Prediction Computer Code for Advanced</span>
 <span class="sd">        Subsonic Propulsion Systems&quot;. NASA-CR-195480).</span>
@@ -1546,13 +1487,14 @@
         <span class="c1"># create outlet combination (tone + broadband)</span>
         <span class="n">prms_discharge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prms_tone_discharge</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms_broadband_discharge</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">prms_discharge</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">prms_inlet</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;something wrong&#39;</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="p">[</span><span class="n">prms_tone_inlet</span><span class="p">,</span> <span class="n">prms_tone_discharge</span><span class="p">,</span> <span class="n">prms_broadband_inlet</span><span class="p">,</span> <span class="n">prms_broadband_discharge</span><span class="p">,</span>
                 <span class="n">prms_inlet_combination</span><span class="p">,</span> <span class="n">prms_inlet</span><span class="p">,</span> <span class="n">prms_discharge</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="FanCompressor.fanCompr_comb_tone"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.fanCompr_comb_tone">[docs]</a>    <span class="k">def</span> <span class="nf">fanCompr_comb_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">fb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fan and compressor combination tone noise estimation. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.fanCompr_comb_tone">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.fanCompr_comb_tone">[docs]</a>
+    <span class="k">def</span> <span class="nf">fanCompr_comb_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">fb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Fan and compressor combination tone noise estimation. &quot;&quot;&quot;</span>
         <span class="n">fband</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fband</span>
         <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
         <span class="n">nfreq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span>
@@ -1594,8 +1536,11 @@
         <span class="n">prms_combination</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL_combination</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prms_combination</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms_combination</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms_combination</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FanCompressor.fanCompr_tone"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.fanCompr_tone">[docs]</a>    <span class="k">def</span> <span class="nf">fanCompr_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">delta_cutoff</span><span class="p">,</span> <span class="n">fb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fan and compressor discrete tone noise estimation. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.fanCompr_tone">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.fanCompr_tone">[docs]</a>
+    <span class="k">def</span> <span class="nf">fanCompr_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">delta_cutoff</span><span class="p">,</span> <span class="n">fb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Fan and compressor discrete tone noise estimation. &quot;&quot;&quot;</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span>
         <span class="n">nfreq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span>
         <span class="n">nthet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nthet</span>
@@ -1623,18 +1568,22 @@
             <span class="n">BPF2</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">approach_2BPF</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)(</span><span class="n">theta</span><span class="p">)</span>
 
         <span class="c1"># set inlet data</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fuselage_fan&#39;</span><span class="p">:</span>
-            <span class="n">F5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig9</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">no_ff_stages</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">F5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig9</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">no_fan_stages</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-
         <span class="n">Lc_inlet</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dT</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTref</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">g1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">mref</span><span class="p">)</span> <span class="o">+</span> <span class="n">F1a</span> <span class="o">+</span> <span class="n">F2a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">F3a_data</span>  <span class="c1"># eq6</span>
 
         <span class="n">F4a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Fan&#39;</span><span class="p">:</span>
             <span class="n">F4a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig8</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">fan_IGV</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta_cutoff</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fuselage_fan&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;fuselage_fan&#39;</span><span class="p">:</span>
             <span class="n">F4a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig8</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">ff_IGV</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta_cutoff</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">distortion</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;fuselage_fan&#39;</span><span class="p">:</span>
+                <span class="n">F5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig9</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">no_ff_stages</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">F5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig9</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">no_fan_stages</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="n">F4F5</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">F5</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">F4F5</span> <span class="o">=</span> <span class="n">F4a</span>
 
         <span class="n">SPL_inlet</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">))</span>
         <span class="n">prms_inlet</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">))</span>
@@ -1651,28 +1600,19 @@
 
                 <span class="k">if</span> <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># first tone</span>
-                        <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>
-                                                                          <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">BPF1</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                        <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">F4F5</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">BPF1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                     <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># second tone</span>
-                        <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span>
-                                                                          <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">BPF2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                        <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">F4F5</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">BPF2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span>
-                                                                          <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F5</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+                        <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">F4F5</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>  <span class="c1"># coinciding tones</span>
                     <span class="n">prms_temp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
                     <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># first tone</span>
-                        <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">((</span><span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span>
-                                                                  <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>
-                                                                                  <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.10</span> <span class="o">**</span> <span class="n">BPF1</span><span class="p">[</span><span class="n">i</span><span class="p">]))))</span>
+                        <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">((</span><span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">F4F5</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">BPF1</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
                     <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># second tone</span>
-                        <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">((</span><span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span>
-                                                                  <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span>
-                                                                                  <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.10</span> <span class="o">**</span> <span class="n">BPF2</span><span class="p">[</span><span class="n">i</span><span class="p">]))))</span>
+                        <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">((</span><span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">F4F5</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">BPF2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">((</span><span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span>
-                                                                  <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F4a</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span>
-                                                                                  <span class="mf">10.0</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">F5</span><span class="p">[</span><span class="n">j</span><span class="p">]))))</span>
+                        <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">((</span><span class="n">Lc_inlet</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">F4F5</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
 
                     <span class="n">prms_tot</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prms_temp</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">prms_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
                     <span class="n">SPL_inlet</span><span class="p">[</span><span class="n">pos</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">prms_tot</span> <span class="o">/</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">p0</span><span class="p">)</span>
@@ -1687,18 +1627,8 @@
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fuselage_fan&#39;</span><span class="p">:</span>
                 <span class="n">F4b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig8</span><span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">ff_IGV</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta_cutoff</span><span class="p">)</span>
 
-            <span class="n">liner_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nthet</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liners_tone</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fan&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fuselage_fan&#39;</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Sideline&#39;</span><span class="p">:</span>
-                        <span class="n">liner_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_sid</span>
-                    <span class="k">elif</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Cutback&#39;</span><span class="p">:</span>
-                        <span class="n">liner_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_cut</span>
-                    <span class="k">elif</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Approach&#39;</span><span class="p">:</span>
-                        <span class="n">liner_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_app</span>
-
             <span class="n">Lc_discharge</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dT</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTref</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">g1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">mref</span><span class="p">)</span> <span class="o">+</span> <span class="n">F1b</span> <span class="o">+</span> <span class="n">F2b</span> <span class="o">+</span> \
-                           <span class="bp">self</span><span class="o">.</span><span class="n">F3b_data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_C</span><span class="p">(</span><span class="n">nthet</span><span class="p">)</span> <span class="o">+</span> <span class="n">liner_data</span>  <span class="c1"># eq 6</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">F3b_data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_C</span><span class="p">(</span><span class="n">nthet</span><span class="p">)</span>  <span class="c1"># eq 6</span>
 
             <span class="n">SPL_discharge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">))</span>
             <span class="n">prms_discharge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">))</span>
@@ -1728,8 +1658,11 @@
 
         <span class="k">return</span> <span class="p">[</span><span class="n">prms_inlet</span><span class="p">,</span> <span class="n">prms_discharge</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="FanCompressor.fanCompr_broadband"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.fanCompr_broadband">[docs]</a>    <span class="k">def</span> <span class="nf">fanCompr_broadband</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">fb</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">g1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fan and compressor broadband noise estimation. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.fanCompr_broadband">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.fanCompr_broadband">[docs]</a>
+    <span class="k">def</span> <span class="nf">fanCompr_broadband</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatingPoint</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">fb</span><span class="p">,</span> <span class="n">dT</span><span class="p">,</span> <span class="n">g1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Fan and compressor broadband noise estimation. &quot;&quot;&quot;</span>
         <span class="n">fband</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fband</span>
         <span class="n">nfreq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span>
         <span class="n">nthet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nthet</span>
@@ -1748,17 +1681,9 @@
         <span class="n">prms_inlet</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL_inlet</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fan&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp</span> <span class="o">==</span> <span class="s1">&#39;Fuselage_fan&#39;</span><span class="p">:</span>
-            <span class="n">liner_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nthet</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liners</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Sideline&#39;</span><span class="p">:</span>
-                    <span class="n">liner_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_sid</span>
-                <span class="k">elif</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Cutback&#39;</span><span class="p">:</span>
-                    <span class="n">liner_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_cut</span>
-                <span class="k">elif</span> <span class="n">operatingPoint</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Approach&#39;</span><span class="p">:</span>
-                    <span class="n">liner_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">liner_data_app</span>
 
             <span class="n">Lc_discharge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">nthet</span><span class="p">),</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dT</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTref</span><span class="p">)</span> <span class="o">+</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">g1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">mref</span><span class="p">)</span> <span class="o">+</span>
-                                   <span class="n">F1b</span> <span class="o">+</span> <span class="n">F2b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">f3b_data_broad</span> <span class="o">+</span> <span class="n">liner_data</span><span class="p">)</span>  <span class="c1"># eq 4</span>
+                                   <span class="n">F1b</span> <span class="o">+</span> <span class="n">F2b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">f3b_data_broad</span><span class="p">)</span>  <span class="c1"># eq 4</span>
             <span class="n">SPL_discharge</span> <span class="o">=</span> <span class="n">Lc_discharge</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Fig3a</span><span class="p">(</span><span class="n">fband</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">nfreq</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">fb</span><span class="p">)</span>  <span class="c1"># eq 5</span>
 
             <span class="n">prms_discharge</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPL_discharge</span><span class="p">)</span>
@@ -1767,21 +1692,30 @@
 
         <span class="k">return</span> <span class="p">[</span><span class="n">prms_inlet</span><span class="p">,</span> <span class="n">prms_discharge</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_C"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_C">[docs]</a>    <span class="k">def</span> <span class="nf">get_C</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nthet</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; C coefficient from eq. 12 in Heidmann&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.get_C">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_C">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_C</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nthet</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; C coefficient from eq. 12 in Heidmann&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">fan_IGV</span> <span class="ow">or</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">no_fan_stages</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> \
                 <span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">ff_IGV</span> <span class="ow">or</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">no_ff_stages</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">nthet</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nthet</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig3a"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig3a">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig3a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f_over_fb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creating F4 according to eq. 2 in Heidmann&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig3a">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig3a">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig3a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f_over_fb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Creating F4 according to eq. 2 in Heidmann&quot;&quot;&quot;</span>
         <span class="n">sigmae</span> <span class="o">=</span> <span class="mf">2.2</span>
         <span class="k">return</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f_over_fb</span> <span class="o">/</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigmae</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig4a"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig4a">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig4a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get peak broadband sound pressure levels from Fig 4(a) for inlet duct according to Heidmann. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig4a">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig4a">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig4a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Get peak broadband sound pressure levels from Fig 4(a) for inlet duct according to Heidmann. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">M_tr</span> <span class="o">&lt;=</span> <span class="mf">0.9</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">58.5</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">M_tr</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
@@ -1791,11 +1725,14 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">M_tr</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">58.5</span> <span class="o">+</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span><span class="p">)</span> <span class="o">-</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">M_tr</span> <span class="o">/</span> <span class="mf">0.9</span><span class="p">)</span>  <span class="c1"># ANOPP update (1996 - Kontos)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">choice_aux</span><span class="o">.</span><span class="n">report_error</span><span class="p">(</span><span class="s1">&#39;unexpected combination of tip Mach numbers&#39;</span><span class="p">,</span> <span class="s1">&#39;get_Fig4a&#39;</span><span class="p">,</span> <span class="s1">&#39;choice_physics&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unexpected combination of tip Mach numbers in get_Fig4a in choice_physics&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="mf">0.0</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig4b"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig4b">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig4b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get peak broadband sound pressure levels from Fig 4(b) for discharge duct according to Heidmann and</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig4b">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig4b">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig4b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Get peak broadband sound pressure levels from Fig 4(b) for discharge duct according to Heidmann and</span>
 <span class="sd">        eq. 3a-3b in Kontos. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">M_tr</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">60.0</span>
@@ -1804,11 +1741,14 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">M_tr</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">63.0</span> <span class="o">+</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span><span class="p">)</span> <span class="o">-</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">M_tr</span><span class="p">)</span>  <span class="c1"># ANOPP update (1996 - Kontos)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">choice_aux</span><span class="o">.</span><span class="n">report_error</span><span class="p">(</span><span class="s1">&#39;unexpected combination of tip Mach numbers&#39;</span><span class="p">,</span> <span class="s1">&#39;get_Fig4b&#39;</span><span class="p">,</span> <span class="s1">&#39;choice_physics&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unexpected combination of tip Mach numbers in get_Fig4b in choice_physics&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="mf">0.0</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig8"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig8">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig8</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">igv</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get rotor-stator interaction discrete tone harmonic levels from Fig 8 in Heidmann and eq. 7a-8c in</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig8">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig8">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig8</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">igv</span><span class="p">,</span> <span class="n">Mtr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Get rotor-stator interaction discrete tone harmonic levels from Fig 8 in Heidmann and eq. 7a-8c in</span>
 <span class="sd">        Kontos. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">igv</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">Mtr</span> <span class="o">&lt;</span> <span class="mf">1.15</span><span class="p">:</span>
@@ -1832,19 +1772,25 @@
                 <span class="n">Fig8</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.0</span>
         <span class="k">return</span> <span class="n">Fig8</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig9"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig9">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_fan_stages</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get inlet flow distortion discrete tone harmonic levels for inlet duct from Fig 9 in Heidmann. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig9">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig9">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_fan_stages</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Get inlet flow distortion discrete tone harmonic levels for inlet duct from Fig 9 in Heidmann. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">no_fan_stages</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">10.0</span> <span class="o">-</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">k</span>
         <span class="k">elif</span> <span class="n">no_fan_stages</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">nk</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nk</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">choice_aux</span><span class="o">.</span><span class="n">report_error</span><span class="p">(</span><span class="s1">&#39;Unexpected number of stages&#39;</span><span class="p">,</span> <span class="s1">&#39;get_Fig9&#39;</span><span class="p">,</span> <span class="s1">&#39;choice_physics&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unexpected number of stages in get_Fig9 in choice_physics&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="mf">0.0</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig10a"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig10a">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig10a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get characteristic peak sound pressure level of fundamental discrete tone for inlet duct according to</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig10a">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig10a">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig10a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Get characteristic peak sound pressure level of fundamental discrete tone for inlet duct according to</span>
 <span class="sd">        Fig. 10(a) in Heidmann and eq. 5 in Kontos. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">M_tr</span> <span class="o">&lt;=</span> <span class="mf">0.72</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
@@ -1856,8 +1802,11 @@
             <span class="n">F1a2</span> <span class="o">=</span> <span class="mf">64.5</span> <span class="o">+</span> <span class="mf">80.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">/</span> <span class="n">M_tr</span><span class="p">)</span>
             <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">F1a1</span><span class="p">,</span> <span class="n">F1a2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FanCompressor.get_Fig10b"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig10b">[docs]</a>    <span class="k">def</span> <span class="nf">get_Fig10b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get characteristic peak sound pressure level of fundamental discrete tone for discharge duct according to</span>
+
+<div class="viewcode-block" id="FanCompressor.get_Fig10b">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.FanCompressor.get_Fig10b">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_Fig10b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M_tr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Get characteristic peak sound pressure level of fundamental discrete tone for discharge duct according to</span>
 <span class="sd">        Fig. 10(b) in Heidmann. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">M_tr</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
@@ -1865,11 +1814,15 @@
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="mf">63.0</span> <span class="o">+</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mf">63.0</span> <span class="o">+</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span><span class="p">)</span> <span class="o">-</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">M_tr</span><span class="p">)</span></div></div>
+            <span class="k">return</span> <span class="mf">63.0</span> <span class="o">+</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MtrD</span><span class="p">)</span> <span class="o">-</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">M_tr</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="PropagationEffects"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects">[docs]</a><span class="k">class</span> <span class="nc">PropagationEffects</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PropagationEffects">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects">[docs]</a>
+<span class="k">class</span> <span class="nc">PropagationEffects</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiate noise estimation at microphone/observer.</span>
 
 <span class="sd">    :param float ymic: Microphone height (m)</span>
@@ -1880,22 +1833,27 @@
 <span class="sd">    :param ndarray xsii: 1D array containing observation angles (rad)</span>
 <span class="sd">    :param ndarray Mai: 1D array containing Mach number</span>
 <span class="sd">    :param ndarray alphai: 1D array containing Angle of attack (deg)</span>
+<span class="sd">    :param float dTisa: Deviation from ISA temperature (K)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ymic</span><span class="p">,</span> <span class="n">use_ground_refl</span><span class="p">,</span> <span class="n">spherical_spr</span><span class="p">,</span> <span class="n">atm_atten</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">,</span> <span class="n">alphai</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ymic</span><span class="p">,</span> <span class="n">use_ground_refl</span><span class="p">,</span> <span class="n">spherical_spr</span><span class="p">,</span> <span class="n">atm_atten</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">,</span> <span class="n">alphai</span><span class="p">,</span> <span class="n">dTisa</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ymic</span> <span class="o">=</span> <span class="n">ymic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_ground_refl</span> <span class="o">=</span> <span class="n">use_ground_refl</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spherical_spr</span> <span class="o">=</span> <span class="n">spherical_spr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">atm_atten</span> <span class="o">=</span> <span class="n">atm_atten</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mach</span> <span class="o">=</span> <span class="n">Mai</span>
         <span class="k">if</span> <span class="n">fband</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDopplerShift</span><span class="p">(</span><span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fobs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">xsii_alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_theta</span><span class="p">(</span><span class="n">xsii</span><span class="p">,</span> <span class="n">alphai</span><span class="p">)</span>  <span class="c1"># add aircraft alpha to xsii</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">N_b</span> <span class="o">=</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_n_freqs</span> <span class="o">=</span> <span class="mi">150</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dTisa</span> <span class="o">=</span> <span class="n">dTisa</span>
 
-<div class="viewcode-block" id="PropagationEffects.flightEffects"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.flightEffects">[docs]</a>    <span class="k">def</span> <span class="nf">flightEffects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nti</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">tai</span><span class="p">,</span> <span class="n">SPLi</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PropagationEffects.flightEffects">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.flightEffects">[docs]</a>
+    <span class="k">def</span> <span class="nf">flightEffects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nti</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">tai</span><span class="p">,</span> <span class="n">SPLi</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the sound pressure level and the acoustic pressure matrices accounting for propagation effects.</span>
 
 <span class="sd">        :param int nti: Number of trajectory points</span>
@@ -1912,6 +1870,10 @@
         <span class="n">atm_absorption</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_atm_abs</span><span class="p">(</span><span class="n">ta_i</span><span class="p">,</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">RH</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fobs</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ta_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tai</span><span class="p">)])</span>
 
+        <span class="c1"># Convective amplification - source motion effect</span>
+        <span class="n">DF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mach</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">thet</span><span class="p">))))</span> <span class="k">for</span> <span class="n">thet</span> <span class="ow">in</span> <span class="n">theta</span><span class="p">])</span>
+        <span class="n">SPLi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">SPLi</span><span class="p">[</span><span class="n">i_f</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">DF</span><span class="p">)</span> <span class="k">for</span> <span class="n">i_f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span><span class="p">)])</span>
+
         <span class="n">N_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">N_b</span>
         <span class="c1"># Only one directivity reaches the microphone. Here we choose the element in the directivity vector closest</span>
         <span class="c1"># to the computed angle.</span>
@@ -1921,14 +1883,22 @@
         <span class="n">SPLp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">SPLi</span><span class="p">[:,</span> <span class="n">closest_value_ptr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nti</span><span class="p">)])</span><span class="o">.</span><span class="n">T</span>
         <span class="n">prmsp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPLp</span><span class="p">)</span>
 
-        <span class="c1"># atmospheric attenuation  spherical spreading</span>
+        <span class="n">pa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">AtmosphericEffects</span><span class="o">.</span><span class="n">get_p_ambient</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymic</span><span class="p">])</span>
+        <span class="n">rho_ac</span> <span class="o">=</span> <span class="n">pa</span> <span class="o">/</span> <span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">Risa</span> <span class="o">*</span> <span class="n">tai</span><span class="p">)</span>
+        <span class="n">c_ac</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">cisa</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tai</span> <span class="o">/</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">Tisa</span><span class="p">)</span>
+        <span class="n">pa_mic</span> <span class="o">=</span> <span class="n">AtmosphericEffects</span><span class="o">.</span><span class="n">get_p_ambient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ymic</span><span class="p">)</span>
+        <span class="n">t_mic</span> <span class="o">=</span> <span class="n">AtmosphericEffects</span><span class="o">.</span><span class="n">get_t_ambient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ymic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTisa</span><span class="p">)</span>
+        <span class="n">rho_mic</span> <span class="o">=</span> <span class="n">pa_mic</span> <span class="o">/</span> <span class="p">(</span><span class="n">choice_data</span><span class="o">.</span><span class="n">Risa</span> <span class="o">*</span> <span class="n">t_mic</span><span class="p">)</span>
+        <span class="n">c_mic</span> <span class="o">=</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">cisa</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">t_mic</span> <span class="o">/</span> <span class="n">choice_data</span><span class="o">.</span><span class="n">Tisa</span><span class="p">)</span>
+        <span class="n">impedance_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">rho_mic</span> <span class="o">*</span> <span class="n">c_mic</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">rho_ac</span> <span class="o">*</span> <span class="n">c_ac</span><span class="p">))</span>
+        <span class="c1"># atmospheric attenuation / spherical spreading/ characteristic impedance</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical_spr</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">atm_atten</span><span class="p">:</span>
-            <span class="n">SPLp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prmsp</span> <span class="o">/</span> <span class="n">r1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">r1</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">atm_absorption</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">SPLp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prmsp</span> <span class="o">/</span> <span class="n">r1</span> <span class="o">*</span> <span class="n">impedance_factor</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">r1</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">atm_absorption</span><span class="o">.</span><span class="n">T</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical_spr</span><span class="p">:</span>
-            <span class="n">SPLp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prmsp</span> <span class="o">/</span> <span class="n">r1</span><span class="p">)</span>
+            <span class="n">SPLp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prmsp</span> <span class="o">/</span> <span class="n">r1</span> <span class="o">*</span> <span class="n">impedance_factor</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">atm_atten</span><span class="p">:</span>
             <span class="n">SPLp</span> <span class="o">=</span> <span class="n">SPLp</span> <span class="o">-</span> <span class="p">(</span><span class="n">r1</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">atm_absorption</span><span class="o">.</span><span class="n">T</span>
-        
+            
         <span class="n">prmsp</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">SPL2prms</span><span class="p">(</span><span class="n">SPLp</span><span class="p">)</span>
 
         <span class="c1"># Ground Reflection</span>
@@ -1967,8 +1937,11 @@
 
         <span class="k">return</span> <span class="p">[</span><span class="n">SPLp</span><span class="p">,</span> <span class="n">prmsp</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="PropagationEffects.ground_reflection"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.ground_reflection">[docs]</a>    <span class="k">def</span> <span class="nf">ground_reflection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_plane</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">ta</span><span class="p">,</span> <span class="n">fband</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PropagationEffects.ground_reflection">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.ground_reflection">[docs]</a>
+    <span class="k">def</span> <span class="nf">ground_reflection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_plane</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">ta</span><span class="p">,</span> <span class="n">fband</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the ground effects factor for a sound wave that does not travel directly from the source to the</span>
 <span class="sd">        observer.</span>
 
@@ -2059,12 +2032,18 @@
 
         <span class="k">return</span> <span class="n">G1</span></div>
 
-<div class="viewcode-block" id="PropagationEffects.getDopplerShift"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.getDopplerShift">[docs]</a>    <span class="k">def</span> <span class="nf">getDopplerShift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Computes the frequency shift due to the movement of the aircraft. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PropagationEffects.getDopplerShift">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.getDopplerShift">[docs]</a>
+    <span class="k">def</span> <span class="nf">getDopplerShift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Computes the frequency shift due to the movement of the aircraft. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fb</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">Mai</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">xsii</span><span class="p">))</span> <span class="k">for</span> <span class="n">fb</span> <span class="ow">in</span> <span class="n">fband</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="PropagationEffects.get_theta"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.get_theta">[docs]</a>    <span class="k">def</span> <span class="nf">get_theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsi</span><span class="p">,</span> <span class="n">alphai</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PropagationEffects.get_theta">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.get_theta">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsi</span><span class="p">,</span> <span class="n">alphai</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes directivity angle (from aircraft body axis to sound propagation path).</span>
 
 <span class="sd">        :param ndarray xsi: 1D array containing observation angles (rad)</span>
@@ -2076,9 +2055,12 @@
         <span class="n">theta</span><span class="p">[</span><span class="n">theta</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[</span><span class="n">theta</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">theta</span></div>
 
-<div class="viewcode-block" id="PropagationEffects.get_atm_abs"><a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.get_atm_abs">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="PropagationEffects.get_atm_abs">
+<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.get_atm_abs">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_atm_abs</span><span class="p">(</span><span class="n">t_k</span><span class="p">,</span> <span class="n">relHum</span><span class="p">,</span> <span class="n">fband</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the SAE ARP</span>
 <span class="sd">        866A report.</span>
 
@@ -2111,14 +2093,16 @@
         <span class="n">alfa_norm</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">PchipInterpolator</span><span class="p">(</span><span class="n">h_norm_data</span><span class="p">,</span> <span class="n">alfa_norm_data</span><span class="p">)(</span><span class="n">h_norm</span><span class="p">)</span>
 
         <span class="n">alfa_mol</span> <span class="o">=</span> <span class="n">alfa_molmax</span> <span class="o">*</span> <span class="n">alfa_norm</span>
-        <span class="k">return</span> <span class="n">alfa_class</span> <span class="o">+</span> <span class="n">alfa_mol</span></div></div>
+        <span class="k">return</span> <span class="n">alfa_class</span> <span class="o">+</span> <span class="n">alfa_mol</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">PerceivedNoiseMetrics</span><span class="p">:</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">getPNL</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nti</span><span class="p">,</span> <span class="n">fdoppler</span><span class="p">,</span> <span class="n">SPLp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the Perceived Noise Level.</span>
 
 <span class="sd">        :param int nti: Number of times (for interpolated grid)</span>
@@ -2140,7 +2124,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">getPNLT</span><span class="p">(</span><span class="n">nti</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">PNL</span><span class="p">,</span> <span class="n">SPL</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the Perceived Noise Level corrected for spectral irregularities</span>
 
 <span class="sd">        :param int nti: Number of times / points</span>
@@ -2170,7 +2154,7 @@
         <span class="n">SPLnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nfr</span><span class="p">,</span> <span class="n">nti</span><span class="p">))</span>
 
         <span class="n">SPLnew</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">SPL</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">SPLnew</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">encircled</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">SPL</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">encircled</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)]</span>
+        <span class="n">SPLnew</span><span class="p">[</span><span class="n">encircled</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SPL</span><span class="p">[</span><span class="n">encircled</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfr</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nti</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">23</span> <span class="ow">and</span> <span class="n">encircled</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
@@ -2193,7 +2177,7 @@
         <span class="c1"># difference</span>
         <span class="n">F</span> <span class="o">=</span> <span class="n">SPL</span> <span class="o">-</span> <span class="n">SPLfinal</span>
 
-        <span class="n">F</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">F</span> <span class="o">&lt;</span> <span class="mf">3.0</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">F</span><span class="p">[</span><span class="n">F</span> <span class="o">&lt;</span> <span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nfr</span><span class="p">):</span>
@@ -2215,7 +2199,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">getEPNL</span><span class="p">(</span><span class="n">PNLT</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the Effective Perceived Noise Level.</span>
 
 <span class="sd">        :param ndarray PNLT: 1D array containing the corrected Perceived Noise Level (dB)</span>
@@ -2236,7 +2220,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">getNoys</span><span class="p">(</span><span class="n">fband</span><span class="p">,</span> <span class="n">SPL_vec</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Computes Noys metric from SPL and frequency. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Computes Noys metric from SPL and frequency. &quot;&quot;&quot;</span>
         <span class="n">Noys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fband</span><span class="p">))</span>
 
         <span class="n">Mb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.043478</span><span class="p">,</span> <span class="mf">0.040570</span><span class="p">,</span> <span class="mf">0.036831</span><span class="p">,</span> <span class="mf">0.036831</span><span class="p">,</span> <span class="mf">0.035336</span><span class="p">,</span> <span class="mf">0.033333</span><span class="p">,</span> <span class="mf">0.033333</span><span class="p">,</span> <span class="mf">0.032051</span><span class="p">,</span> <span class="mf">0.030675</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -2267,7 +2251,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Computes the dynamic viscocity for a given temperature. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Computes the dynamic viscocity for a given temperature. &quot;&quot;&quot;</span>
         <span class="n">mu_0</span> <span class="o">=</span> <span class="mf">17.1e-6</span>
         <span class="k">if</span> <span class="mf">273.15</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mf">373.15</span><span class="p">:</span>
             <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.4743742289</span><span class="p">,</span> <span class="mf">0.0445219791</span><span class="p">,</span> <span class="mf">0.1651857290</span><span class="p">])</span>
@@ -2281,42 +2265,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2023, Marily Thoma
-
-    </p>
+    <p>&#169; Copyright 2023, Marily Thoma.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
