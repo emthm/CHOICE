@@ -34,22 +34,22 @@ class WeightChoice:
         """ Constructs all the necessary attributes for the noise calculation, from the provided weightAircraft file."""
 
         self.MtipD_fan = weightFile.get('MtipFan')
-        if self.MtipD_fan is not None and (self.MtipD_fan > 3.0 or self.MtipD_fan < 0.7): choice_aux.report_error(
-            'unexpected value on MtipD_fan', 'setFan', 'SetWeightChoice')
+        if self.MtipD_fan is not None and (self.MtipD_fan > 3.0 or self.MtipD_fan < 0.7):
+            print('unexpected value on MtipD_fan in WeightChoice in choice_interf')
         self.xnlD_fan = weightFile.get('xnl')
-        if self.xnlD_fan is not None and self.xnlD_fan > 600: choice_aux.report_error(
-            'xnl from self.weightFile very large. Unit should always be rps!', 'setFan', 'SetWeightChoice')
+        if self.xnlD_fan is not None and self.xnlD_fan > 600:
+            print('xnl from weightFile in choice_interf is very large. Unit should always be rps!')
         self.rss_fan = weightFile.get('FanRss')
-        if self.rss_fan is not None and (self.rss_fan > 300.0 or self.rss_fan < 5.0): choice_aux.report_error(
-            'unexpected value on rss_fan', 'setFan', 'SetWeightChoice')
+        if self.rss_fan is not None and (self.rss_fan > 300.0 or self.rss_fan < 5.0):
+            print('unexpected value on rss_fan in WeightChoice in choice_interf')
         self.N_rotors_fan = int(weightFile.get('FanR1BNb'))
         self.N_stators_fan = int(weightFile.get('FanVsOgvNb'))
         self.A2_fan = weightFile.get('FanA2')
-        if self.A2_fan is not None and (self.A2_fan > 50.0 or self.A2_fan < 0.1): choice_aux.report_error(
-            'unexpected value on A2_fan', 'setFan', 'SetWeightChoice')
+        if self.A2_fan is not None and (self.A2_fan > 50.0 or self.A2_fan < 0.1):
+            print('unexpected value on A2_fan in WeightChoice in choice_interf')
         self.D1_fan = weightFile.get('FanR1BDiaOuter')
-        if self.D1_fan is not None and (self.D1_fan < 0.1 or self.D1_fan > 10.0): choice_aux.report_error(
-            'unexpected value on D1_fan', 'setFan', 'SetWeightChoice')
+        if self.D1_fan is not None and (self.D1_fan < 0.1 or self.D1_fan > 10.0):
+            print('unexpected value on D1_fan in WeightChoice in choice_interf')
 
         self.n_stages_LPC = weightFile.get('stages_LPC')
         self.gbx_ratio = weightFile.get('GBX_ratio')
@@ -96,22 +96,22 @@ class WeightChoice:
         self.A_bypass_caj = weightFile.get('A_bypass')
 
         self.MtipD_ff = weightFile.get('Mtipff')
-        if self.MtipD_ff is not None and (self.MtipD_ff > 3.0 or self.MtipD_ff < 0.7): choice_aux.report_error(
-            'unexpected value on MtipD_ff', 'setff', 'SetWeightChoice')
+        if self.MtipD_ff is not None and (self.MtipD_ff > 3.0 or self.MtipD_ff < 0.7):
+            print('unexpected value on MtipD_ff in WeightChoice in choice_interf')
         self.xnlD_ff = weightFile.get('xnlff')
-        if self.xnlD_ff is not None and self.xnlD_ff > 600: choice_aux.report_error(
-            'xnlff from weightFile very large. Unit should always be rps!', 'setff', 'SetWeightChoice')
+        if self.xnlD_ff is not None and self.xnlD_ff > 600:
+            print('xnlff from weightFile in choice_interf very large. Unit should always be rps!')
         self.rss_ff = weightFile.get('ffRss')
-        if self.rss_ff is not None and (self.rss_ff > 300.0 or self.rss_ff) < 5.0: choice_aux.report_error(
-            'unexpected value on rss_ff', 'setff', 'SetWeightChoice')
+        if self.rss_ff is not None and (self.rss_ff > 300.0 or self.rss_ff) < 5.0:
+            print('unexpected value on rss_ff in WeightChoice in choice_interf')
         self.N_rotors_ff = weightFile.get('ffR1BNb')
         self.N_stators_ff = weightFile.get('ffVsOgvNb')
         self.A2_ff = weightFile.get('ffA2')
-        if self.A2_ff is not None and (self.A2_ff > 50.0 or self.A2_ff < 0.1): choice_aux.report_error(
-            'unexpected value on A2_ff', 'setff', 'SetWeightChoice')
+        if self.A2_ff is not None and (self.A2_ff > 50.0 or self.A2_ff < 0.1):
+            print('unexpected value on A2_ff in WeightChoice in choice_interf')
         self.D1_ff = weightFile.get('ffR1BDiaOuter')
-        if self.D1_ff is not None and (self.D1_ff < 0.1 or self.D1_ff > 10.0): choice_aux.report_error(
-            'unexpected value on D1_ff', 'setff', 'SetWeightChoice')
+        if self.D1_ff is not None and (self.D1_ff < 0.1 or self.D1_ff > 10.0):
+            print('unexpected value on D1_ff in WeightChoice in choice_interf')
 
         self.A_core_caj_ffn = weightFile.get('A_core_ffn')
         self.A_bypass_caj_ffn = weightFile.get('A_bypass_ffn')
@@ -422,7 +422,7 @@ class Trajectory:
             solution_found = True
 
         if not solution_found:
-            choice_aux.report_error('failed to establish solution', 'get_dx', 'choice_interf')
+            print('failed to establish solution in get_dx in choice_interf')
             return
         else:
             return dx
