@@ -1,6 +1,12 @@
 # CHOICE - CHalmers nOIse CodE
 An aircraft noise prediction framework based on empirical and semi-empirical methods found in public literature. 
-The code is able to predict the noise at the source (aircraft) and at the certification points on the ground (so far for 2D propagation only).  
+The code is able to predict the noise at the source (aircraft) and at the certification points on the ground (so far for 2D propagation only). 
+
+
+If you use this framework in your work, we would kindly ask you to help us by citing CHOICE. 
+Please use the following paper where CHOICE is described in detail and validated against noise measurements:
+>Thoma, E. M., Grönstedt, T., Otero, E., and Zhao, X., "Assessment of an Open-Source Aircraft Noise Prediction Model Using Approach Phase Measurements", Journal of Aircraft, 2023, https://doi.org/10.2514/1.C037332
+
 
 -------------------------------------------------------------------------------
 
@@ -20,7 +26,7 @@ The code is able to predict the noise at the source (aircraft) and at the certif
 
 ## How to use CHOICE
 
-A sample script to run choice is provided in main.py. Below a step by step guide:
+A sample script to run choice is provided in main.py. Below a step-by-step guide:
 
 1. Import the library:
    ```
@@ -123,7 +129,7 @@ The following files are required as input to CHOICE
 - Dhyd_comb: exhaust nozzle exit plane hydraulic diameter
 - Lc_comb: combustor nominal length
 - h_annulus_comb: annulus height at combustor exit
-- LptStgLastBNb: number of rotor at the last stage of the LPT---------------------------------
+- LptStgLastBNb: number of rotors at the last stage of the LPT
 - stages_LPT: number of LPT stages
 - LptStgLastDiaOuter: outer diameter of the last stage of the LPT
 - LptStgLastAExit: exit area of the last stage of the LPT
