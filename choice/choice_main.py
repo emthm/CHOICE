@@ -80,8 +80,8 @@ class CHOICE:
         ground_noise = \
             GroundNoise.compute_flight_effects(noise_choice.use_ground_reflection, noise_choice.use_spherical_spreading,
                                                noise_choice.use_atmospheric_attenuation, trajectory,
-                                               noise_choice.ymic[i], noise_choice.dtIsa, SPLi, noise_sources.theta,
-                                               noise_sources.fband)
+                                               noise_choice.ymic[i], noise_choice.dtIsa, noise_choice.elevation,
+                                               SPLi, noise_sources.theta, noise_sources.fband)
         EPNL = CertificationData.compute(trajectory.n_times, ground_noise.fobs, noise_sources.fband, ground_noise.SPLp,
                                          modules)
         save_noise_points(output_folder + '\choiceOutput.txt', noise_choice.opPnt[i].strip(), noise_choice.fuselage_fan,

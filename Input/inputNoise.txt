@@ -2,6 +2,8 @@ point:Approach
 trajectory_performance: true
 use_trajectory_preparser: false
 generate_noise_sources: false
+plot_source_spectra: false
+directivity_angle_to_plot: 90
 use_ground_reflection: true
 use_spherical_spreading: true
 use_atmospheric_attenuation: true
@@ -14,7 +16,11 @@ xmic:-2000.0
 ymic:1.2
 zmic:0.0
 !
+dt_mic: 0.5
+ground_elevation: 0
 dtIsa: 0.0
+!
+engine_height: 1.57
 !
 ! aircraft parameters - find data for specific aircraft!!!mass has to be MTOW and in kg
 ! aircraft_type:a321neo
@@ -50,7 +56,6 @@ fan_distortion: 0
 ff_distortion: 0
 fuselage_fan: false
 !
-psi:0.048517
 defl_flap:0.436332
 defl_slat:0.383972
 !
