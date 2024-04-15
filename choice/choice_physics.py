@@ -159,7 +159,7 @@ class Airframe(NoiseSource):
         self.X = \
             np.array([-9.992824, -7.587345, -1.474888e1, 3.307829e1, 1.141251e2, -3.080667e2, 2.104914e2, -4.519879e1])
 
-    def calc(self, Ta, Ha, Ma, Va, defl_flap, defl_slat, LG):
+    def calc(self, Ta, Ha, Ma, Va, phi, defl_flap, defl_slat, LG):
         """
         Airframe source noise model based on a combination of methods found in public literature. Trailing-edge and
         landing gear noise are modelled separately. The references for each method are found in the description of the
@@ -169,6 +169,7 @@ class Airframe(NoiseSource):
         :param float Ha: Flight altitude (m)
         :param float Ma: Aircraft Mach number
         :param float Va: Aircraft speed (m/s)
+        :param float phi: Lateral directivity angle (deg)
         :param float defl_flap: Flap deflection angle (rad)
         :param float defl_flap: Slat deflection angle (rad)
         :param int LG: Landing gear position (0 => retracted, 1 => extended)
@@ -206,7 +207,7 @@ class Airframe(NoiseSource):
 
             # Noise from wing
             ny = DynamicViscocity.calculate(Ta) / rho0
-            phi_sid = 0  # Sideline angle (lateral directivity) is calculated from the flyover plane->In flyover, phi=0
+            phi_sid = phi  # Sideline angle (lateral directivity) is calculated from the flyover plane->In flyover, phi=0
             horizontal_factor = np.cos(np.radians(phi_sid))
             wing = self.get_wing_and_tail(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND)
             prms_wing = wing
@@ -1712,12 +1713,12 @@ class PropagationEffects:
     :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
     :param ndarray xsii: 1D array containing observation angles (rad)
     :param ndarray Mai: 1D array containing Mach number
-    :param ndarray alphai: 1D array containing Angle of attack (deg)
+    :param ndarray xsi_alphai: 1D array containing dircetivity angle accounting for angle of attack (deg)
     :param float dTisa: Deviation from ISA temperature (K)
     :param float elevation: Ground elevation at microphone location (m)
     """
 
-    def __init__(self, ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai, alphai, dTisa, elevation):
+    def __init__(self, ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai, xsi_alphai, dTisa, elevation):
         self.ymic = ymic
         self.use_ground_refl = use_ground_refl
         self.spherical_spr = spherical_spr
@@ -1730,7 +1731,7 @@ class PropagationEffects:
             self.fupper_ds = self.getDopplerShift(fband * (2 ** (1 / 6)), xsii, Mai)
             self.flower_ds = self.getDopplerShift(fband / (2 ** (1 / 6)), xsii, Mai)
             self.nfreq = len(self.fds)
-            self.xsii_alpha = self.get_theta(xsii, alphai)  # add aircraft alpha to xsii
+            self.xsii_alpha = xsi_alphai
         self.N_b = 5
         self.max_n_freqs = 150
         self.dTisa = dTisa
@@ -2005,19 +2006,6 @@ class PropagationEffects:
             Lp_narrow[jfstart:jfend] = choice_aux.prms2SPL(prms[jfstart:jfend])
 
         return Lp_narrow
-
-    def get_theta(self, xsi, alphai):
-        """
-        Computes directivity angle (from aircraft body axis to sound propagation path).
-
-        :param ndarray xsi: 1D array containing observation angles (rad)
-        :param ndarray alphai: 1D array containing Angle of attack (deg)
-
-        :return ndarray: 1D array containing directivity angle to microphone (rad)
-        """
-        theta = xsi + np.radians(alphai)
-        theta[theta > math.pi] = 2 * math.pi - theta[theta > math.pi]
-        return theta
 
     @staticmethod
     def atmospheric_attenuation(t_k, pa, relHum, r, fband, third_octave_band=False):
