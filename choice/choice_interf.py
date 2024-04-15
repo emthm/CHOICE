@@ -141,6 +141,13 @@ class NoiseChoice:
         self.gen_noise_source_matr = False
         if 'true' in noiseFile.get('generate_noise_sources'): self.gen_noise_source_matr = True
 
+        self.plot_source_spectra = False
+        if 'true' in noiseFile.get('plot_source_spectra'):
+            self.plot_source_spectra = True
+            self.directivity_plot = float(noiseFile.get('directivity_angle_to_plot'))
+        else:
+            self.directivity_plot = None
+
         self.use_ground_reflection = True
         if 'false' in noiseFile.get('use_ground_reflection'): self.use_ground_reflection = False
 
@@ -176,6 +183,8 @@ class NoiseChoice:
         self.xmic = np.zeros(3)
         self.ymic = np.zeros(3)
         self.zmic = np.zeros(3)
+        self.dt_mic = noiseFile.get('dt_mic')
+        self.elevation = noiseFile.get('ground_elevation')
         self.Nf_comb_ign = np.zeros(3)
         self.Nf_comb_pattern = np.zeros(3)
 
@@ -221,6 +230,7 @@ class NoiseChoice:
         self.Svt = noiseFile.get('vertical_tail_area')  # vertical tail area m2
 
         self.no_engines = int(noiseFile.get('no_engines'))
+        self.h_engine = noiseFile.get('engine_height')
         self.dtIsa = noiseFile.get('dtIsa')
         self.total_weight_airfrm = noiseFile.get('aircraft_mass')
 
@@ -238,17 +248,14 @@ class NoiseChoice:
             self.N_wheels_airfrm = np.array([float(nw) for nw in noiseFile.get('Nwheels').split()])
             self.N_struts_airfrm = np.array([float(ns) for ns in noiseFile.get('Nstruts').split()])
 
-        self.psi_airfrm_vec = np.zeros(3)
         self.defl_flap_airfrm_vec = np.zeros(3)
         self.defl_slat_airfrm_vec = np.zeros(3)
         self.LandingGear = np.zeros(3)
         if self.nops == 1:
-            self.psi_airfrm_vec[0] = noiseFile.get('psi')
             self.defl_flap_airfrm_vec[0] = noiseFile.get('defl_flap')
             self.defl_slat_airfrm_vec[0] = noiseFile.get('defl_slat')
             self.LandingGear[0] = noiseFile.get('LandingGear_vec')
         else:
-            self.psi_airfrm_vec = np.array([float(psi) for psi in noiseFile.get('psi').split()])
             self.defl_flap_airfrm_vec = np.array([float(df) for df in noiseFile.get('defl_flap').split()])
             self.defl_slat_airfrm_vec = np.array([float(ds) for ds in noiseFile.get('defl_slat').split()])
             self.LandingGear = np.array([int(lg) for lg in noiseFile.get('LandingGear_vec').split()])
@@ -268,11 +275,12 @@ class Trajectory:
         for the selected trajectories. Computes distance to mic (r), flight path angle (clgr), time and angle between
         aircraft and microphone (xsi). """
 
-        self.read_trajectory_input(opPnt, input_folder)  # read trajectory data from file
+        self.read_trajectory_input(opPnt, input_folder, noise_choice.h_engine)  # read trajectory data from file
 
         if 'Approach' in opPnt and self.x[0]>0: self.x = self.x - self.x[-1]
 
-        self.r = np.sqrt((self.x - noise_choice.xmic[ipnt]) ** 2 + (self.y - noise_choice.ymic[ipnt]) ** 2 +
+        self.r = np.sqrt((self.x - noise_choice.xmic[ipnt]) ** 2 +
+                         (self.y - noise_choice.ymic[ipnt] - noise_choice.elevation) ** 2 +
                          noise_choice.zmic[ipnt] ** 2)  # distance along trajectory to microphone
 
         self.clgr = np.zeros(self.n_traj_pts)  # flight path angle along trajectory
@@ -284,8 +292,8 @@ class Trajectory:
 
         self.clgr[self.n_traj_pts - 1] = self.clgr[self.n_traj_pts - 2]
 
-        self.get_xsi(noise_choice.xmic[ipnt], noise_choice.ymic[ipnt])
-
+        self.get_xsi(noise_choice.xmic[ipnt], noise_choice.ymic[ipnt] + noise_choice.elevation, noise_choice.zmic[ipnt])
+        
         if np.isnan(self.xsi).any(): sys.exit('not a number computed for xsi')
         self.xsid = np.rad2deg(self.xsi)
 
@@ -310,7 +318,7 @@ class Trajectory:
         :param int ipnt: Operating point (trajectory) number in order of appearance in the inputNoise.txt
         :param NoiseChoice noise_choice: NoiseChoice object
         """
-        dt = 0.5
+        dt = noise_choice.dt_mic
 
         # create tmic (starting from when the first noise reaches the microphone from xstart (i.e. r[0]/a[0]) to when
         # the noise reaches the microphone from the last point)
@@ -327,7 +335,7 @@ class Trajectory:
         self.clgr_source = np.zeros(self.n_times)
 
         self.x_source[0] = self.x[0] - noise_choice.xmic[ipnt]  # use mic-related coordinate system
-        self.y_source[0] = self.y[0] - noise_choice.ymic[ipnt]  # use mic-related coordinate system
+        self.y_source[0] = self.y[0] - (noise_choice.ymic[ipnt] + noise_choice.elevation)  # use mic-related coordinate system
         self.va_source[0] = self.Va[0]
         self.a_source[0] = self.a[0]
         self.clgr_source[0] = self.clgr[0]
@@ -368,8 +376,9 @@ class Trajectory:
         :param float dtIsa: Deviation from ISA temperature
         """
         R = choice_aux.get_R(0.0)
-        self.ta = np.array([choice_physics.AtmosphericEffects.get_t_ambient(h, dtIsa) for h in self.y])
-        self.a = np.sqrt(choice_data.gamma_air * R * self.ta)
+        self.pa = choice_physics.AtmosphericEffects.get_p_ambient(self.y)
+        self.ta = choice_physics.AtmosphericEffects.get_t_ambient(self.y, dtIsa)
+        self.a = choice_physics.AtmosphericEffects.get_sound_speed(self.ta)
         self.Ma = self.Va / self.a
 
     @staticmethod
@@ -427,19 +436,31 @@ class Trajectory:
         else:
             return dx
 
-    def get_xsi(self, xmic, ymic):
+    def get_xsi(self, xmic, ymic, zmic):
         """
         Computes the angle between the direction of the aircraft's motion and the sound propagation path.
 
         :param float xmic: Microphone/observer horizontal distance (m)
         :param float ymic: Microphone/observer height (m)
+        :param float zmic: Microphone/observer lateral horizontal distance (m)
         """
-        fi = np.arctan((xmic - self.x) / (self.y - ymic))
-        fi[self.y <= ymic] = math.pi / 2  # in reality the airframe and engines are always higher than the microphone
-        psi = math.pi / 2 - fi
-        self.xsi = psi + np.deg2rad(self.clgr)
+        if zmic > 0:
+            ex = (xmic - self.x) / np.sqrt((xmic - self.x)**2 + zmic**2 + (ymic - self.y)**2)
+            ey = (self.y - ymic) / np.sqrt((xmic - self.x)**2 + zmic**2 + (ymic - self.y)**2)
+            ez = zmic / np.sqrt((xmic - self.x)**2 + zmic**2 + (ymic - self.y)**2)
+            ex_body = ex * np.cos(np.deg2rad(self.clgr)) - ey * np.sin(np.deg2rad(self.clgr))
+            ey_body = ex * np.sin(np.deg2rad(self.clgr)) + ey * np.cos(np.deg2rad(self.clgr))
+            ez_body = ez
+            fi = np.arccos(ex_body)
+            self.xsi = fi
+            self.phi = np.degrees(np.arctan2(ey_body, ez_body))
+        else:
+            fi = np.arctan((xmic - self.x) / (self.y - ymic))
+            fi[self.y <= ymic] = math.pi / 2  # in reality the airframe and engines are always higher than the microphone
+            psi = math.pi / 2 - fi
+            self.xsi = psi + np.deg2rad(self.clgr)
 
-    def read_trajectory_input(self, opPnt, input_folder):
+    def read_trajectory_input(self, opPnt, input_folder, h_engine):
         """
         Reads and stores the trajectory data (position, velocity and angle of attack) for the provided operating point
 
@@ -462,15 +483,13 @@ class Trajectory:
                         y.append(float(string[1]))
                         Va.append(float(string[2]))
                         alpha.append(float(string[3]))
-
                     else:
                         continue
 
         self.x = np.asarray(x)
-        self.y = np.asarray(y)
+        self.y = np.asarray(y) + h_engine
         self.Va = np.asarray(Va)
         self.alpha = np.asarray(alpha)
-                              
         self.n_traj_pts = len(self.x)
 
     @classmethod
@@ -589,12 +608,10 @@ class PerformanceChoice:
         file_path = self.input_folder + self.point.rstrip() + '_airfrm_performance.txt'
         if self.trajPerf:
             storage_mat = choice_aux.loadStorageMat(file_path, self.n_traj, 4)
-            self.psi_airfrm = storage_mat[:, 0]
             self.defl_flap_airfrm = storage_mat[:, 1]
             self.defl_slat_airfrm = storage_mat[:, 2]
             self.LandingGear = storage_mat[:, 3]
         else:
-            self.psi_airfrm = np.full(self.n_traj, noise_choice.psi_airfrm_vec[self.ptr])
             self.defl_flap_airfrm = np.full(self.n_traj, noise_choice.defl_flap_airfrm_vec[self.ptr])
             self.defl_slat_airfrm = np.full(self.n_traj, noise_choice.defl_slat_airfrm_vec[self.ptr])
             self.LandingGear = np.full(self.n_traj, noise_choice.LandingGear[self.ptr])
@@ -705,7 +722,7 @@ class PerformanceChoice:
             self.Mtip_lpc = storage_mat[:, 0]
             self.Mu_lpc = storage_mat[:, 1]
             self.xnl_lpc = storage_mat[:, 2]
-            self.dt_lpc = storage_mat[:, 3]
+            self.dt_lpc = storage_mat[:, 3] / self.weight_choice.n_stages_LPC
             self.g1_lpc = storage_mat[:, 4]
         else:
             # use performanceResults.txt file and additional data to estimate the trajectory variables.
@@ -872,6 +889,13 @@ class Prms:
         self.Lpt = np.zeros((nfreq, nthet, npts))
         self.Caj = np.zeros((nfreq, nthet, npts))
         self.Airfrm = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_wing = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_hor_tail = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_slats = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_flaps = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_nose_lg = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_main_lg = np.zeros((nfreq, nthet, npts))
+        self.Airfrm_lg = np.zeros((nfreq, nthet, npts))
         self.Ff_inlet_tone = np.zeros((nfreq, nthet, npts))
         self.Ff_discharge_tone = np.zeros((nfreq, nthet, npts))
         self.Ff_inlet_broadband = np.zeros((nfreq, nthet, npts))
@@ -1019,9 +1043,16 @@ class NoiseSources:
                 else:
                     pass
 
-            prms.Airfrm[:, :, i] = airframe.calc(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i],
-                                                 performance.defl_flap_airfrm[i], performance.defl_slat_airfrm[i],
-                                                 performance.LandingGear[i])
+            temp = airframe.calc(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i], performance.defl_flap_airfrm[i],
+                                 performance.defl_slat_airfrm[i], performance.LandingGear[i])
+            prms.Airfrm[:, :, i] = temp[0]
+            prms.Airfrm_wing[:, :, i] = temp[1]
+            prms.Airfrm_hor_tail[:, :, i] = temp[2]
+            prms.Airfrm_slats[:, :, i] = temp[3]
+            prms.Airfrm_flaps[:, :, i] = temp[4]
+            prms.Airfrm_nose_lg[:, :, i] = temp[5]
+            prms.Airfrm_main_lg[:, :, i] = temp[6]
+            prms.Airfrm_lg[:, :, i] = temp[7]
 
         # include multiple engines
         for key in prms.__dict__:
@@ -1031,6 +1062,13 @@ class NoiseSources:
         if noise.gen_noise_source_matr:
             choice_aux.gen_noise_source_matr_subr(output_folder, operatingPoint, choice_data.nfreq, choice_data.nthet,
                                                   traj.n_traj_pts, prms, ext)
+
+        if noise.plot_source_spectra:
+            i_plot = np.argmin(abs(traj.xsid - noise.directivity_plot))
+            choice_aux.plot_source(fband, theta, prms, noise.directivity_plot, i_plot, modules)
+            choice_aux.plot_airframe_source(fband, theta, prms.Airfrm, prms.Airfrm_wing, prms.Airfrm_hor_tail,
+                                            prms.Airfrm_flaps, prms.Airfrm_slats, prms.Airfrm_main_lg, prms.Airfrm_lg,
+                                            prms.Airfrm_nose_lg, noise.directivity_plot, i_plot)
 
         return cls(prms, theta, fband)
 
@@ -1053,7 +1091,16 @@ class NoiseMatrices:
             if 'Fan' in modules:
                 self.Fan_inlet = []
                 self.Fan_discharge = []
-            if 'Ipc' or 'Lpc' in modules: self.Lpc_inlet = []
+                self.Fan_inlet_tone = []
+                self.Fan_discharge_tone = []
+                self.Fan_inlet_broadband = []
+                self.Fan_discharge_broadband = []
+                self.Fan_inlet_combination = []
+            if 'Ipc' or 'Lpc' in modules:
+                self.Lpc_inlet = []
+                self.Lpc_inlet_tone = []
+                self.Lpc_inlet_broadband = []
+                self.Lpc_inlet_combination = []
             if 'Lpt' in modules: self.Lpt = []
             if 'Comb' in modules: self.Comb = []
             if 'Cold_nozzle' in modules: self.Caj = []
@@ -1081,6 +1128,9 @@ def interpolate_to_t_source(traj, modules, prms):
     traj.Mai = interp1d(traj.time, traj.Ma, fill_value="extrapolate")(traj.t_source)
     traj.Tai = interp1d(traj.time, traj.ta, fill_value="extrapolate")(traj.t_source)
     traj.alphai = interp1d(traj.time, traj.alpha, fill_value="extrapolate")(traj.t_source)
+    traj.pai = interp1d(traj.time, traj.pa, fill_value="extrapolate")(traj.t_source)
+    if hasattr(traj, 'phi'):
+        traj.phii = interp1d(traj.time, traj.phi, fill_value="extrapolate")(traj.t_source)
 
     SPLi = NoiseMatrices(modules)
 
@@ -1092,6 +1142,7 @@ def interpolate_to_t_source(traj, modules, prms):
 
 def compute_SPLi(prmsi):
     """ Computes Sound Pressure Level matrix from rms acoustic pressure. """
+    prmsi[prmsi == 0] = choice_data.p0
     return 20.0 * np.log10(prmsi / choice_data.p0)
 
 
@@ -1108,7 +1159,7 @@ class GroundNoise:
         self.fobs = fobs
 
     @classmethod
-    def compute_flight_effects(cls, use_ground_refl, spherical_spr, atm_atten, traj, ymic, dTisa, SPLi,
+    def compute_flight_effects(cls, use_ground_refl, spherical_spr, atm_atten, traj, ymic, dTisa, elevation, SPLi,
                                theta, fband):
         """
         Computes the sound pressure level matrices along the trajectory accounting for propagation effects.
@@ -1119,6 +1170,7 @@ class GroundNoise:
         :param Trajectory traj: A Trajectory object with the trajectory data
         :param float ymic: Microphone height (m)
         :param float dTisa: Deviation from ISA temperature (K)
+        :param float elevation: Ground elevation at microphone location (m)
         :param ndarray SPLi: 3D array containing Sound Pressure Level
         :param ndarray theta: 1D array containing directivity angles (deg)
         :param ndarray fband: 1D array containing 1/3 octave band frequencies (Hz)
@@ -1128,13 +1180,17 @@ class GroundNoise:
         """
 
         propagation = choice_physics.PropagationEffects(ymic, use_ground_refl, spherical_spr, atm_atten, fband,
-                                                        traj.xsii, traj.Mai, traj.alphai, dTisa)
+                                                        traj.xsii, traj.Mai, traj.alphai, dTisa, elevation)
+        if hasattr(traj, 'phii'):
+            phi = traj.phii
+        else:
+            phi = np.nan
         SPLp = NoiseMatrices()
         prmsp = NoiseMatrices()
         for key in SPLi.__dict__:
             [SPLp.__dict__[key], prmsp.__dict__[key]] = \
                 propagation.flightEffects(traj.n_times, theta, traj.x_source, traj.y_source, traj.r1, traj.Tai,
-                                          SPLi.__dict__[key])
+                                          SPLi.__dict__[key], key, phi)
         return cls(SPLp, propagation.fobs)
 
 
@@ -1182,14 +1238,17 @@ class CertificationData:
         PNL = NoiseMatricesCerification(modules)
         PNLT = NoiseMatricesCerification(modules)
         EPNL = NoiseMatricesCerification(modules)
-        for key in SPLp.__dict__:
+        SPLp_total = np.zeros_like(SPLp.Airfrm)
+        for key in PNL.__dict__:
             PNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp.__dict__[key])
             PNLT.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.__dict__[key],
                                                                               SPLp.__dict__[key])
             EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.__dict__[key])
+            SPLp_total += 10 ** (SPLp.__dict__[key] / 10)
+        SPLp_total = 10 * np.log10(SPLp_total)
 
-        all_sources = np.array([PNLT_value for PNLT_value in PNLT.__dict__.values()])
-        PNLT.tot = choice_aux.getTotLevel(all_sources)
+        PNL.tot = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp_total)
+        PNLT.tot = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.tot, SPLp_total)
         EPNL.tot = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.tot)
 
         return EPNL
