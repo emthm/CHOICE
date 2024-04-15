@@ -106,7 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_interf.source_interpolation"><code class="docutils literal notranslate"><span class="pre">source_interpolation()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_physics">Physics based methods for noise prediction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-choice.choice_physics">Methods for noise prediction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_physics.Airframe"><code class="docutils literal notranslate"><span class="pre">Airframe</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.Airframe.calc"><code class="docutils literal notranslate"><span class="pre">Airframe.calc()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.Airframe.full_matrix"><code class="docutils literal notranslate"><span class="pre">Airframe.full_matrix()</span></code></a></li>
@@ -142,11 +142,17 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_physics.PropagationEffects"><code class="docutils literal notranslate"><span class="pre">PropagationEffects</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.atmospheric_attenuation"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.atmospheric_attenuation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.convert_to_3rd_octave_bands"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.convert_to_3rd_octave_bands()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.convert_to_narrowband"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.convert_to_narrowband()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.flightEffects"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.flightEffects()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.getDopplerShift"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.getDopplerShift()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.get_atm_abs"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.get_atm_abs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.get_theta"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.get_theta()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.ground_reflection"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.ground_reflection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.lateral_attenuation"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.lateral_attenuation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.subband_combination"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.subband_combination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.subband_division"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.subband_division()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.tones_to_3rd_octave_bands"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.tones_to_3rd_octave_bands()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_physics.Turbine"><code class="docutils literal notranslate"><span class="pre">Turbine</span></code></a><ul>
@@ -170,6 +176,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.get_M"><code class="docutils literal notranslate"><span class="pre">get_M()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.get_R"><code class="docutils literal notranslate"><span class="pre">get_R()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.loadStorageMat"><code class="docutils literal notranslate"><span class="pre">loadStorageMat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.plot_airframe_source"><code class="docutils literal notranslate"><span class="pre">plot_airframe_source()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.plot_source"><code class="docutils literal notranslate"><span class="pre">plot_source()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.preProcessFanFile"><code class="docutils literal notranslate"><span class="pre">preProcessFanFile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.preProcessLptFile"><code class="docutils literal notranslate"><span class="pre">preProcessLptFile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#choice.choice_aux.prms2SPL"><code class="docutils literal notranslate"><span class="pre">prms2SPL()</span></code></a></li>
@@ -539,13 +547,14 @@ and the 1/3 octave band frequencies</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="choice.choice_interf.Trajectory.get_xsi">
-<span class="sig-name descname"><span class="pre">get_xsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.get_xsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.get_xsi" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_xsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xmic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zmic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.get_xsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.get_xsi" title="Link to this definition"></a></dt>
 <dd><p>Computes the angle between the direction of the aircraft’s motion and the sound propagation path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xmic</strong> (<em>float</em>) – Microphone/observer horizontal distance (m)</p></li>
 <li><p><strong>ymic</strong> (<em>float</em>) – Microphone/observer height (m)</p></li>
+<li><p><strong>zmic</strong> (<em>float</em>) – Microphone/observer lateral horizontal distance (m)</p></li>
 </ul>
 </dd>
 </dl>
@@ -553,7 +562,7 @@ and the 1/3 octave band frequencies</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="choice.choice_interf.Trajectory.read_trajectory_input">
-<span class="sig-name descname"><span class="pre">read_trajectory_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opPnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.read_trajectory_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.read_trajectory_input" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">read_trajectory_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opPnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_interf.html#Trajectory.read_trajectory_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_interf.Trajectory.read_trajectory_input" title="Link to this definition"></a></dt>
 <dd><p>Reads and stores the trajectory data (position, velocity and angle of attack) for the provided operating point</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -681,7 +690,7 @@ for each component, the observation angle, the Mach number and the angle of atta
 
 </section>
 <section id="module-choice.choice_physics">
-<span id="physics-based-methods-for-noise-prediction"></span><h2>Physics based methods for noise prediction<a class="headerlink" href="#module-choice.choice_physics" title="Link to this heading"></a></h2>
+<span id="methods-for-noise-prediction"></span><h2>Methods for noise prediction<a class="headerlink" href="#module-choice.choice_physics" title="Link to this heading"></a></h2>
 <p>Module choice_physics</p>
 <p>Physics and methods for the noise prediction broken down in modules.</p>
 <dl class="py class">
@@ -710,7 +719,7 @@ for each component, the observation angle, the Mach number and the angle of atta
 <li><p><strong>Svt</strong> (<em>float</em>) – Vertical tail area (m)</p></li>
 <li><p><strong>flap_type</strong> (<em>str</em>) – Flap type: 1slot, 2slot, 3slot</p></li>
 <li><p><strong>slat_type</strong> (<em>str</em>) – Leading edge high-lift system type: slat, le_flap</p></li>
-<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the directivity angles (deg)</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the longitudinal directivity angles (deg)</p></li>
 <li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
 </ul>
 </dd>
@@ -866,14 +875,14 @@ Codes”. NASA-CR-210244). Includes model for SAC (Single-Annular Combustor) and
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Nf</strong> (<em>int</em>) – Number of ignited fuel nozzles</p></li>
 <li><p><strong>pattern</strong> (<em>int/float</em>) – Fuel nozzle firing pattern</p></li>
-<li><p><strong>pa</strong> (<em>float</em>) – Atmosperic pressure (Pa)</p></li>
+<li><p><strong>pa</strong> (<em>float</em>) – Atmospheric pressure (Pa)</p></li>
 <li><p><strong>p3</strong> (<em>float</em>) – Combustor inlet pressure (Pa)</p></li>
 <li><p><strong>p4</strong> (<em>float</em>) – Combustor exit pressure (Pa)</p></li>
-<li><p><strong>p7</strong> (<em>float</em>) – Tubine last stage exit pressure (Pa)</p></li>
-<li><p><strong>ta</strong> (<em>float</em>) – Atmosperic temperature (K)</p></li>
+<li><p><strong>p7</strong> (<em>float</em>) – Turbine last stage exit pressure (Pa)</p></li>
+<li><p><strong>ta</strong> (<em>float</em>) – Atmospheric temperature (K)</p></li>
 <li><p><strong>t3</strong> (<em>float</em>) – Combustor inlet temperature (K)</p></li>
 <li><p><strong>t4</strong> (<em>float</em>) – Combustor exit temperature (K)</p></li>
-<li><p><strong>t5</strong> (<em>float</em>) – Tubine last stage exit temperature (K)</p></li>
+<li><p><strong>t5</strong> (<em>float</em>) – Turbine last stage exit temperature (K)</p></li>
 <li><p><strong>w3</strong> (<em>float</em>) – Combustor inlet flow (kg/s)</p></li>
 </ul>
 </dd>
@@ -918,7 +927,7 @@ Codes”. NASA-CR-210244). Includes model for SAC (Single-Annular Combustor) and
 <dl class="py method">
 <dt class="sig sig-object py" id="choice.choice_physics.FanCompressor.calc">
 <span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operatingPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mtip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xnl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#FanCompressor.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.FanCompressor.calc" title="Link to this definition"></a></dt>
-<dd><p>Fan and compressor source noise model based on the methods developed by Heidmann (M. F. Heidmann. “Interim
+<dd><p>Fan and compressor source noise model based on the methods developed by Heidman (M. F. Heidmann. “Interim
 Prediction Method for Fan and Compressor Source Noise”. NASA-TM-X71763) and updated by Kontos et al.
 (K. B. Kontos, B. A. Janardan and P. R. Gliebe. “Improved NASA-ANOPP Noise Prediction Computer Code for Advanced
 Subsonic Propulsion Systems”. NASA-CR-195480).</p>
@@ -1055,7 +1064,7 @@ NASA-CR-3786).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">PropagationEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ground_refl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spherical_spr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atm_atten</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dTisa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">PropagationEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ground_refl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spherical_spr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atm_atten</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dTisa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects" title="Link to this definition"></a></dt>
 <dd><p>Instantiate noise estimation at microphone/observer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1069,12 +1078,51 @@ NASA-CR-3786).</p>
 <li><p><strong>Mai</strong> (<em>ndarray</em>) – 1D array containing Mach number</p></li>
 <li><p><strong>alphai</strong> (<em>ndarray</em>) – 1D array containing Angle of attack (deg)</p></li>
 <li><p><strong>dTisa</strong> (<em>float</em>) – Deviation from ISA temperature (K)</p></li>
+<li><p><strong>elevation</strong> (<em>float</em>) – Ground elevation at microphone location (m)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.atmospheric_attenuation">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atmospheric_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relHum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">third_octave_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.atmospheric_attenuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.atmospheric_attenuation" title="Link to this definition"></a></dt>
+<dd><p>Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the
+ISO 9613-1:1993 report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_k</strong> – 1D array containing atmospheric temperature (K)</p></li>
+<li><p><strong>pa</strong> – 1D array containing atmospheric pressure (Pa)</p></li>
+<li><p><strong>relHum</strong> (<em>float</em>) – Relative humidity</p></li>
+<li><p><strong>r</strong> – 1D array containing distance between source and observer (m)</p></li>
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+<li><p><strong>third_octave_band</strong> (<em>bool</em>) – If True 1/3 octave bands are used and coefficients are estimated using the Volpe</p></li>
+</ul>
+</dd>
+</dl>
+<p>method (E. D. Rickley, G. G. Fleming, C. Roof. “Simplified procedure for computing the absorption of sound by
+the atmosphere”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1D array containing the atmospheric absorption in dB.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.convert_to_3rd_octave_bands">
+<span class="sig-name descname"><span class="pre">convert_to_3rd_octave_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spl_dop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdop_u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdop_l</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.convert_to_3rd_octave_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.convert_to_3rd_octave_bands" title="Link to this definition"></a></dt>
+<dd><p>Convert dopplerized frequency spectrum to 1/3 octave bands</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.convert_to_narrowband">
+<span class="sig-name descname"><span class="pre">convert_to_narrowband</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Lp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fupper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fc_new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.convert_to_narrowband"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.convert_to_narrowband" title="Link to this definition"></a></dt>
+<dd><p>Compute the narrowband spectrum</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.flightEffects">
-<span class="sig-name descname"><span class="pre">flightEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SPLi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.flightEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.flightEffects" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">flightEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SPLi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.flightEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.flightEffects" title="Link to this definition"></a></dt>
 <dd><p>Computes the sound pressure level and the acoustic pressure matrices accounting for propagation effects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1086,6 +1134,7 @@ NASA-CR-3786).</p>
 <li><p><strong>r1</strong> (<em>ndarray</em>) – 1D array containing aircraft distance relative to the microphone (m)</p></li>
 <li><p><strong>tai</strong> (<em>ndarray</em>) – 1D array containing atmospheric temperature (K)</p></li>
 <li><p><strong>SPLi</strong> (<em>ndarray</em>) – 3D array containing Sound pressure level at the source (dB)</p></li>
+<li><p><strong>comp</strong> (<em>string</em>) – Noise component</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1098,25 +1147,6 @@ NASA-CR-3786).</p>
 <dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.getDopplerShift">
 <span class="sig-name descname"><span class="pre">getDopplerShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.getDopplerShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.getDopplerShift" title="Link to this definition"></a></dt>
 <dd><p>Computes the frequency shift due to the movement of the aircraft.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.get_atm_abs">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_atm_abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relHum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.get_atm_abs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.get_atm_abs" title="Link to this definition"></a></dt>
-<dd><p>Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the SAE ARP
-866A report.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>t_k</strong> – 1D array containing atmospheric temperature (K)</p></li>
-<li><p><strong>relHum</strong> (<em>float</em>) – Relative humidity</p></li>
-<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
-<dd class="field-even"><p>1D array containing the atmospheric absorption in dB per 100 m</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1138,23 +1168,56 @@ NASA-CR-3786).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.ground_reflection">
-<span class="sig-name descname"><span class="pre">ground_reflection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.ground_reflection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.ground_reflection" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ground_reflection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.ground_reflection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.ground_reflection" title="Link to this definition"></a></dt>
 <dd><p>Computes the ground effects factor for a sound wave that does not travel directly from the source to the
 observer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y_plane</strong> (<em>float</em>) – Aircraft altitude relative to the microphone (m)</p></li>
-<li><p><strong>x1</strong> (<em>float</em>) – Aircraft horizontal distance relative to the microphone (m)</p></li>
 <li><p><strong>r1</strong> (<em>float</em>) – Aircraft distance relative to the microphone (m)</p></li>
 <li><p><strong>ta</strong> (<em>float</em>) – Atmospheric static temperature (K)</p></li>
 <li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return array<span class="colon">:</span></dt>
-<dd class="field-even"><p>1D array containg ground effects factor</p>
+<dd class="field-even"><p>1D array containing ground effects factor</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.lateral_attenuation">
+<span class="sig-name descname"><span class="pre">lateral_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.lateral_attenuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.lateral_attenuation" title="Link to this definition"></a></dt>
+<dd><p>Calculation of engine-installation effects (lateral directional effects attributed to wing or fuselage mounted
+engines) for conventional aircraft. The method is based on the SAE AIR 5662 report, “Method for Predicting Lateral
+Attenuation of Airplane Noise”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> – depression angle (deg)</p></li>
+<li><p><strong>engine</strong> – wing or fus depending on where the engine is mounted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.subband_combination">
+<span class="sig-name descname"><span class="pre">subband_combination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prms_subband</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.subband_combination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.subband_combination" title="Link to this definition"></a></dt>
+<dd><p>Combine into subband prms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.subband_division">
+<span class="sig-name descname"><span class="pre">subband_division</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.subband_division"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.subband_division" title="Link to this definition"></a></dt>
+<dd><p>Divide into subbands to be used in the ground effects application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.tones_to_3rd_octave_bands">
+<span class="sig-name descname"><span class="pre">tones_to_3rd_octave_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spl_dop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DF</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.tones_to_3rd_octave_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.tones_to_3rd_octave_bands" title="Link to this definition"></a></dt>
+<dd><p>Convert dopplerized frequency spectrum of tonal components to 1/3 octave bands</p>
 </dd></dl>
 
 </dd></dl>
@@ -1308,6 +1371,49 @@ observer.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.plot_airframe_source">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">plot_airframe_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_airframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_wing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_hor_tail</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms__flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_lg_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_lg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms_lg_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#plot_airframe_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.plot_airframe_source" title="Link to this definition"></a></dt>
+<dd><p>Plot airframe source spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the longitudinal directivities (deg)</p></li>
+<li><p><strong>prms_airframe</strong> (<em>ndarray</em>) – 1D array containing the mean square (rms) acoustic pressure for the trailing</p></li>
+</ul>
+</dd>
+</dl>
+<p>edge (Pa)
+:param ndarray prms_wing: 1D array containing the rms acoustic pressure for the wing (Pa)
+:param ndarray prms_hor_tail: 1D array containing therms acoustic pressure for the horizontal tail (Pa)
+:param ndarray prms__flap: 1D array containing the rms acoustic pressure for the flaps (Pa)
+:param ndarray prms_slat: 1D array containing the rms acoustic pressure for the slats (Pa)
+:param ndarray prms_lg_m: 1D array containing the rms acoustic pressure for the main landing gear (Pa)
+:param ndarray prms_lg: 1D array containing the rms acoustic pressure for all landing gears (Pa)
+:param ndarray prms_lg_n: 1D array containing the rms acoustic pressure for the nose landing gear (Pa)
+:param ndarray theta_plot: Directivity angle for which to plot the source (deg)
+:param int point: Point in the trajectory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="choice.choice_aux.plot_source">
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">plot_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#plot_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.plot_source" title="Link to this definition"></a></dt>
+<dd><p>Plot total source spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
+<li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the longitudinal directivities (deg)</p></li>
+<li><p><strong>prms</strong> (<em>ndarray</em>) – A Prms object</p></li>
+<li><p><strong>theta_plot</strong> (<em>ndarray</em>) – Directivity angle for which to plot the source (deg)</p></li>
+<li><p><strong>point</strong> (<em>int</em>) – Point in the trajectory</p></li>
+<li><p><strong>modules</strong> (<em>list</em>) – Fan, Lpc, Lpt, etc.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="choice.choice_aux.preProcessFanFile">
 <span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">preProcessFanFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#preProcessFanFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.preProcessFanFile" title="Link to this definition"></a></dt>
 <dd><p>Computes missing data from fan performance file and saves new file. (This routine is only called if the file
@@ -1357,7 +1463,7 @@ has stars)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="choice.choice_aux.set_frequencies">
-<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">set_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#set_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.set_frequencies" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">choice.choice_aux.</span></span><span class="sig-name descname"><span class="pre">set_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_aux.html#set_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_aux.set_frequencies" title="Link to this definition"></a></dt>
 <dd><p>Computes the 1/3 octave band frequency, the mid-frequency of each band and all the frequencies from the given
 minimum to the maximum value.</p>
 <dl class="field-list simple">
@@ -1393,7 +1499,7 @@ minimum to the maximum value.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Marily Thoma.</p>
+    <p>&#169; Copyright 2023, Evangelia Maria Thoma, Xin Zhao, Tomas Grönstedt.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

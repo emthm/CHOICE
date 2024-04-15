@@ -156,8 +156,8 @@
         <span class="n">ground_noise</span> <span class="o">=</span> \
             <span class="n">GroundNoise</span><span class="o">.</span><span class="n">compute_flight_effects</span><span class="p">(</span><span class="n">noise_choice</span><span class="o">.</span><span class="n">use_ground_reflection</span><span class="p">,</span> <span class="n">noise_choice</span><span class="o">.</span><span class="n">use_spherical_spreading</span><span class="p">,</span>
                                                <span class="n">noise_choice</span><span class="o">.</span><span class="n">use_atmospheric_attenuation</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span>
-                                               <span class="n">noise_choice</span><span class="o">.</span><span class="n">ymic</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">noise_choice</span><span class="o">.</span><span class="n">dtIsa</span><span class="p">,</span> <span class="n">SPLi</span><span class="p">,</span> <span class="n">noise_sources</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-                                               <span class="n">noise_sources</span><span class="o">.</span><span class="n">fband</span><span class="p">)</span>
+                                               <span class="n">noise_choice</span><span class="o">.</span><span class="n">ymic</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">noise_choice</span><span class="o">.</span><span class="n">dtIsa</span><span class="p">,</span> <span class="n">noise_choice</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span>
+                                               <span class="n">SPLi</span><span class="p">,</span> <span class="n">noise_sources</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">noise_sources</span><span class="o">.</span><span class="n">fband</span><span class="p">)</span>
         <span class="n">EPNL</span> <span class="o">=</span> <span class="n">CertificationData</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">trajectory</span><span class="o">.</span><span class="n">n_times</span><span class="p">,</span> <span class="n">ground_noise</span><span class="o">.</span><span class="n">fobs</span><span class="p">,</span> <span class="n">noise_sources</span><span class="o">.</span><span class="n">fband</span><span class="p">,</span> <span class="n">ground_noise</span><span class="o">.</span><span class="n">SPLp</span><span class="p">,</span>
                                          <span class="n">modules</span><span class="p">)</span>
         <span class="n">save_noise_points</span><span class="p">(</span><span class="n">output_folder</span> <span class="o">+</span> <span class="s1">&#39;\choiceOutput.txt&#39;</span><span class="p">,</span> <span class="n">noise_choice</span><span class="o">.</span><span class="n">opPnt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">noise_choice</span><span class="o">.</span><span class="n">fuselage_fan</span><span class="p">,</span>
@@ -172,7 +172,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Marily Thoma.</p>
+    <p>&#169; Copyright 2023, Evangelia Maria Thoma, Xin Zhao, Tomas Grönstedt.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

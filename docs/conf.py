@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'CHOICE'
-copyright = '2023, Marily Thoma'
-author = 'Marily Thoma'
+copyright = '2023, Evangelia Maria Thoma, Xin Zhao, Tomas Grönstedt'
+author = 'Evangelia Maria Thoma'
 
 
 # -- General configuration ---------------------------------------------------

@@ -22,7 +22,7 @@ Interface
    :members:
 
 
-Physics based methods for noise prediction
+Methods for noise prediction
 ==========================================
 
 .. automodule:: choice.choice_physics
