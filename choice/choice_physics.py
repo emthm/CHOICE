@@ -345,12 +345,7 @@ class Airframe(NoiseSource):
             G67[(75 <= St)] = 155.11 - 30 * np.log10(St[(75 <= St)])
             G67_dir = np.tile(np.reshape(G67, (nfreq, 1)), (1, nthet))
         dir_factor = np.sin(np.radians(theta) + defl_flap) * np.cos(np.radians(phi))
-        for i, df in enumerate(dir_factor):
-            if df < 10 ** (-3):
-                if i < len(dir_factor) - 1 and dir_factor[i + 1] > 10 ** (-3):
-                    dir_factor[i] = dir_factor[i + 1]
-                else:
-                    dir_factor[i] = dir_factor[i - 1]
+        dir_factor[dir_factor < 10 ** (-3)] = 10 ** (-3)
         dir_fac = np.tile(np.reshape(20 * np.log10(dir_factor), (1, nthet)), (nfreq, 1))
         SPL = G67_dir + 10 * np.log10(Sf * (np.sin(defl_flap)) ** 2 / (H ** 2)) + \
               60 * math.log10(Va / (100 * choice_data.kt2mps)) + dir_fac
