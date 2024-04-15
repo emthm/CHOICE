@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     # url="",
-    author="Marily Thoma",
+    author="Evangelia Maria Thoma",
     author_email="marily@chalmers.se",
     license="gpl-3.0",
     classifiers=[
@@ -31,5 +31,5 @@ setup(
     ],
     packages=["choice"],
     include_package_data=True,
-    install_requires=["numpy~=1.21.6", "scipy~=1.7.3"]
+    install_requires=["numpy~=1.24.3", "scipy~=1.10.1", "matplotlib~=3.7.2"]
 )
