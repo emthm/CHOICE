@@ -10,6 +10,7 @@ import numpy as np
 import choice.choice_data as choice_data
 from scipy.optimize import brentq
 import csv
+import matplotlib.pyplot as plt
 
 release_version = True
 
@@ -28,7 +29,7 @@ def loadStorageMat(fname, ndata, nvars):
     with open(fname) as fp:
         i = 0
         for line in fp:
-            if line and not line.startswith('!'):  # data line
+            if line.strip() != '' and not line.startswith('!'):  # data line
                 string = line.split()
                 for j, st in enumerate(string):
                     mat[i, j] = float(st)
@@ -144,7 +145,7 @@ def containsStars(fname):
     return stars
 
 
-def set_frequencies(nb, nfreq, fmin, fmax):
+def set_frequencies(nb, nfreq, fmin=choice_data.fmin, fmax=choice_data.fmax):
     """
     Computes the 1/3 octave band frequency, the mid-frequency of each band and all the frequencies from the given
     minimum to the maximum value.
@@ -411,3 +412,111 @@ class chapter3:
         else:
             return 80.57 + 8.51 * math.log10(400.0)  # 102.71
 
+
+def plot_airframe_source(fband, theta, prms_airframe, prms_wing, prms_hor_tail, prms__flap, prms_slat, prms_lg_m,
+                         prms_lg, prms_lg_n,theta_plot, point):
+    """
+    Plot airframe source spectrum.
+
+    :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
+    :param ndarray theta: 1D array containing the longitudinal directivities (deg)
+    :param ndarray prms_airframe: 1D array containing the mean square (rms) acoustic pressure for the trailing
+    edge (Pa)
+    :param ndarray prms_wing: 1D array containing the rms acoustic pressure for the wing (Pa)
+    :param ndarray prms_hor_tail: 1D array containing therms acoustic pressure for the horizontal tail (Pa)
+    :param ndarray prms__flap: 1D array containing the rms acoustic pressure for the flaps (Pa)
+    :param ndarray prms_slat: 1D array containing the rms acoustic pressure for the slats (Pa)
+    :param ndarray prms_lg_m: 1D array containing the rms acoustic pressure for the main landing gear (Pa)
+    :param ndarray prms_lg: 1D array containing the rms acoustic pressure for all landing gears (Pa)
+    :param ndarray prms_lg_n: 1D array containing the rms acoustic pressure for the nose landing gear (Pa)
+    :param ndarray theta_plot: Directivity angle for which to plot the source (deg)
+    :param int point: Point in the trajectory
+    """
+    theta_ind = np.argmin(abs(theta - theta_plot))
+    plt.figure(figsize=(6.3, 5.68))
+    plt.semilogx(fband, prms2SPL(prms_airframe[:, theta_ind, point]), color='lime', linewidth=4)
+    plt.semilogx(fband, prms2SPL(prms_wing[:, theta_ind, point]) - 3, color='cyan', linewidth=2)
+    plt.semilogx(fband, prms2SPL(prms_hor_tail[:, theta_ind, point]) - 3, color='black', linewidth=2)
+    plt.semilogx(fband, prms2SPL(np.sqrt(prms__flap[:, theta_ind, point])) - 3, color='gold', linewidth=2)
+    plt.semilogx(fband, prms2SPL(prms_slat[:, theta_ind, point]) - 3, color='brown', linewidth=2, linestyle='dotted')
+    plt.semilogx(fband, prms2SPL(prms_lg_m[:, theta_ind, point]), color='blue', linewidth=2, linestyle='dashed')
+    plt.semilogx(fband, prms2SPL(prms_lg_n[:, theta_ind, point]), color='magenta', linewidth=2, linestyle='dashed')
+    plt.xlabel('1/3-octave frequency (Hz)', family='monospace', fontsize=11, fontweight='bold')
+    plt.xscale('log')
+    plt.grid(True, which="major", color='gainsboro')
+    plt.grid(True, which="minor", color='whitesmoke', linestyle=':')
+    plt.xlim((50, 10000))
+    plt.ylim((60, 140))
+    plt.legend(['Total airframe', 'Wing', 'Hor. tail', 'Flaps', 'Slat', 'Main LGs', 'Nose LG'],
+               bbox_to_anchor=(0, 1.035, 1, 0.12), loc="upper center", borderaxespad=0, ncols=4, fontsize=9,
+               edgecolor='black', fancybox=False)
+    plt.subplots_adjust(top=0.8)
+    plt.show()
+
+
+def plot_source(fband, theta, prms, theta_plot, point, modules):
+    """
+    Plot total source spectrum.
+
+    :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
+    :param ndarray theta: 1D array containing the longitudinal directivities (deg)
+    :param ndarray prms: A Prms object
+    :param ndarray theta_plot: Directivity angle for which to plot the source (deg)
+    :param int point: Point in the trajectory
+    :param list modules: Fan, Lpc, Lpt, etc.
+    """
+    theta_ind = np.argmin(abs(theta - theta_plot))
+    ps_sum = 0
+    legend = []
+    plt.figure(figsize=(6.3, 5.68))
+    if 'Fan' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Fan_inlet[:, theta_ind, point]), color='cyan', linewidth=2, linestyle='dashed')
+        plt.semilogx(fband, prms2SPL(prms.Fan_discharge[:, theta_ind, point]), color='gold', linewidth=2)
+        legend.append('Fan inlet')
+        legend.append('Fan discharge')
+        ps_sum += pow(prms.Fan_inlet[:, theta_ind, point], 2) + pow(prms.Fan_discharge[:, theta_ind, point], 2)
+    if 'Lpc' or 'Ipc' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Lpc_inlet[:, theta_ind, point]), color='magenta', linewidth=2)
+        if 'Ipc' in modules:
+            legend.append('IPC inlet')
+        else:
+            legend.append('LPC inlet')
+        ps_sum += pow(prms.Lpc_inlet[:, theta_ind, point], 2)
+    if 'Comb' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Comb[:, theta_ind, point]), color='black', linewidth=2, linestyle='dotted')
+        legend.append('Combustor')
+        ps_sum += pow(prms.Comb[:, theta_ind, point], 2)
+    if 'Lpt' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Lpt[:, theta_ind, point]), color='brown', linewidth=2)
+        legend.append('LPT')
+        ps_sum += pow(prms.Lpt[:, theta_ind, point], 2)
+    if 'Cold_nozzle' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Caj[:, theta_ind, point]), color='purple', linewidth=2, linestyle='dashed')
+        legend.append('Jet')
+        ps_sum += pow(prms.Caj[:, theta_ind, point], 2)
+    if 'Fuselage_fan' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Ff_inlet[:, theta_ind, point]), color='red', linewidth=2)
+        plt.semilogx(fband, prms2SPL(prms.Ff_discharge[:, theta_ind, point]), color='yellow', linewidth=2)
+        legend.append('Fuselage fan inlet')
+        legend.append('Fuselage fan inlet discharge')
+        ps_sum += pow(prms.Ff_inlet[:, theta_ind, point], 2) + pow(prms.Ff_discharge[:, theta_ind, point], 2)
+    if 'Ff_nozzle' in modules:
+        plt.semilogx(fband, prms2SPL(prms.Caj_ffn[:, theta_ind, point]), color='grey', linewidth=2, linestyle='dotted')
+        legend.append('Fuselage fan jet')
+        ps_sum += pow(prms.Caj_ffn[:, theta_ind, point], 2)
+
+    plt.semilogx(fband, prms2SPL(prms.Airfrm[:, theta_ind, point]), color='lime', linewidth=2)
+    legend.append('Airframe')
+    prms_tot = np.sqrt(ps_sum + pow(prms.Airfrm[:, theta_ind, point], 2))
+    plt.semilogx(fband, prms2SPL(prms_tot), color='blue', linewidth=3)
+    legend.append('Total')
+    plt.xlabel('1/3-octave frequency (Hz)', family='monospace', fontsize=11, fontweight='bold')
+    plt.xscale('log')
+    plt.grid(True, which="major", color='gainsboro')
+    plt.grid(True, which="minor", color='whitesmoke', linestyle=':')
+    plt.xlim((50, 10000))
+    plt.ylim((60, 140))
+    plt.legend(legend, bbox_to_anchor=(0, 1.035, 1, 0.12), loc="upper center", borderaxespad=0, ncols=4, fontsize=9,
+               edgecolor='black', fancybox=False)
+    plt.subplots_adjust(top=0.8)
+    plt.show()
