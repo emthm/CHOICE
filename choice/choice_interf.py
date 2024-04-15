@@ -453,12 +453,16 @@ class Trajectory:
             ez_body = ez
             fi = np.arccos(ex_body)
             self.xsi = fi
-            self.phi = np.degrees(np.arctan2(ey_body, ez_body))
+            self.phi = np.degrees(np.arctan2(ey, ez))
+            ex_body_w_alpha = ex * np.cos(np.deg2rad(self.clgr + self.alpha)) - \
+                              ey * np.sin(np.deg2rad(self.clgr + self.alpha))
+            self.xsi_alpha = np.arccos(ex_body_w_alpha)
         else:
             fi = np.arctan((xmic - self.x) / (self.y - ymic))
-            fi[self.y <= ymic] = math.pi / 2  # in reality the airframe and engines are always higher than the microphone
+            fi[self.y <= ymic] = math.pi / 2
             psi = math.pi / 2 - fi
             self.xsi = psi + np.deg2rad(self.clgr)
+            self.xsi_alpha = psi + np.deg2rad(self.clgr + self.alpha)
 
     def read_trajectory_input(self, opPnt, input_folder, h_engine):
         """
@@ -1043,8 +1047,13 @@ class NoiseSources:
                 else:
                     pass
 
-            temp = airframe.calc(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i], performance.defl_flap_airfrm[i],
-                                 performance.defl_slat_airfrm[i], performance.LandingGear[i])
+            if hasattr(traj, 'phi'):
+                temp = airframe.calc(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i], 90 - traj.phi[i],
+                                     performance.defl_flap_airfrm[i], performance.defl_slat_airfrm[i],
+                                     performance.LandingGear[i])
+            else:
+                temp = airframe.calc(traj.ta[i], traj.y[i], traj.Ma[i], traj.Va[i], 0, performance.defl_flap_airfrm[i],
+                                     performance.defl_slat_airfrm[i], performance.LandingGear[i])
             prms.Airfrm[:, :, i] = temp[0]
             prms.Airfrm_wing[:, :, i] = temp[1]
             prms.Airfrm_hor_tail[:, :, i] = temp[2]
@@ -1127,6 +1136,7 @@ def interpolate_to_t_source(traj, modules, prms):
     traj.xsii = interp1d(traj.time, traj.xsi, fill_value="extrapolate")(traj.t_source)
     traj.Mai = interp1d(traj.time, traj.Ma, fill_value="extrapolate")(traj.t_source)
     traj.Tai = interp1d(traj.time, traj.ta, fill_value="extrapolate")(traj.t_source)
+    traj.xsi_alphai = interp1d(traj.time, traj.xsi_alpha, fill_value="extrapolate")(traj.t_source)
     traj.alphai = interp1d(traj.time, traj.alpha, fill_value="extrapolate")(traj.t_source)
     traj.pai = interp1d(traj.time, traj.pa, fill_value="extrapolate")(traj.t_source)
     if hasattr(traj, 'phi'):
@@ -1142,7 +1152,7 @@ def interpolate_to_t_source(traj, modules, prms):
 
 def compute_SPLi(prmsi):
     """ Computes Sound Pressure Level matrix from rms acoustic pressure. """
-    prmsi[prmsi == 0] = choice_data.p0
+    prmsi[prmsi <= 0] = choice_data.p0
     return 20.0 * np.log10(prmsi / choice_data.p0)
 
 
@@ -1180,7 +1190,7 @@ class GroundNoise:
         """
 
         propagation = choice_physics.PropagationEffects(ymic, use_ground_refl, spherical_spr, atm_atten, fband,
-                                                        traj.xsii, traj.Mai, traj.alphai, dTisa, elevation)
+                                                        traj.xsii, traj.Mai, traj.xsi_alphai, dTisa, elevation)
         if hasattr(traj, 'phii'):
             phi = traj.phii
         else:
