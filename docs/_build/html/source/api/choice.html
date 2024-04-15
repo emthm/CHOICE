@@ -147,7 +147,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.convert_to_narrowband"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.convert_to_narrowband()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.flightEffects"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.flightEffects()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.getDopplerShift"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.getDopplerShift()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.get_theta"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.get_theta()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.ground_reflection"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.ground_reflection()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.lateral_attenuation"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.lateral_attenuation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#choice.choice_physics.PropagationEffects.subband_combination"><code class="docutils literal notranslate"><span class="pre">PropagationEffects.subband_combination()</span></code></a></li>
@@ -726,7 +725,7 @@ for each component, the observation angle, the Mach number and the angle of atta
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="choice.choice_physics.Airframe.calc">
-<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.calc" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Va</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_flap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defl_slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#Airframe.calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.Airframe.calc" title="Link to this definition"></a></dt>
 <dd><p>Airframe source noise model based on a combination of methods found in public literature. Trailing-edge and
 landing gear noise are modelled separately. The references for each method are found in the description of the
 corresponding functions.</p>
@@ -737,6 +736,7 @@ corresponding functions.</p>
 <li><p><strong>Ha</strong> (<em>float</em>) – Flight altitude (m)</p></li>
 <li><p><strong>Ma</strong> (<em>float</em>) – Aircraft Mach number</p></li>
 <li><p><strong>Va</strong> (<em>float</em>) – Aircraft speed (m/s)</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Lateral directivity angle (deg)</p></li>
 <li><p><strong>defl_flap</strong> (<em>float</em>) – Flap deflection angle (rad)</p></li>
 <li><p><strong>defl_flap</strong> – Slat deflection angle (rad)</p></li>
 <li><p><strong>LG</strong> (<em>int</em>) – Landing gear position (0 =&gt; retracted, 1 =&gt; extended)</p></li>
@@ -1064,7 +1064,7 @@ NASA-CR-3786).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">PropagationEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ground_refl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spherical_spr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atm_atten</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dTisa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">choice.choice_physics.</span></span><span class="sig-name descname"><span class="pre">PropagationEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ymic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ground_refl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spherical_spr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atm_atten</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsi_alphai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dTisa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects" title="Link to this definition"></a></dt>
 <dd><p>Instantiate noise estimation at microphone/observer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1076,7 +1076,7 @@ NASA-CR-3786).</p>
 <li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
 <li><p><strong>xsii</strong> (<em>ndarray</em>) – 1D array containing observation angles (rad)</p></li>
 <li><p><strong>Mai</strong> (<em>ndarray</em>) – 1D array containing Mach number</p></li>
-<li><p><strong>alphai</strong> (<em>ndarray</em>) – 1D array containing Angle of attack (deg)</p></li>
+<li><p><strong>xsi_alphai</strong> (<em>ndarray</em>) – 1D array containing dircetivity angle accounting for angle of attack (deg)</p></li>
 <li><p><strong>dTisa</strong> (<em>float</em>) – Deviation from ISA temperature (K)</p></li>
 <li><p><strong>elevation</strong> (<em>float</em>) – Ground elevation at microphone location (m)</p></li>
 </ul>
@@ -1147,23 +1147,6 @@ the atmosphere”)</p>
 <dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.getDopplerShift">
 <span class="sig-name descname"><span class="pre">getDopplerShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fband</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xsii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mai</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.getDopplerShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.getDopplerShift" title="Link to this definition"></a></dt>
 <dd><p>Computes the frequency shift due to the movement of the aircraft.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="choice.choice_physics.PropagationEffects.get_theta">
-<span class="sig-name descname"><span class="pre">get_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xsi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphai</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/choice/choice_physics.html#PropagationEffects.get_theta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#choice.choice_physics.PropagationEffects.get_theta" title="Link to this definition"></a></dt>
-<dd><p>Computes directivity angle (from aircraft body axis to sound propagation path).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>xsi</strong> (<em>ndarray</em>) – 1D array containing observation angles (rad)</p></li>
-<li><p><strong>alphai</strong> (<em>ndarray</em>) – 1D array containing Angle of attack (deg)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
-<dd class="field-even"><p>1D array containing directivity angle to microphone (rad)</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">

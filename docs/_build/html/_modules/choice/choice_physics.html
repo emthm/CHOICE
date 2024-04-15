@@ -234,7 +234,7 @@
 
 <div class="viewcode-block" id="Airframe.calc">
 <a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.Airframe.calc">[docs]</a>
-    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ta</span><span class="p">,</span> <span class="n">Ha</span><span class="p">,</span> <span class="n">Ma</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="n">defl_slat</span><span class="p">,</span> <span class="n">LG</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ta</span><span class="p">,</span> <span class="n">Ha</span><span class="p">,</span> <span class="n">Ma</span><span class="p">,</span> <span class="n">Va</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">defl_flap</span><span class="p">,</span> <span class="n">defl_slat</span><span class="p">,</span> <span class="n">LG</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Airframe source noise model based on a combination of methods found in public literature. Trailing-edge and</span>
 <span class="sd">        landing gear noise are modelled separately. The references for each method are found in the description of the</span>
@@ -244,6 +244,7 @@
 <span class="sd">        :param float Ha: Flight altitude (m)</span>
 <span class="sd">        :param float Ma: Aircraft Mach number</span>
 <span class="sd">        :param float Va: Aircraft speed (m/s)</span>
+<span class="sd">        :param float phi: Lateral directivity angle (deg)</span>
 <span class="sd">        :param float defl_flap: Flap deflection angle (rad)</span>
 <span class="sd">        :param float defl_flap: Slat deflection angle (rad)</span>
 <span class="sd">        :param int LG: Landing gear position (0 =&gt; retracted, 1 =&gt; extended)</span>
@@ -281,7 +282,7 @@
 
             <span class="c1"># Noise from wing</span>
             <span class="n">ny</span> <span class="o">=</span> <span class="n">DynamicViscocity</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">Ta</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho0</span>
-            <span class="n">phi_sid</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Sideline angle (lateral directivity) is calculated from the flyover plane-&gt;In flyover, phi=0</span>
+            <span class="n">phi_sid</span> <span class="o">=</span> <span class="n">phi</span>  <span class="c1"># Sideline angle (lateral directivity) is calculated from the flyover plane-&gt;In flyover, phi=0</span>
             <span class="n">horizontal_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_sid</span><span class="p">))</span>
             <span class="n">wing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wing_and_tail</span><span class="p">(</span><span class="n">Va</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bw</span><span class="p">,</span> <span class="n">horizontal_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ND</span><span class="p">)</span>
             <span class="n">prms_wing</span> <span class="o">=</span> <span class="n">wing</span>
@@ -1869,12 +1870,12 @@
 <span class="sd">    :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)</span>
 <span class="sd">    :param ndarray xsii: 1D array containing observation angles (rad)</span>
 <span class="sd">    :param ndarray Mai: 1D array containing Mach number</span>
-<span class="sd">    :param ndarray alphai: 1D array containing Angle of attack (deg)</span>
+<span class="sd">    :param ndarray xsi_alphai: 1D array containing dircetivity angle accounting for angle of attack (deg)</span>
 <span class="sd">    :param float dTisa: Deviation from ISA temperature (K)</span>
 <span class="sd">    :param float elevation: Ground elevation at microphone location (m)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ymic</span><span class="p">,</span> <span class="n">use_ground_refl</span><span class="p">,</span> <span class="n">spherical_spr</span><span class="p">,</span> <span class="n">atm_atten</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">,</span> <span class="n">alphai</span><span class="p">,</span> <span class="n">dTisa</span><span class="p">,</span> <span class="n">elevation</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ymic</span><span class="p">,</span> <span class="n">use_ground_refl</span><span class="p">,</span> <span class="n">spherical_spr</span><span class="p">,</span> <span class="n">atm_atten</span><span class="p">,</span> <span class="n">fband</span><span class="p">,</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">,</span> <span class="n">xsi_alphai</span><span class="p">,</span> <span class="n">dTisa</span><span class="p">,</span> <span class="n">elevation</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ymic</span> <span class="o">=</span> <span class="n">ymic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_ground_refl</span> <span class="o">=</span> <span class="n">use_ground_refl</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spherical_spr</span> <span class="o">=</span> <span class="n">spherical_spr</span>
@@ -1887,7 +1888,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">fupper_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDopplerShift</span><span class="p">(</span><span class="n">fband</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)),</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">flower_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDopplerShift</span><span class="p">(</span><span class="n">fband</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">)),</span> <span class="n">xsii</span><span class="p">,</span> <span class="n">Mai</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nfreq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fds</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xsii_alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_theta</span><span class="p">(</span><span class="n">xsii</span><span class="p">,</span> <span class="n">alphai</span><span class="p">)</span>  <span class="c1"># add aircraft alpha to xsii</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xsii_alpha</span> <span class="o">=</span> <span class="n">xsi_alphai</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">N_b</span> <span class="o">=</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_n_freqs</span> <span class="o">=</span> <span class="mi">150</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dTisa</span> <span class="o">=</span> <span class="n">dTisa</span>
@@ -2185,22 +2186,6 @@
             <span class="n">Lp_narrow</span><span class="p">[</span><span class="n">jfstart</span><span class="p">:</span><span class="n">jfend</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice_aux</span><span class="o">.</span><span class="n">prms2SPL</span><span class="p">(</span><span class="n">prms</span><span class="p">[</span><span class="n">jfstart</span><span class="p">:</span><span class="n">jfend</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">Lp_narrow</span></div>
-
-
-<div class="viewcode-block" id="PropagationEffects.get_theta">
-<a class="viewcode-back" href="../../source/api/choice.html#choice.choice_physics.PropagationEffects.get_theta">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsi</span><span class="p">,</span> <span class="n">alphai</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes directivity angle (from aircraft body axis to sound propagation path).</span>
-
-<span class="sd">        :param ndarray xsi: 1D array containing observation angles (rad)</span>
-<span class="sd">        :param ndarray alphai: 1D array containing Angle of attack (deg)</span>
-
-<span class="sd">        :return ndarray: 1D array containing directivity angle to microphone (rad)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">theta</span> <span class="o">=</span> <span class="n">xsi</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alphai</span><span class="p">)</span>
-        <span class="n">theta</span><span class="p">[</span><span class="n">theta</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">theta</span><span class="p">[</span><span class="n">theta</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">theta</span></div>
 
 
 <div class="viewcode-block" id="PropagationEffects.atmospheric_attenuation">
