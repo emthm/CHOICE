@@ -21,33 +21,35 @@ class AtmosphericEffects:
         """
         Computes the ambient temperature at a given altitude.
 
-        :param float alt: Altitude (m)
-        :param float dTisa: Deviation from ISA temperature
+        :param ndarray alt: Altitude (m)
+        :param ndarray dTisa: Deviation from ISA temperature
 
-        :return float: Ambient temperature at given altitude
+        :return ndarray: Ambient temperature at given altitude
         """
-        if alt < 11000.0:
-            ambient_temperature = 288.15 - 6.5e-3 * alt
-        elif 11000.0 <= alt < 25000.0:
-            ambient_temperature = 216.65
+        temp = np.zeros_like(alt)
+        alt = np.asarray(alt)
+        temp[alt < 11000.0] = 288.15 - 6.5e-3 * alt[alt < 11000.0] + dTisa
+        temp[(11000.0 <= alt) & (25000.0 > alt)] = 216.65 + dTisa
 
-        return ambient_temperature + dTisa
+        return temp
 
     @staticmethod
     def get_p_ambient(alt):
         """
         Computes the ambient pressure at a given altitude.
 
-        :param float altitude: Altitude (m)
+        :param ndarray alt: Altitude (m)
 
-        :return float: Ambient pressure at given altitude
+        :return ndarray: Ambient pressure at given altitude
         """
-        if alt < 11000.0:
-            return 101325.0 * (1 - 2.2557E-5 * alt) ** 5.2561
-        elif 11000.0 <= alt < 25000.0:
-            return 22632.0 / math.exp(1.5769e-4 * (alt - 11000.0))
-        elif alt >= 25000.0:
-            return 22632.0 / math.exp(1.5769e-4 * (alt - 11000.0))
+        pa = np.zeros_like(alt)
+        alt = np.asarray(alt)
+        pa[alt < 11000.0] = 101325.0 * (1 - 2.2557E-5 * alt[alt < 11000.0]) ** 5.2561
+        pa[(11000.0 <= alt) & (25000.0 > alt)] = 22632.0 / np.exp(
+            1.5769e-4 * (alt[(11000.0 <= alt) & (25000.0 > alt)] - 11000.0))
+        pa[alt >= 25000.0] = 22632.0 / np.exp(1.5769e-4 * (alt[alt >= 25000.0] - 11000.0))
+
+        return pa
 
     @staticmethod
     def getVel(gam, T, M):
@@ -62,6 +64,18 @@ class AtmosphericEffects:
         """
         ts = T / (1.0 + ((gam - 1.0) / 2.0) * M ** 2)
         return math.sqrt(gam * choice_data.Risa * ts) * M
+
+    @staticmethod
+    def get_sound_speed(temp):
+        """
+        Computes speed of sound for the given temperature.
+
+        :param ndarray temp: Ambient temperature (K)
+        
+        :return ndarray: Sound speed (m/s)
+        """
+        c = 331.4 * np.sqrt(temp / 273.15)
+        return c
 
 
 class NoiseSource:
@@ -95,7 +109,7 @@ class Airframe(NoiseSource):
     :param float Svt: Vertical tail area (m)
     :param str flap_type: Flap type: 1slot, 2slot, 3slot
     :param str slat_type: Leading edge high-lift system type: slat, le_flap
-    :param ndarray theta: 1D array containing the directivity angles (deg)
+    :param ndarray theta: 1D array containing the longitudinal directivity angles (deg)
     :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
     """
 
@@ -195,26 +209,35 @@ class Airframe(NoiseSource):
             phi_sid = 0  # Sideline angle (lateral directivity) is calculated from the flyover plane->In flyover, phi=0
             horizontal_factor = np.cos(np.radians(phi_sid))
             wing = self.get_wing_and_tail(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND)
+            prms_wing = wing
             ps_trailing_edge = pow(wing, 2)
 
             # Noise from horizontal tail
             hor_tail = self.get_wing_and_tail(Va, ny, self.Sht, self.bht, horizontal_factor, 0)
+            prms_hor_tail = hor_tail
             ps_trailing_edge = pow(hor_tail, 2) + ps_trailing_edge
 
             # Noise from vertical tail (0 when lateral directivity is fixed to 90 degrees)
             vertical_factor = np.sin(np.radians(phi_sid))
             ver_tail = self.get_wing_and_tail(Va, ny, self.Svt, self.bvt, vertical_factor, 0)
             ps_trailing_edge = pow(ver_tail, 2) + ps_trailing_edge
-
+            ps_flap = np.zeros((self.nfreq, self.nthet))
             if flaps:
                 for iflap in range(self.NoFlaps):
                     flap = self.get_te_flaps(Va, self.Sf[iflap], self.bf[iflap], defl_flap, self.flap_type, phi_sid)
                     ps_trailing_edge = ps_trailing_edge + pow(flap, 2)
+                    ps_flap = ps_flap + pow(flap, 2)
+            else:
+                ps_flap = np.zeros(np.shape(ps_trailing_edge))
+            prms_flap = np.sqrt(ps_flap)
 
             if slats:
                 horizontal_factor = math.cos(np.radians(phi_sid))
-                slat = self.get_le_slats(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND, self.slat_type)
-                ps_trailing_edge = ps_trailing_edge + pow(slat, 2)
+                p_slat = self.get_le_slats(Va, ny, self.Sw, self.bw, horizontal_factor, self.ND, self.slat_type)
+                ps_trailing_edge = ps_trailing_edge + pow(p_slat, 2)
+            else:
+                p_slat = np.zeros(np.shape(ps_trailing_edge))
+            prms_slat = p_slat
 
             SPLte = choice_aux.prms2SPL(
                 np.sqrt(ps_trailing_edge)) - 3  # Method predicts the level 3 dB above free field
@@ -222,22 +245,37 @@ class Airframe(NoiseSource):
 
             if lgs:
                 ps_lg = np.zeros(np.shape(ps_trailing_edge))
+                ps_lg_m = np.zeros(np.shape(ps_trailing_edge))
                 for ilg in range(self.NoLG):
-                    landinggear = self.getLandingGear(self.N_wheels[ilg], self.N_struts[ilg], Ma * 0.75,
-                                                      np.sqrt(choice_data.gamma_air * choice_data.Risa * Ta),
-                                                      self.d_strut[ilg], self.d_wire[ilg], self.d_wheel[ilg])
-                    ps_lg = ps_lg + pow(landinggear, 2)
+                    p_landinggear = self.getLandingGear(self.N_wheels[ilg], self.N_struts[ilg], Ma * 0.75,
+                                                        np.sqrt(choice_data.gamma_air * choice_data.Risa * Ta),
+                                                        self.d_strut[ilg], self.d_wire[ilg], self.d_wheel[ilg])
+                    ps_lg = ps_lg + pow(p_landinggear, 2)
+                    if ilg <= 1:
+                        ps_lg_m = ps_lg_m + pow(p_landinggear, 2)
+                        prms_main_lg = np.sqrt(ps_lg_m)
+                    else:
+                        prms_nose_lg = p_landinggear
 
                 prms_lg = np.sqrt(ps_lg)
 
             else:
-                prms_lg = 0.0
+                prms_lg = np.zeros(np.shape(ps_trailing_edge))
+                prms_nose_lg = np.zeros(np.shape(ps_trailing_edge))
+                prms_main_lg = np.zeros(np.shape(ps_trailing_edge))
 
         else:
-            prms_trailing_edge = 0.0
-            prms_lg = 0.0
+            prms_trailing_edge = np.zeros((self.nfreq, self.nthet))
+            prms_wing = np.zeros((self.nfreq, self.nthet))
+            prms_hor_tail = np.zeros((self.nfreq, self.nthet))
+            prms_slat = np.zeros((self.nfreq, self.nthet))
+            prms_flap = np.zeros((self.nfreq, self.nthet))
+            prms_nose_lg = np.zeros((self.nfreq, self.nthet))
+            prms_main_lg = np.zeros((self.nfreq, self.nthet))
+            prms_lg = np.zeros((self.nfreq, self.nthet))
 
-        return np.sqrt(pow(prms_trailing_edge, 2) + pow(prms_lg, 2))
+        return [np.sqrt(pow(prms_trailing_edge, 2) + pow(prms_lg, 2)), prms_wing, prms_hor_tail, prms_slat, prms_flap,
+                prms_nose_lg, prms_main_lg, prms_lg]
 
     def get_wing_and_tail(self, Va, ny, S, b, dir_factor, ND):
         """
@@ -466,7 +504,7 @@ class Airframe(NoiseSource):
             elif 120 < th < 140:
                 for j in range(nl):
                     mat[j, i] = interpolate.interp1d(
-                        np.array([120, 130, 140]), np.array([mato[j, 6], mato[j, 6], mato[j, 7]]),
+                        np.array([120, 130, 140]), np.array([mato[j, 5], mato[j, 6], mato[j, 7]]),
                         fill_value="extrapolate")(th)
             elif th >= 140:
                 mat[:, i] = mato[:, 7]
@@ -984,14 +1022,14 @@ class Combustor(NoiseSource):
 
         :param int Nf: Number of ignited fuel nozzles
         :param int/float pattern: Fuel nozzle firing pattern
-        :param float pa: Atmosperic pressure (Pa)
+        :param float pa: Atmospheric pressure (Pa)
         :param float p3: Combustor inlet pressure (Pa)
         :param float p4: Combustor exit pressure (Pa)
-        :param float p7: Tubine last stage exit pressure (Pa)
-        :param float ta: Atmosperic temperature (K)
+        :param float p7: Turbine last stage exit pressure (Pa)
+        :param float ta: Atmospheric temperature (K)
         :param float t3: Combustor inlet temperature (K)
         :param float t4: Combustor exit temperature (K)
-        :param float t5: Tubine last stage exit temperature (K)
+        :param float t5: Turbine last stage exit temperature (K)
         :param float w3: Combustor inlet flow (kg/s)
 
         :return ndarray: 2D array of Rms or effective acoustic pressure for combustor component
@@ -1007,8 +1045,8 @@ class Combustor(NoiseSource):
         w3_lbms = w3 * 2.20462
         self.R0 = 150  # ft
 
-        AA = PropagationEffects.get_atm_abs(ta, choice_data.RH, self.fband)  # dB/100 m
-        AA = (AA / 100.0) * 0.3048 * 1000.0  # dB/1000 ft
+        AA = PropagationEffects.atmospheric_attenuation(ta, pa, choice_data.RH, self.R0 * choice_data.ft2m - 1,
+                                                        self.fband, third_octave_band=True)  # dB for 150 ft - 1m
 
         if self.cmbtype == 'SAC':
             SPL = self.getSAC(Nf, pa_psia, p3_psia, p4_psia, p7_psia,
@@ -1074,8 +1112,7 @@ class Combustor(NoiseSource):
                          -147.50 + 286.40 * fN[2, :] - 142.31 * fN[2, :] ** 2])
 
         SD = 20.0 * math.log10(self.R0 / (1 / choice_data.ft2m))  # to back-propagate at the source (1 m)
-        SPL = np.array([[OASPL[:, i] + SPLN[:, j] + AA[j] * ((self.R0 - 1 / choice_data.ft2m) / 1000.0) + SD
-                         for i in range(nthet)] for j in range(nfreq)])
+        SPL = np.array([[OASPL[:, i] + SPLN[:, j] + AA[j] + SD for i in range(nthet)] for j in range(nfreq)])
 
         prms = choice_aux.SPL2prms(SPL)
 
@@ -1152,8 +1189,7 @@ class Combustor(NoiseSource):
                          -137.21 + 268.99 * fN[1, :] - 135.81 * fN[1, :] ** 2])
 
         SD = 20.0 * math.log10(self.R0 / (1 / choice_data.ft2m))  # to back-propagate at the source (1 m)
-        SPL = np.array([[OASPL[:, i] + SPLN[:, j] + AA[j] * ((self.R0 - 1 / choice_data.ft2m) / 1000.0) + SD
-                         for i in range(nthet)] for j in range(nfreq)])
+        SPL = np.array([[OASPL[:, i] + SPLN[:, j] + AA[j] + SD for i in range(nthet)] for j in range(nfreq)])
 
         prms = choice_aux.SPL2prms(SPL)
         prms_total = np.sqrt(prms[:, :, 0] ** 2 + prms[:, :, 1] ** 2)
@@ -1347,10 +1383,11 @@ class FanCompressor(NoiseSource):
         """
 
         f = self.f
-        fb = round(xnl * self.N_rotors)
+        fb = xnl * self.N_rotors
         acc = int(round(f[-1] / fb))
 
         delta_cutoff = abs(Mu / (1 - self.N_stators / self.N_rotors))  # cut-off factor
+
         # get broadband noise
         [prms_broadband_inlet, prms_broadband_discharge] = self.fanCompr_broadband(operatingPoint, Mtip, fb, dT, g1)
 
@@ -1396,8 +1433,8 @@ class FanCompressor(NoiseSource):
         # set peak
         peak = np.array([Lc_combination + F1[i] for i in range(3)])
 
-        peakf = [int(np.where(f > 0.500 * fb)[0][0]), int(np.where(f > 0.250 * fb)[0][0]),
-                 int(np.where(f > 0.125 * fb)[0][0])]
+        peakf = [np.argmin(abs(f - 0.500 * fb)), np.argmin(abs(f - 0.250 * fb)),
+                 np.argmin(abs(f - 0.125 * fb))]
 
         # Figure 14
         F3 = np.zeros((3, nfreq))
@@ -1677,23 +1714,29 @@ class PropagationEffects:
     :param ndarray Mai: 1D array containing Mach number
     :param ndarray alphai: 1D array containing Angle of attack (deg)
     :param float dTisa: Deviation from ISA temperature (K)
+    :param float elevation: Ground elevation at microphone location (m)
     """
 
-    def __init__(self, ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai, alphai, dTisa):
+    def __init__(self, ymic, use_ground_refl, spherical_spr, atm_atten, fband, xsii, Mai, alphai, dTisa, elevation):
         self.ymic = ymic
         self.use_ground_refl = use_ground_refl
         self.spherical_spr = spherical_spr
         self.atm_atten = atm_atten
         self.Mach = Mai
+        self.fband = fband
         if fband is not None:
-            self.fobs = self.getDopplerShift(fband, xsii, Mai)
-            self.nfreq = len(self.fobs)
+            self.fds = self.getDopplerShift(fband, xsii, Mai)
+            # calculate shifted band limits, needed for auralization
+            self.fupper_ds = self.getDopplerShift(fband * (2 ** (1 / 6)), xsii, Mai)
+            self.flower_ds = self.getDopplerShift(fband / (2 ** (1 / 6)), xsii, Mai)
+            self.nfreq = len(self.fds)
             self.xsii_alpha = self.get_theta(xsii, alphai)  # add aircraft alpha to xsii
         self.N_b = 5
         self.max_n_freqs = 150
         self.dTisa = dTisa
+        self.elevation = elevation
 
-    def flightEffects(self, nti, theta, x, y, r1, tai, SPLi):
+    def flightEffects(self, nti, theta, x, y, r1, tai, SPLi, comp, phi):
         """
         Computes the sound pressure level and the acoustic pressure matrices accounting for propagation effects.
 
@@ -1704,113 +1747,112 @@ class PropagationEffects:
         :param ndarray r1: 1D array containing aircraft distance relative to the microphone (m)
         :param ndarray tai: 1D array containing atmospheric temperature (K)
         :param ndarray SPLi: 3D array containing Sound pressure level at the source (dB)
+        :param string comp: Noise component
 
         :return: An SPL and a prms array
         """
-
-        atm_absorption = np.array(
-            [self.get_atm_abs(ta_i, choice_data.RH, self.fobs[:, i]) for i, ta_i in enumerate(tai)])
 
         # Convective amplification - source motion effect
         DF = np.array([1 / (1 - np.multiply(self.Mach, np.cos(np.radians(thet)))) for thet in theta])
         SPLi = np.array([SPLi[i_f, :, :] - 40 * np.log10(1 / DF) for i_f in range(self.nfreq)])
 
-        N_b = self.N_b
         # Only one directivity reaches the microphone. Here we choose the element in the directivity vector closest
         # to the computed angle.
         closest_value_ptr = np.array([np.abs(theta - math.degrees(xsii_a)).argmin() for xsii_a in self.xsii_alpha])
 
         # extract the directivity elements from the SPL matrix
-        SPLp = np.array([SPLi[:, closest_value_ptr[j], j] for j in range(nti)]).T
+        SPLp_ds = np.array([SPLi[:, closest_value_ptr[j], j] for j in range(nti)]).T
+        DF_mic = np.array([DF[closest_value_ptr[j], j] for j in range(nti)]).T
+
+        if 'tone' in comp or 'combination' in comp:
+            SPLp = self.tones_to_3rd_octave_bands(SPLp_ds, DF_mic)
+        else:
+            SPLp = self.convert_to_3rd_octave_bands(SPLp_ds, self.fupper_ds, self.flower_ds)
         prmsp = choice_aux.SPL2prms(SPLp)
 
-        pa = np.array([AtmosphericEffects.get_p_ambient(h) for h in y + self.ymic])
+        pa = AtmosphericEffects.get_p_ambient(y + self.ymic + self.elevation)
+
         rho_ac = pa / (choice_data.Risa * tai)
-        c_ac = choice_data.cisa * np.sqrt(tai / choice_data.Tisa)
-        pa_mic = AtmosphericEffects.get_p_ambient(self.ymic)
-        t_mic = AtmosphericEffects.get_t_ambient(self.ymic, self.dTisa)
+        c_ac = AtmosphericEffects.get_sound_speed(tai)
+        pa_mic = AtmosphericEffects.get_p_ambient(self.ymic + self.elevation)
+        t_mic = AtmosphericEffects.get_t_ambient(self.ymic + self.elevation, self.dTisa)
         rho_mic = pa_mic / (choice_data.Risa * t_mic)
-        c_mic = choice_data.cisa * np.sqrt(t_mic / choice_data.Tisa)
+        c_mic = AtmosphericEffects.get_sound_speed(t_mic)
         impedance_factor = np.sqrt((rho_mic * c_mic) / (rho_ac * c_ac))
-        # atmospheric attenuation / spherical spreading/ characteristic impedance
-        if self.spherical_spr and self.atm_atten:
-            SPLp = choice_aux.prms2SPL(prmsp / r1 * impedance_factor) - (r1 / 100.0) * atm_absorption.T
-        elif self.spherical_spr:
+        # spherical spreading/ characteristic impedance
+        if self.spherical_spr:
             SPLp = choice_aux.prms2SPL(prmsp / r1 * impedance_factor)
-        elif self.atm_atten:
-            SPLp = SPLp - (r1 / 100.0) * atm_absorption.T
-            
+        else:
+            SPLp = choice_aux.prms2SPL(prmsp * impedance_factor)
+
         prmsp = choice_aux.SPL2prms(SPLp)
 
-        # Ground Reflection
-        if self.use_ground_refl:
-            sub_band = np.zeros((self.max_n_freqs, nti))
-            G1mat = np.zeros((self.max_n_freqs, nti))
-            for i in range(nti):
-                n_freqs = int(round((3 * N_b * math.log10(self.fobs[-1, i] / self.fobs[0, i]) / math.log10(2)))) + 1
-                if n_freqs > self.max_n_freqs: sys.exit('max_n_freqs insufficient in flight effects')
+        # Ground Reflection and atmospheric absorption
+        if self.use_ground_refl or self.atm_atten:
+            sub_band, prms_band = self.subband_division(prmsp)
 
-                [fband, f, freq] = choice_aux.set_frequencies(N_b, n_freqs, self.fobs[0, i], self.fobs[-1, i])
-                sub_band[0:n_freqs, i] = fband
+            if self.atm_atten:
+                if not hasattr(self, 'atm_absorption'):
+                    # Coefficients remain the same for all components. Save to reuse in the next component
+                    atm_absorption = np.array(
+                        [self.atmospheric_attenuation(ta_i, pa[i], choice_data.RH, r1[i], sub_band,
+                                                      third_octave_band=False) for i, ta_i in enumerate(tai)])
+                    self.atm_absorption = atm_absorption.T
 
-                G1mat[0:n_freqs, i] = self.ground_reflection(y[i], x[i], r1[i], tai[i], fband)
+                prms_band = choice_aux.SPL2prms(choice_aux.prms2SPL(prms_band) - self.atm_absorption)
 
-            ptr = 1
-            G13damp = np.zeros((self.nfreq, nti))
-            for i in range(N_b, int(round(n_freqs - (N_b - 1) / 2)), N_b):
-                n_start = int(i - (N_b - 1) / 2)
-                n_end = int(i + (N_b - 1) / 2)
-                G13damp[ptr, :] = np.sum(G1mat[n_start:n_end + 1, :], axis=0) / float(n_end - n_start + 1)
-                ptr = ptr + 1
+            if self.use_ground_refl:
+                if not hasattr(self, 'ground_refl'):
+                    G1mat = np.array([self.ground_reflection(y[i], r1[i], t_mic, sub_band) for i in range(nti)]).T
+                    self.ground_refl = G1mat
 
-            ptr = ptr - 1  # remove last unused update
+                prms_band = np.sqrt(self.ground_refl * prms_band ** 2)
 
-            G13damp[0, :] = sum(G1mat[0:int((N_b - 1) / 2 + 1), :]) / float((N_b - 1) / 2 + 1)  # first row special
-            n_freqs_last = int(
-                round((3 * N_b * np.log10(self.fobs[-1, -1] / self.fobs[0, -1]) / math.log10(2)))) + 1
-            G13damp[-1, :] = sum(G1mat[round(n_freqs_last - (N_b - 1) / 2 - 1):n_freqs_last, 0]) / float(
-                (N_b - 1) / 2 + 1)
-            # last row special
+            prmsp = self.subband_combination(prms_band)
 
-            prmsp = np.sqrt(G13damp * prmsp ** 2)
+        if hasattr(phi, "__len__"):
+            TL_lateral = self.lateral_attenuation(phi, 'wing')
+            SPLp = choice_aux.prms2SPL(prmsp) + TL_lateral
+        else:
+            SPLp = choice_aux.prms2SPL(prmsp)
 
-        SPLp = choice_aux.prms2SPL(prmsp)
+        self.fobs = np.array([self.fband for i in range(nti)]).T  # observer frequencies are now in 1/3 octave bands
+        self.fupper_obs = np.array([self.fband * (2 ** (1 / 6)) for i in range(nti)]).T
+        self.flower_obs = np.array([self.fband / (2 ** (1 / 6)) for i in range(nti)]).T
 
         return [SPLp, prmsp]
 
-    def ground_reflection(self, y_plane, x1, r1, ta, fband):
+    def ground_reflection(self, y_plane, r1, ta, fband):
         """
         Computes the ground effects factor for a sound wave that does not travel directly from the source to the
         observer.
 
         :param float y_plane: Aircraft altitude relative to the microphone (m)
-        :param float x1: Aircraft horizontal distance relative to the microphone (m)
         :param float r1: Aircraft distance relative to the microphone (m)
         :param float ta: Atmospheric static temperature (K)
         :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
 
-        :return array: 1D array containg ground effects factor
+        :return array: 1D array containing ground effects factor
         """
         ainc = 0.01  # incoherence coefficient
         sigma = 225000  # specific flow resistance of the ground
         nf = len(fband)
 
-        y1 = y_plane + self.ymic
+        y1 = y_plane + self.ymic  # aircraft altitude from the ground
         c = math.sqrt(choice_data.Risa * choice_data.gamma_air * ta)
-        x = abs(x1)
 
-        # microphone angle
-        thet = math.pi / 2 - math.atan((y1 + self.ymic) / x)
-        dr = 2.0 * self.ymic * math.cos(thet)
-        r2 = r1 + dr
+        r_xz = np.sqrt(r1 ** 2 - y_plane ** 2)  # ground distance to microphone
+        thet = math.pi / 2 - math.atan((y1 + self.ymic) / r_xz)  # incidence angle
+        dr = 2.0 * self.ymic * math.cos(thet)  # path length difference
+        r2 = r1 + dr  # source image to receiver distance
 
-        k = 2 * math.pi * fband / c  # create the wave number k
+        k = 2 * math.pi * fband / c  # wave number k
         eta = (2 * math.pi * choice_data.rhoisa / sigma) * fband  # dimensionless frequency
 
-        ny = np.array([1 / complex(1 + (6.86 * e) ** (-0.75), (4.36 * e) ** (-0.73)) for e in eta])  # the complex
+        ny = np.array([1 / (1 + (6.86 * e) ** (-0.75) + 1j * (4.36 * e) ** (-0.73)) for e in eta])  # the complex
+
         # specific ground admittance
-        tau = np.array([cmath.sqrt((k_i * r2) / (2.0 * complex(0, 1))) * (math.cos(thet) + ny[i])
-                        for i, k_i in enumerate(k)])
+        tau = np.array([cmath.sqrt((k_i * r2) / 2j) * (math.cos(thet) + ny[i]) for i, k_i in enumerate(k)])
 
         t = np.array([i for i in range(-100, 101)])
 
@@ -1826,8 +1868,8 @@ class PropagationEffects:
                 Fcap[i] = -2 * math.sqrt(math.pi) * U * taui * cmath.exp(taui ** 2) + 1 / (2 * taui ** 2) - 3 / (
                         (2 * taui ** 2) ** 2)
             else:
-                vec = np.exp(-t ** 2) / (complex(0, 1) * taui - t)
-                W = (complex(0, 1) / math.pi) * sum(vec)  # Imag(z)>0 complex error function
+                vec = np.exp(-t ** 2) / (1j * taui - t)
+                W = (1j / math.pi) * sum(vec)  # Imag(z)>0 complex error function
                 Fcap[i] = 1 - cmath.sqrt(math.pi) * taui * W
 
         gam = (math.cos(thet) - ny) / (math.cos(thet) + ny)  # complex plane-wave reflection coefficient
@@ -1838,41 +1880,131 @@ class PropagationEffects:
 
         Kcap = 2 ** (1 / (6.0 * self.N_b))
 
-        G = 1 + Rvec ** 2 + 2 * Rvec * Ccap * np.cos(alfa + k * dr) * np.sin((Kcap - 1) * k * dr) / (
-                (Kcap - 1) * k * dr)
         G1 = 1 + Rvec ** 2 + 2 * Rvec * Ccap * np.cos(alfa + k * dr) * np.sin((Kcap - 1) * k * dr) / (
                 (Kcap - 1) * k * dr)
-
-        arrow = np.zeros(self.max_n_freqs)
-        Rvect = np.zeros(self.max_n_freqs)
-        if y1 > self.ymic:
-            no_pts = 0
-            firstPos = True
-            for i in range(nf):
-                if fband[i] > 4000.0:
-                    if firstPos:
-                        firstPos = False
-                        fptr = i
-
-                    Rvect[no_pts] = G[i]
-                    arrow[no_pts] = Rvect[0]
-                    no_pts = no_pts + 1
-
-            no_pts = no_pts - 1
-            arrow[no_pts] = 1
-            sub = (arrow[0] - arrow[no_pts]) / float(no_pts + 1)
-            arrow[1:no_pts] = arrow[1:no_pts] - sub * np.arange(1, no_pts, 1)
-            G1[fptr:nf] = arrow[0:nf - fptr]
-
-        if x == 0 or thet > np.radians(89.0):
-            G[:] = 1.0
-            G1[:] = 1.0
 
         return G1
 
     def getDopplerShift(self, fband, xsii, Mai):
         """ Computes the frequency shift due to the movement of the aircraft. """
         return np.array([fb / (1.0 - Mai * np.cos(xsii)) for fb in fband])
+
+    def subband_division(self, prms):
+        """ Divide into subbands to be used in the ground effects application."""
+
+        # Ratio of subband center frequencies
+        w = 10 ** (1 / (10 * self.N_b))
+
+        h = np.arange(1, self.N_b + 1)
+        i = np.arange(1, self.nfreq + 1)
+        m = int((self.N_b - 1) / 2)
+
+        # Subband center frequency
+        f = np.reshape(np.array([w ** (h - m - 1) * fb for fb in self.fband]), self.nfreq * self.N_b)
+
+        # Calculate prms for each subband
+        u = np.zeros_like(prms)
+        v = np.zeros_like(prms)
+        u[1:, :] = np.divide(prms[1:, :] ** 2, prms[:-1, :] ** 2)  # slope in lower half of band
+        v[:-1, :] = u[1:, :]  # slope in upper half of band
+        u[0, :] = v[0, :]
+        v[-1, :] = u[-1, :]
+
+        A = np.array([[1 + sum(ui ** ((h[:m] - m - 1) / self.N_b) + vi ** (h[:m] / self.N_b)) for ui, vi in zip(u[:, i], v[:, i])] for i in
+                      range(u.shape[1])]).T
+
+        prms_subband = np.zeros((len(f), prms.shape[1]))
+        for i in range(self.nfreq):
+            j = i * self.N_b + h - 1
+            prms_subband[j[:m], :] = np.sqrt((np.tile(np.reshape(prms[i, :], (1, prms.shape[1])), (len(h[:m]), 1))
+                                              ** 2 / A[i]) * u[i] ** ((h[:m].reshape(len(h[:m]), 1) - m - 1) / self.N_b))
+            prms_subband[j[m], :] = np.sqrt(prms[i, :] ** 2 / A[i])
+            prms_subband[j[m + 1:], :] = np.sqrt(
+                (np.tile(np.reshape(prms[i, :], (1, prms.shape[1])), (len(h[m + 1:]), 1))
+                 ** 2 / A[i]) * v[i] ** ((h[m + 1:].reshape(len(h[m + 1:]), 1) - m - 1) / self.N_b))
+
+        return f, prms_subband
+
+    def subband_combination(self, prms_subband):
+        """ Combine into subband prms."""
+
+        h = np.arange(1, self.N_b + 1) - 1
+        prms = np.zeros((self.nfreq, prms_subband.shape[1]))
+        for i in range(self.nfreq):
+            j = i * self.N_b + h
+            prms[i, :] = np.sqrt(sum(prms_subband[j, :] ** 2))
+
+        return prms
+
+    def tones_to_3rd_octave_bands(self, spl_dop, DF):
+        """ Convert dopplerized frequency spectrum of tonal components to 1/3 octave bands"""
+
+        dn = -3 * np.log2(1 / DF)
+        nt = spl_dop.shape[1]
+        spl = np.zeros_like(spl_dop)
+        for i in range(nt):
+            if abs(dn[i]) >= 0.5:
+                if dn[i] > 0:
+                    n = int(np.round(dn[i]))
+                    spl[n:, i] = spl_dop[:-n, i]
+                else:
+                    n = int(np.round(dn[i]))
+                    spl[:n, i] = spl_dop[-n:, i]
+            else:
+                spl[:, i] = spl_dop[:, i]
+
+        return spl
+
+    def convert_to_3rd_octave_bands(self, spl_dop, fdop_u, fdop_l):
+        """ Convert dopplerized frequency spectrum to 1/3 octave bands"""
+
+        fband = self.fband
+        freq = np.arange(choice_data.fmin, choice_data.fmax)
+        fband_upper = fband * (2 ** (1 / 6))
+        fband_lower = fband / (2 ** (1 / 6))
+        nt = spl_dop.shape[1]
+        spl = np.zeros_like(spl_dop)
+        for i in range(nt):
+            spl_narrow = self.convert_to_narrowband(spl_dop[:, i], fdop_u[:, i], fdop_l[:, i], freq)
+            # Compute mean square acoustic pressure in the narrowband frequencies
+            psd_initial = choice_aux.SPL2prms(spl_narrow) ** 2
+            # Sum mean square acoustic pressures falling in the same 1/3 octave band
+            pressure_amplitude = np.zeros_like(fband)
+            for fi in range(self.nfreq):
+                freq_ind = np.where((freq >= fband_lower[fi]) & (freq <= fband_upper[fi]))[0]
+                portion_lower = fband_lower[fi] - int(fband_lower[fi])
+                portion_upper = fband_upper[fi] - int(fband_upper[fi])
+                if fi > 0:
+                    psd_band = sum(psd_initial[freq_ind[:-1]]) + psd_initial[freq_ind[0] - 1] * (1 - portion_lower) + \
+                               psd_initial[freq_ind[-1]] * portion_upper
+                else:
+                    psd_band = sum(psd_initial[freq_ind[:-1]]) + psd_initial[freq_ind[-1]] * portion_upper
+                # Compute pressure amplitude at desired frequency resolution
+                pressure_amplitude[fi] = np.sqrt(psd_band)
+            spl[:, i] = choice_aux.prms2SPL(pressure_amplitude)
+
+        return spl
+
+    def convert_to_narrowband(self, Lp, fupper, flower, fc_new):
+        """ Compute the narrowband spectrum"""
+
+        Lp_narrow = np.zeros(fc_new.shape)
+        prms = np.zeros(fc_new.shape)
+        jfend = np.where((fc_new >= flower[0]))[0][0]
+        for fi, lp in enumerate(Lp):
+            # Compute number of narrowband bins in the band
+            nf = (fc_new[np.where((fc_new >= flower[fi]) & (fc_new <= fupper[fi]))]).size
+            jfstart = jfend
+            jfend = jfend + nf
+            # Compute mean square acoustic pressure and divide with the number of bins within the band
+            prms_sq = choice_aux.SPL2prms(lp) ** 2
+            if nf > 0:
+                prms[jfstart:jfend] = np.sqrt(prms_sq / nf)
+            else:
+                prms[jfstart:jfend] = choice_data.p0
+            Lp_narrow[jfstart:jfend] = choice_aux.prms2SPL(prms[jfstart:jfend])
+
+        return Lp_narrow
 
     def get_theta(self, xsi, alphai):
         """
@@ -1888,41 +2020,96 @@ class PropagationEffects:
         return theta
 
     @staticmethod
-    def get_atm_abs(t_k, relHum, fband):
+    def atmospheric_attenuation(t_k, pa, relHum, r, fband, third_octave_band=False):
         """
-        Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the SAE ARP
-        866A report.
+        Computes the absorption for a sound wave travelling through the atmosphere. Modelled according to the
+        ISO 9613-1:1993 report.
 
         :param t_k: 1D array containing atmospheric temperature (K)
+        :param pa: 1D array containing atmospheric pressure (Pa)
         :param float relHum: Relative humidity
+        :param r: 1D array containing distance between source and observer (m)
         :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
+        :param bool third_octave_band: If True 1/3 octave bands are used and coefficients are estimated using the Volpe
+        method (E. D. Rickley, G. G. Fleming, C. Roof. "Simplified procedure for computing the absorption of sound by
+        the atmosphere")
 
-        :return ndarray: 1D array containing the atmospheric absorption in dB per 100 m
+        :return ndarray: 1D array containing the atmospheric absorption in dB.
         """
-        # Standard Classical Atmospheric Coefficient
-        b = np.array([1.328924, -3.179768E-2, 2.173716E-4, -1.7496E-6])
-        # Normalized parameters, quadratic interpolation is recommended
-        h_norm_data = np.array(
-            [0.0, 0.25, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.5, 1.7, 2.0, 2.3, 2.5, 2.8, 3.0,
-             3.3, 3.6, 4.15, 4.45, 4.80, 5.25, 5.7, 6.05, 6.5, 7.0, 10.0])
-        alfa_norm_data = np.array(
-            [0.0, 0.315, 0.7, 0.84, 0.93, 0.975, 0.996, 1.0, 0.97, 0.9, 0.840, 0.750, 0.670, 0.570,
-             0.495, 0.45, 0.4, 0.37, 0.33, 0.30, 0.26, 0.245, 0.230, 0.220, 0.210, 0.205, 0.2, 0.2,
-             0.2])
+        pr = 101325  # Reference pressure (Pa)
+        Tr = 293.15  # Reference temperature (K)
+        T01 = 273.16  # Triple-point isotherm temperature
 
-        t_C = t_k - 273.15
+        # Molar concentration of water vapour
+        V = 10.79586 * (1 - T01 / t_k) - 5.02808 * np.log10(t_k / T01) + 1.50474e-4 * (
+                    1 - 10 ** (-8.29692 * (t_k / T01 - 1))) \
+            + 0.42873e-3 * (-1 + 10 ** 4.76955 * (1 - T01 / t_k)) - 2.2195983
+        psat = pr * 10 ** V
+        h = relHum * (psat / pr) * (pa / pr) ** (-1)
 
-        alfa_class = 10.0 ** (2.05 * np.log10(fband / 1000) + 1.1394E-3 * t_C - 1.916984)
-        alfa_molmax = 10.0 ** (np.log10(fband) + (8.42994E-3) * t_C - 2.755624)
-        Bpar = b[0] + b[1] * t_C + b[2] * t_C ** 2 + b[3] * t_C ** 3
-        ha = 10.0 ** (math.log10(relHum) - Bpar)
-        h_molmax = np.sqrt(fband / 1010.0)
-        h_norm = ha / h_molmax
+        # Relaxation frequency of oxygen
+        fro = pa / pr * (24.0 + 4.04 * 10.0 ** 4.0 * h * (0.02 + h) / (0.391 + h))
 
-        alfa_norm = interpolate.PchipInterpolator(h_norm_data, alfa_norm_data)(h_norm)
+        # Relaxation frequency of nitrogen
+        frn = pa / pr * (t_k / Tr) ** (-0.5) * (9.0 + 280.0 * h * np.exp(-4.170 * ((t_k / Tr) ** (-1.0 / 3.0) - 1.0)))
 
-        alfa_mol = alfa_molmax * alfa_norm
-        return alfa_class + alfa_mol
+        # Mid-band attenuation rate in dB/m
+        alpha = 8.686 * fband ** 2 * ((1.84 * 10.0 ** (-11.0) * (pr / pa) * (t_k / Tr) ** 0.5) + (t_k / Tr) ** (-2.5) *
+                                      (0.01275 * np.exp(-2239.1 / t_k) * (fro / (fband ** 2.0 + fro ** 2)) +
+                                       0.1068 * np.exp(-3352.0 / t_k) * (frn / (fband ** 2.0 + frn ** 2))))
+        # Mid_band attenuation in dB
+        delta_t = alpha * r
+
+        # Volpe Method for calculating attenuation by atmospheric absorption on wideband sounds analyzed by 1/3
+        # octave-band filters
+        if third_octave_band:
+            A = 0.867942
+            B = 0.111761
+            C = 0.95824
+            D = 0.008191
+            E = 1.6
+            F = 9.2
+            G = 0.765
+            delta_b = np.zeros_like(delta_t)
+            delta_b[delta_t < 150] = A * delta_t[delta_t < 150] * (1 + B * (C - D * delta_t[delta_t < 150])) ** E
+            delta_b[delta_t >= 150] = F + G * delta_t[delta_t >= 150]
+            return delta_b
+        else:
+            return delta_t
+
+    def lateral_attenuation(self, phi, engine='wing'):
+        """
+        Calculation of engine-installation effects (lateral directional effects attributed to wing or fuselage mounted
+        engines) for conventional aircraft. The method is based on the SAE AIR 5662 report, "Method for Predicting Lateral
+        Attenuation of Airplane Noise".
+
+        :param phi: depression angle (deg)
+        :param engine: wing or fus depending on where the engine is mounted
+        """
+        # The method accounts for engine installation effects, ground effects and refraction and scattering due to wind
+        # and meteorological conditions. Here only the installations effects are implemented as more accurate models are
+        # used for the propagation effects in all directions (not just lateral). The correction for installation effects is
+        # applied to the total aircraft source noise, directly under it
+
+        phi[phi < 0] = 0
+        phi[phi > 180] = 0
+
+        phi_rad = np.radians(phi)
+
+        Einst = np.zeros_like(phi_rad)
+        if 'wing' in engine.lower():
+            # Engine installation effects for wing mounted engines
+            Einst = Einst - 1.49
+            ind = np.where(phi <= 180)
+            Einst[ind] = 10 * np.log10((0.0039 * np.cos(phi_rad[ind]) ** 2 + np.sin(phi_rad[ind]) ** 2) ** 0.062 /
+                                       (0.8786 * np.sin(2 * phi_rad[ind]) ** 2 + np.cos(2 * phi_rad[ind]) ** 2))
+        elif 'fus' in engine.lower():
+            # Engine installation effects for fuselage mounted engines
+            Einst = 10 * np.log10((0.1225 * np.cos(phi_rad) ** 2 + np.sin(phi_rad) ** 2) ** 0.329)
+        else:
+            print('Lateral attenuation method is not valid for this configuration and it will be ignored')
+
+        return Einst
 
 
 class PerceivedNoiseMetrics:
@@ -1947,7 +2134,7 @@ class PerceivedNoiseMetrics:
             vec1 = max(wrk)
             vec2[i] = (1 - Ffactor) * vec1 + Ffactor * sum(wrk)
 
-        return 40.0 + (10.0 / (math.log10(2))) * np.log10(vec2)
+        return 40.0 + (10.0 / np.log10(2)) * np.log10(vec2)
 
     @staticmethod
     def getPNLT(nti, fband, PNL, SPL):
@@ -1963,7 +2150,7 @@ class PerceivedNoiseMetrics:
         """
         nfr = len(fband)
         s = np.zeros((nfr, nti))
-        encircled = np.zeros((nfr, nti))
+        encircled = np.zeros((nfr, nti), dtype=int)
         snew = np.zeros((nfr + 1, nti))
         sbar = np.zeros((nfr, nti))
         SPLfinal = np.zeros((nfr, nti))
@@ -1974,19 +2161,19 @@ class PerceivedNoiseMetrics:
             for k in range(nti):
                 if abs(s[i, k] - s[i - 1, k]) > 5.0:
                     if s[i, k] > 0.0 and s[i, k] > s[i - 1, k]:
-                        encircled[i, k] = 1.0
-                    elif s[i, k] <= 0.0 and s[i - 1, k] > 0.0:
-                        encircled[i - 1, k] = 1.0
+                        encircled[i, k] = 1
+                    elif s[i, k] <= 0.0 < s[i - 1, k]:
+                        encircled[i - 1, k] = 1
 
         SPLnew = np.zeros((nfr, nti))
 
         SPLnew[0, :] = SPL[0, :]
-        SPLnew[encircled == 0.0] = SPL[encircled == 0.0]
+        SPLnew[encircled == 0] = SPL[encircled == 0]
         for i in range(nfr):
             for k in range(nti):
-                if i < 23 and encircled[i, k] != 0.0:
+                if i < 23 and encircled[i, k] != 0:
                     SPLnew[i, k] = 0.5 * (SPL[i - 1, k] + SPL[i + 1, k])
-                elif i == 23 and encircled[i, k] != 0.0:
+                elif i == 23 and encircled[i, k] != 0:
                     SPLnew[23, k] = SPL[22, k] + s[22, k]
 
         # new slopes
@@ -2004,7 +2191,7 @@ class PerceivedNoiseMetrics:
         # difference
         F = SPL - SPLfinal
 
-        F[F < 3.0] = 0.0
+        F[F < 1.5] = 0.0
         F[0:2, :] = 0.0
 
         for i in range(2, nfr):
@@ -2014,11 +2201,15 @@ class PerceivedNoiseMetrics:
                         F[i, k] = F[i, k] / 6.0
                     elif F[i, k] >= 20.0:
                         F[i, k] = 10.0 / 3.0
+                    elif 1.5 <= F[i, k] < 3.0:
+                        F[i, k] = F[i, k] / 3.0 - 0.5
                 elif 500.0 <= fband[i] <= 5000.0:
                     if 3.0 <= F[i, k] < 20.0:
                         F[i, k] = F[i, k] / 3.0
                     elif F[i, k] >= 20.0:
                         F[i, k] = 20.0 / 3.0
+                    elif 1.5 <= F[i, k] < 3.0:
+                        F[i, k] = 2 * F[i, k] / 3.0 - 1
 
         C = np.amax(F, axis=0)
 
@@ -2036,7 +2227,7 @@ class PerceivedNoiseMetrics:
         PNLTM = max(PNLT)
         # Duration correction D calculated based on the threshold PNLTM-10 for all the conditions
         istart = np.where(PNLTM - PNLT < 10.0)[0][0]
-        istop = istart + np.where(PNLTM - PNLT[istart:-1] < 10.0)[0][-1] + 1
+        istop = istart + np.where(PNLTM - PNLT[istart:-1] < 10.0)[0][-1]
         if istop > len(PNLT): istop = len(PNLT)
 
         PNLTsum = sum(10 ** (PNLT[istart:istop + 1] / 10.0))
@@ -2047,29 +2238,40 @@ class PerceivedNoiseMetrics:
 
     @staticmethod
     def getNoys(fband, SPL_vec):
-        """ Computes Noys metric from SPL and frequency. """
+        """ Computes Noys metric from SPL and frequency. Source:
+        https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-36/appendix-Appendix%20A%20to%20Part%2036"""
         Noys = np.zeros(len(fband))
 
-        Mb = np.array([0.043478, 0.040570, 0.036831, 0.036831, 0.035336, 0.033333, 0.033333, 0.032051, 0.030675, 0.0,
-                       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.042285, 0.042285])
-        Mc = np.array([0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103,
+        Mb = np.array([0.043478, 0.040570, 0.036831, 0.036831, 0.035336, 0.033333, 0.033333, 0.032051, 0.030675,
                        0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.029960, 0.029960, 0.029960,
-                       0.029960, 0.029960, 0.029960, 0.029960, 0.029960, 0.029960])
-        SPLa = np.array([91.0, 85.9, 87.3, 79.9, 79.8, 76.0, 74.0, 74.9, 94.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                         0.0, 0.0, 0.0, 0.0, 0.0, 44.3, 50.7])
-        SPLb = np.array([64.0, 60.0, 56.0, 53.0, 51.0, 48.0, 46.0, 44.0, 42.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                         0.0, 0.0, 0.0, 0.0, 0.0, 37.0, 41.0])
+                       0.029960, 0.029960, 0.029960, 0.029960, 0.042285, 0.042285])
+        Mc = np.array([0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103, 0.030103,
+                       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.029960, 0.029960])
+        Md = np.array([0.079520, 0.068160, 0.068160, 0.059640, 0.053013, 0.053013, 0.053013, 0.053013, 0.053013,
+                       0.053013, 0.053013, 0.053013, 0.053013, 0.053013, 0.059640, 0.053013, 0.053013, 0.047712,
+                       0.047712, 0.053013, 0.053013, 0.068160, 0.079520, 0.059640])
+        Me = np.array([0.058098, 0.058098, 0.052288, 0.047534, 0.043573, 0.043573, 0.040221, 0.037349, 0.034859,
+                       0.034859, 0.034859, 0.034859, 0.034859, 0.034859, 0.034859, 0.040221, 0.037349, 0.034859,
+                       0.034859, 0.034859, 0.034859, 0.037349, 0.037349, 0.043573])
+        SPLa = np.array([91.0, 85.9, 87.3, 79.9, 79.8, 76.0, 74.0, 74.9, 94.6, np.inf, np.inf, np.inf, np.inf, np.inf,
+                         np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, 44.3, 50.7])
+        SPLb = np.array([64.0, 60.0, 56.0, 53.0, 51.0, 48.0, 46.0, 44.0, 42.0, 40.0, 40.0, 40.0, 40.0, 40.0, 38.0, 34.0,
+                         32.0, 30.0, 29.0, 29.0, 30.0, 30.0, 37.0, 41.0])
         SPLc = np.array([52.0, 51.0, 49.0, 47.0, 46.0, 45.0, 43.0, 42.0, 41.0, 40.0, 40.0, 40.0, 40.0, 40.0, 38.0, 34.0,
                          32.0, 30.0, 29.0, 29.0, 30.0, 31.0, 34.0, 37.0])
+        SPLd = np.array([49, 44, 39, 34, 30, 27, 24, 21, 18, 16, 16, 16, 16, 16, 15, 12, 9, 5, 4, 5, 6, 10, 17, 21])
+        SPLe = np.array([
+            55, 51, 46, 42, 39, 36, 33, 30, 27, 25, 25, 25, 25, 25, 23, 21, 18, 15, 14, 14, 15, 17, 23, 29])
 
         for i, fb in enumerate(fband):
-            if fb < 400.0 or fb > 6300.0:
-                if SPL_vec[i] < SPLa[i]:
-                    Noys[i] = 10 ** (Mb[i] * (SPL_vec[i] - SPLb[i]))
-                elif SPL_vec[i] >= SPLa[i]:
-                    Noys[i] = 10 ** (Mc[i] * (SPL_vec[i] - SPLc[i]))
-            elif 6300.0 >= fb >= 400.0:
+            if SPL_vec[i] >= SPLa[i]:
                 Noys[i] = 10 ** (Mc[i] * (SPL_vec[i] - SPLc[i]))
+            elif SPLb[i] <= SPL_vec[i] < SPLa[i]:
+                Noys[i] = 10 ** (Mb[i] * (SPL_vec[i] - SPLb[i]))
+            elif SPLe[i] <= SPL_vec[i] < SPLb[i]:
+                Noys[i] = 0.3 * 10 ** (Me[i] * (SPL_vec[i] - SPLe[i]))
+            elif SPLd[i] <= SPL_vec[i] < SPLe[i]:
+                Noys[i] = 0.1 * 10 ** (Md[i] * (SPL_vec[i] - SPLd[i]))
 
         return Noys
 
