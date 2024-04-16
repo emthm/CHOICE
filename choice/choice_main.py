@@ -57,7 +57,7 @@ class CHOICE:
             for i in range(self.noise_choice.nops):
                 self.trajectory = Trajectory.set(i, self.noise_choice.opPnt[i], self.noise_choice, self.input_folder)
                 self.calc_noise_points(i, self.trajectory, input.modules, input.mpd, self.noise_choice, self.weight_choice,
-                                       self.input_folder, self.output_folder)
+                                       self.input_folder, self.output_folder, self.ext)
 
         # establish ICAO certification limits for given mass and number of engines.
         certificationLimits(self.noise_choice.no_engines, self.noise_choice.total_weight_airfrm / 1000)
