@@ -1,11 +1,11 @@
 ! Choice version: 1.0
 ***Operating point is Approach
-      Fan inlet EPNL is          81.8415
-  Fan discharge EPNL is          81.5831
-      Inlet LPC EPNL is          73.8766
-            LPT EPNL is          81.4689
-           Comb EPNL is          68.3178
-            Caj EPNL is          66.3054
-     EPNL_tot_engine is          86.7442
-       Airframe EPNL is          89.6159
-     EPNL_tot with D is          92.2201
+      Fan inlet EPNL is          81.8312
+  Fan discharge EPNL is          81.5728
+      Inlet LPC EPNL is          73.8663
+            LPT EPNL is          81.4586
+           Comb EPNL is          68.3075
+            Caj EPNL is          66.2951
+     EPNL_tot_engine is          86.7339
+       Airframe EPNL is          89.6056
+     EPNL_tot with D is          92.2098

@@ -4,7 +4,7 @@ CHOICE = CHalmers university nOIse CodE
 Python implementation: Marily Thoma
 Original (Fortran) code: Tomas Grönstedt
 Debugging: Marily Thoma, Xin Zhao
-Program based on the NoPred code developed by David Carlsson and Lars Ellprant supervised by Richard Avellán.
+Program based on the NoPred code developed by David Carlsson and Lars Ellbrant supervised by Richard Avellán.
 Last update: 2023-01-09
 """
 
@@ -57,7 +57,7 @@ class CHOICE:
             for i in range(self.noise_choice.nops):
                 self.trajectory = Trajectory.set(i, self.noise_choice.opPnt[i], self.noise_choice, self.input_folder)
                 self.calc_noise_points(i, self.trajectory, input.modules, input.mpd, self.noise_choice, self.weight_choice,
-                                       self.input_folder, self.output_folder)
+                                       self.input_folder, self.output_folder, self.ext)
 
         # establish ICAO certification limits for given mass and number of engines.
         certificationLimits(self.noise_choice.no_engines, self.noise_choice.total_weight_airfrm / 1000)
@@ -83,6 +83,6 @@ class CHOICE:
                                                noise_choice.ymic[i], noise_choice.dtIsa, noise_choice.elevation,
                                                SPLi, noise_sources.theta, noise_sources.fband)
         EPNL = CertificationData.compute(trajectory.n_times, ground_noise.fobs, noise_sources.fband, ground_noise.SPLp,
-                                         modules)
+                                         modules, noise_choice.dt_mic)
         save_noise_points(output_folder + '\choiceOutput.txt', noise_choice.opPnt[i].strip(), noise_choice.fuselage_fan,
                           EPNL)

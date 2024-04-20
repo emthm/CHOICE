@@ -404,7 +404,7 @@ class Trajectory:
 
         a = ((1.0 + tg ** 2) * (c0 ** 2 - Va ** 2)) / Va ** 2
         b = -2.0 * (r1 + c0 * dt) * c0 * math.sqrt(1.0 + tg ** 2) / Va - 2.0 * x1 - 2.0 * y1 * tg
-        c = r1 ** 2 + (c0 ** 2) * (dt ** 2) + 2 * r1 * c0 * dt - x1 ** 2 - y1 ** 2
+        c = (c0 ** 2) * (dt ** 2) + 2 * r1 * c0 * dt
 
         sol1 = (-b + math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
         sol2 = (-b - math.sqrt(b ** 2 - 4.0 * a * c)) / (2.0 * a)
@@ -412,8 +412,9 @@ class Trajectory:
         # pick solution
         x2 = x1 + sol1
         y2 = y1 + sol1 * tg
+        z2 = z1
         dr = math.sqrt(sol1 ** 2 + (sol1 * tg) ** 2)
-        attempt1 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
+        attempt1 = math.sqrt(x2 ** 2 + y2 ** 2 + z2 ** 2) / c0 + dr / Va
         res = abs(attempt1 - tnext) / max(1.0, tnext)
 
         if res < 1000 * sys.float_info.epsilon:
@@ -423,7 +424,7 @@ class Trajectory:
         x2 = x1 + sol2
         y2 = y1 + sol2 * tg
         dr = math.sqrt(sol2 ** 2 + (sol2 * tg) ** 2)
-        attempt2 = math.sqrt(x2 ** 2 + y2 ** 2) / c0 + dr / Va
+        attempt2 = math.sqrt(x2 ** 2 + y2 ** 2 + z2 ** 2) / c0 + dr / Va
         res = abs(attempt2 - tnext) / max(1.0, tnext)
 
         if res < 1000 * sys.float_info.epsilon:
@@ -985,11 +986,6 @@ class NoiseSources:
                 if module.rstrip() == 'Fan':
                     temp = fan.calc(operatingPoint, performance.Mtip_fan[i], performance.Mu_fan[i],
                                     performance.dt_fan[i], performance.xnl_fan[i], performance.g1_fan[i])
-                    prms.Fan_inlet_tone[:, :, i] = temp[0]
-                    prms.Fan_discharge_tone[:, :, i] = temp[1]
-                    prms.Fan_inlet_broadband[:, :, i] = temp[2]
-                    prms.Fan_discharge_broadband[:, :, i] = temp[3]
-                    prms.Fan_inlet_combination[:, :, i] = temp[4]
 
                     if noise.use_suppression_factor:
                         prms.Fan_inlet[:, :, i] = fan.suppression(temp[5], noise.S_fan_inlet)
@@ -1232,7 +1228,7 @@ class NoiseMatricesCerification:
 class CertificationData:
 
     @staticmethod
-    def compute(n_times, fobs, fband, SPLp, modules):
+    def compute(n_times, fobs, fband, SPLp, modules, dt_mic):
         """
         Computes the Effective Perceived Noise Level (EPNL) for each aircraft noise source and for the total
         aircraft.
@@ -1242,6 +1238,7 @@ class CertificationData:
         :param ndarray fband: 1D array containing 1/3 octave band frequencies (Hz)
         :param NoiseSources SPLp: Sound Pressure Level (dB)
         :param list modules: Fan, Lpc, Lpt, etc.
+        :param float dt_mic: Sampling time interval or timestep at microphone (sec)
 
         :return NoiseSources: EPNL for each aircraft noise source and for the total aircraft
         """
@@ -1253,13 +1250,13 @@ class CertificationData:
             PNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp.__dict__[key])
             PNLT.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.__dict__[key],
                                                                               SPLp.__dict__[key])
-            EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.__dict__[key])
+            EPNL.__dict__[key] = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.__dict__[key], dt_mic)
             SPLp_total += 10 ** (SPLp.__dict__[key] / 10)
         SPLp_total = 10 * np.log10(SPLp_total)
 
         PNL.tot = choice_physics.PerceivedNoiseMetrics.getPNL(n_times, fobs, SPLp_total)
         PNLT.tot = choice_physics.PerceivedNoiseMetrics.getPNLT(n_times, fband, PNL.tot, SPLp_total)
-        EPNL.tot = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.tot)
+        EPNL.tot = choice_physics.PerceivedNoiseMetrics.getEPNL(PNLT.tot, dt_mic)
 
         return EPNL
 

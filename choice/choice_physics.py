@@ -9,7 +9,7 @@ import sys
 import math
 import numpy as np
 import cmath
-from scipy import interpolate
+from scipy import interpolate, special
 import choice.choice_data as choice_data
 import choice.choice_aux as choice_aux
 
@@ -1497,9 +1497,8 @@ class FanCompressor(NoiseSource):
 
         for i in range(nthet):
             for j in range(acc):
-                positions = np.where(f > float(fb * (j + 1)))
-                if positions[0].size > 0:
-                    pos = positions[0][0] - 1
+                if fb * (j + 1) < self.f[-1]:
+                    pos = np.argmin(abs(fb * (j + 1) - self.fband))
                 else:
                     pos = -2
 
@@ -1542,12 +1541,11 @@ class FanCompressor(NoiseSource):
 
             for i in range(nthet):
                 for j in range(acc):
-                    positions = np.where(f > float(fb * (j + 1)))
-                    if positions[0].size > 0:
-                        pos = positions[0][0] - 1
+                    if fb * (j + 1) < self.f[-1]:
+                        pos = np.argmin(abs(fb * (j + 1) - self.fband))
                     else:
                         pos = -2
-
+                    
                     if pos == -2: continue
 
                     if SPL_discharge[pos, i] == 0.0:
@@ -1588,6 +1586,7 @@ class FanCompressor(NoiseSource):
 
             Lc_discharge = np.full((nfreq, nthet), 20.0 * np.log10(dT / self.dTref) + 10.0 * np.log10(g1 / self.mref) +
                                    F1b + F2b + self.f3b_data_broad)  # eq 4
+
             SPL_discharge = Lc_discharge + self.get_Fig3a(fband.reshape((nfreq, 1)) / fb)  # eq 5
 
             prms_discharge = choice_aux.SPL2prms(SPL_discharge)
@@ -1708,7 +1707,7 @@ class PropagationEffects:
     :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
     :param ndarray xsii: 1D array containing observation angles (rad)
     :param ndarray Mai: 1D array containing Mach number
-    :param ndarray xsi_alphai: 1D array containing dircetivity angle accounting for angle of attack (deg)
+    :param ndarray xsi_alphai: 1D array containing directivity angle accounting for angle of attack (deg)
     :param float dTisa: Deviation from ISA temperature (K)
     :param float elevation: Ground elevation at microphone location (m)
     """
@@ -1845,28 +1844,16 @@ class PropagationEffects:
         k = 2 * math.pi * fband / c  # wave number k
         eta = (2 * math.pi * choice_data.rhoisa / sigma) * fband  # dimensionless frequency
 
-        ny = np.array([1 / (1 + (6.86 * e) ** (-0.75) + 1j * (4.36 * e) ** (-0.73)) for e in eta])  # the complex
+        # complex specific ground admittance
+        ny = np.array([1 / (1 + (6.86 * e) ** (-0.75) + 1j * (4.36 * e) ** (-0.73)) for e in eta])
 
         # specific ground admittance
         tau = np.array([cmath.sqrt((k_i * r2) / 2j) * (math.cos(thet) + ny[i]) for i, k_i in enumerate(k)])
 
-        t = np.array([i for i in range(-100, 101)])
-
         Fcap = np.full(nf, complex(0, 0))
         for i, taui in enumerate(tau):
-            if abs(taui) > 10.0:
-                if -np.real(taui) > 0:
-                    U = 1  # U is a step function
-                elif -np.real(taui) == 0:
-                    U = 0.5
-                elif -np.real(taui) < 0:
-                    U = 0
-                Fcap[i] = -2 * math.sqrt(math.pi) * U * taui * cmath.exp(taui ** 2) + 1 / (2 * taui ** 2) - 3 / (
-                        (2 * taui ** 2) ** 2)
-            else:
-                vec = np.exp(-t ** 2) / (1j * taui - t)
-                W = (1j / math.pi) * sum(vec)  # Imag(z)>0 complex error function
-                Fcap[i] = 1 - cmath.sqrt(math.pi) * taui * W
+            # Use Faddeeva function https://en.wikipedia.org/wiki/Faddeeva_function
+            Fcap[i] = 1 - np.sqrt(math.pi) * taui * special.wofz(1j * taui)
 
         gam = (math.cos(thet) - ny) / (math.cos(thet) + ny)  # complex plane-wave reflection coefficient
         Amat = gam + (1 - gam) * Fcap  # a complex spherical-wave reflection coefficient
@@ -2199,11 +2186,12 @@ class PerceivedNoiseMetrics:
         return PNL + C
 
     @staticmethod
-    def getEPNL(PNLT):
+    def getEPNL(PNLT, dt):
         """
         Computes the Effective Perceived Noise Level.
 
         :param ndarray PNLT: 1D array containing the corrected Perceived Noise Level (dB)
+        :param float dt: Sampling time interval or timestep at microphone (sec)
 
         :return float: EPNL
         """
@@ -2215,7 +2203,7 @@ class PerceivedNoiseMetrics:
 
         PNLTsum = sum(10 ** (PNLT[istart:istop + 1] / 10.0))
 
-        D = 10.0 * math.log10(PNLTsum) - PNLTM - 13.0
+        D = 10.0 * math.log10(PNLTsum) - PNLTM + 10 * np.log10(dt / 10)
 
         return D + PNLTM
 
