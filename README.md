@@ -133,7 +133,7 @@ The following files are required as input to CHOICE
 - Dhyd_comb: exhaust nozzle exit plane hydraulic diameter.
 - Lc_comb: combustor nominal length.
 - h_annulus_comb: annulus height at combustor exit.
-- LptStgLastBNb: number of rotors at the last stage of the LPT.
+- LptStgLastBNb: number of blades at the last rotor stage of the LPT.
 - stages_LPT: number of LPT stages.
 - LptStgLastDiaOuter: outer diameter of the last stage of the LPT.
 - LptStgLastAExit: exit area of the last stage of the LPT.
@@ -154,7 +154,7 @@ IPC/LPC performance:
 -	Mtip_lpc: relative tip Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
 -	Mu_lpc: blade Mach number. In single point mode it is computed from inlet temperature, pressure mass flow area, diameter and rotational speed.
 -	xnl_fan: rotational speed in rps.
--	dt_lpc: temperature rise over LPC rotor. In single point mode it is computed from a stage loading parameter (0.70 for non-geared and 0.45 for geared).
+-	dt_lpc: temperature rise over entire LPC. In single point mode it is computed from a stage loading parameter (0.70 for non-geared and 0.45 for geared).
 -	g1_lpc: mass flow at LPC in kg/s.
 
 Combustor performance:
