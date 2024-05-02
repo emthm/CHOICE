@@ -745,9 +745,9 @@ class PerformanceChoice:
                                                          choice_data.gamma_air)
 
             if self.weight_choice.gbx_ratio == 1:
-                dt = (0.6 * Umid ** 2) / (choice_data.cp_air * self.weight_choice.n_stages_LPC)
+                dt = (0.6 * Umid ** 2) / choice_data.cp_air
             else:
-                dt = (0.45 * Umid ** 2) / (choice_data.cp_air * self.weight_choice.n_stages_LPC)
+                dt = (0.45 * Umid ** 2) / choice_data.cp_air
 
             self.xnl_lpc = np.full(self.n_traj, xni)
             self.dt_lpc = np.full(self.n_traj, dt)
