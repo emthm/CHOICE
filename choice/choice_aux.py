@@ -420,8 +420,7 @@ def plot_airframe_source(fband, theta, prms_airframe, prms_wing, prms_hor_tail, 
 
     :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
     :param ndarray theta: 1D array containing the longitudinal directivities (deg)
-    :param ndarray prms_airframe: 1D array containing the mean square (rms) acoustic pressure for the trailing
-    edge (Pa)
+    :param ndarray prms_airframe: 1D array containing the mean square (rms) acoustic pressure for the trailing edge (Pa)
     :param ndarray prms_wing: 1D array containing the rms acoustic pressure for the wing (Pa)
     :param ndarray prms_hor_tail: 1D array containing therms acoustic pressure for the horizontal tail (Pa)
     :param ndarray prms__flap: 1D array containing the rms acoustic pressure for the flaps (Pa)

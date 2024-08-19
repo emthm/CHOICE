@@ -2001,8 +2001,8 @@ class PropagationEffects:
         :param r: 1D array containing distance between source and observer (m)
         :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
         :param bool third_octave_band: If True 1/3 octave bands are used and coefficients are estimated using the Volpe
-        method (E. D. Rickley, G. G. Fleming, C. Roof. "Simplified procedure for computing the absorption of sound by
-        the atmosphere")
+            method (E. D. Rickley, G. G. Fleming, C. Roof. "Simplified procedure for computing the absorption of sound
+            by the atmosphere")
 
         :return ndarray: 1D array containing the atmospheric absorption in dB.
         """
