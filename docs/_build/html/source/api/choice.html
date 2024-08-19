@@ -1095,15 +1095,13 @@ ISO 9613-1:1993 report.</p>
 <li><p><strong>relHum</strong> (<em>float</em>) – Relative humidity</p></li>
 <li><p><strong>r</strong> – 1D array containing distance between source and observer (m)</p></li>
 <li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
-<li><p><strong>third_octave_band</strong> (<em>bool</em>) – If True 1/3 octave bands are used and coefficients are estimated using the Volpe</p></li>
+<li><p><strong>third_octave_band</strong> (<em>bool</em>) – If True 1/3 octave bands are used and coefficients are estimated using the Volpe
+method (E. D. Rickley, G. G. Fleming, C. Roof. “Simplified procedure for computing the absorption of sound
+by the atmosphere”)</p></li>
 </ul>
 </dd>
-</dl>
-<p>method (E. D. Rickley, G. G. Fleming, C. Roof. “Simplified procedure for computing the absorption of sound by
-the atmosphere”)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return ndarray<span class="colon">:</span></dt>
-<dd class="field-odd"><p>1D array containing the atmospheric absorption in dB.</p>
+<dt class="field-even">Return ndarray<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D array containing the atmospheric absorption in dB.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1362,20 +1360,19 @@ Attenuation of Airplane Noise”.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fband</strong> (<em>ndarray</em>) – 1D array containing the 1/3 octave band frequencies (Hz)</p></li>
 <li><p><strong>theta</strong> (<em>ndarray</em>) – 1D array containing the longitudinal directivities (deg)</p></li>
-<li><p><strong>prms_airframe</strong> (<em>ndarray</em>) – 1D array containing the mean square (rms) acoustic pressure for the trailing</p></li>
+<li><p><strong>prms_airframe</strong> (<em>ndarray</em>) – 1D array containing the mean square (rms) acoustic pressure for the trailing edge (Pa)</p></li>
+<li><p><strong>prms_wing</strong> (<em>ndarray</em>) – 1D array containing the rms acoustic pressure for the wing (Pa)</p></li>
+<li><p><strong>prms_hor_tail</strong> (<em>ndarray</em>) – 1D array containing therms acoustic pressure for the horizontal tail (Pa)</p></li>
+<li><p><strong>prms__flap</strong> (<em>ndarray</em>) – 1D array containing the rms acoustic pressure for the flaps (Pa)</p></li>
+<li><p><strong>prms_slat</strong> (<em>ndarray</em>) – 1D array containing the rms acoustic pressure for the slats (Pa)</p></li>
+<li><p><strong>prms_lg_m</strong> (<em>ndarray</em>) – 1D array containing the rms acoustic pressure for the main landing gear (Pa)</p></li>
+<li><p><strong>prms_lg</strong> (<em>ndarray</em>) – 1D array containing the rms acoustic pressure for all landing gears (Pa)</p></li>
+<li><p><strong>prms_lg_n</strong> (<em>ndarray</em>) – 1D array containing the rms acoustic pressure for the nose landing gear (Pa)</p></li>
+<li><p><strong>theta_plot</strong> (<em>ndarray</em>) – Directivity angle for which to plot the source (deg)</p></li>
+<li><p><strong>point</strong> (<em>int</em>) – Point in the trajectory</p></li>
 </ul>
 </dd>
 </dl>
-<p>edge (Pa)
-:param ndarray prms_wing: 1D array containing the rms acoustic pressure for the wing (Pa)
-:param ndarray prms_hor_tail: 1D array containing therms acoustic pressure for the horizontal tail (Pa)
-:param ndarray prms__flap: 1D array containing the rms acoustic pressure for the flaps (Pa)
-:param ndarray prms_slat: 1D array containing the rms acoustic pressure for the slats (Pa)
-:param ndarray prms_lg_m: 1D array containing the rms acoustic pressure for the main landing gear (Pa)
-:param ndarray prms_lg: 1D array containing the rms acoustic pressure for all landing gears (Pa)
-:param ndarray prms_lg_n: 1D array containing the rms acoustic pressure for the nose landing gear (Pa)
-:param ndarray theta_plot: Directivity angle for which to plot the source (deg)
-:param int point: Point in the trajectory</p>
 </dd></dl>
 
 <dl class="py function">
