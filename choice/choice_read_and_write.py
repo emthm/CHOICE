@@ -33,6 +33,7 @@ class ReadFiles:
             self.open_performance_file()
             self.mpd = MultptPerfData(self.perfFile)
         else:
+            self.mpd = None
             print('Multipoint perf. file not found. Case must be traj. perf. type.')
 
         # parse dimensions file and set modules
