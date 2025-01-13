@@ -963,7 +963,7 @@ class NoiseSources:
             comb = choice_physics.Combustor(weight.type_comb, weight.Aec_comb, weight.De_comb, weight.Dh_comb,
                                             weight.Lc_comb, weight.h_comb, weight.Nfmax_comb, theta, fband)
         if 'Lpt' in modules:
-            turb = choice_physics.Turbine(weight.N_rotors_lpt, weight.n_stages_lpt, weight.SRS_lpt, theta, fband, f)
+            turb = choice_physics.Turbine(weight.N_rotors_lpt, weight.SRS_lpt, theta, fband, f)
         if 'Fan' in modules:
             fan = choice_physics.FanCompressor('Fan', weight.MtipD_fan, weight.N_rotors_fan, weight.N_stators_fan,
                                                weight.rss_fan, theta, fband, f, noise.fan_distortion)

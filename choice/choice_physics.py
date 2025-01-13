@@ -1200,16 +1200,14 @@ class Turbine(NoiseSource):
     Instantiate turbine source noise prediction.
 
     :param int N_rotors: Number of rotors
-    :param int n_stages: Number of stages
     :param float SRS: Stator-rotor spacing
     :param ndarray theta: 1D array containing the directivity angles (deg)
     :param ndarray fband: 1D array containing the 1/3 octave band frequencies (Hz)
     :param ndarray f: 1D array containing frequencies (Hz)
     """
 
-    def __init__(self, N_rotors, n_stages, SRS, theta, fband, f):
+    def __init__(self, N_rotors, SRS, theta, fband, f):
         self.N_rotors = N_rotors
-        self.n_stages = n_stages
         self.SRS = SRS
         self.theta = theta
         self.fband = fband
@@ -1293,9 +1291,8 @@ class Turbine(NoiseSource):
         prms_t = choice_aux.SPL2prms(SPL_46m_t)
         prms_tot = np.sqrt(prms_b ** 2 + prms_t ** 2).T
         SPL_tot = choice_aux.prms2SPL(prms_tot)
-        SPL_tot_46m = SPL_tot + 10.0 * math.log10(self.n_stages)
 
-        SPL_1m = SPL_tot_46m + 33.2 + np.tile(np.reshape(self.turb_atm_abs, (nfreq, 1)), (1, nthet))
+        SPL_1m = SPL_tot + 33.2 + np.tile(np.reshape(self.turb_atm_abs, (nfreq, 1)), (1, nthet))
 
         return choice_aux.SPL2prms(SPL_1m)
 
